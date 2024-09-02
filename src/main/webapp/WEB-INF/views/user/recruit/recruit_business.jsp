@@ -1,0 +1,321 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>아이스크림 홈런 학습센터</title>
+	<link rel="stylesheet" href="/resources/css/common.css">
+</head>
+<body>
+<!-- wrap -->
+<div class="wrap">
+	<!-- header -->
+	<%@ include file="/WEB-INF/views/user/common/header.jsp"%>
+	<!-- header -->
+	<!-- container -->
+	<div class="container sub_container">
+		<!-- 상단 이미지 -->
+		<div class="visual_wrap visual_recruit">
+			<h2>교사채용</h2>
+			<p>아이스크림 홈런과 함께 진정한 교육 전문가로 성장하세요</p>
+		</div>
+		<!--// 상단 이미지 -->
+		<!-- 컨텐츠 로케이션 영역 -->
+		<div class="location_wrap">
+			<div class="inner">
+				<ul>
+					<li class="home"><span>홈</span></li><!-- 190429 a태그 삭제, span태그 추가 -->
+					<li>교사채용</li><!-- 190429 a태그 삭제 -->
+					<li><strong>사업설명회 안내</strong></li><!-- 190429 a태그 삭제 -->
+				</ul>
+			</div>
+		</div>
+		<!--// 컨텐츠 로케이션 영역 -->
+		<!-- contents-->
+		<div class="contents">
+			<h3>사업설명회 안내</h3>
+			<div class="wrap_recruit_business">
+				<section class="section_business_info">
+					<!-- 20190620 수정 -->
+					<div class="inner">
+						<div class="guide_area">
+							<strong class="area_tit">홈런학습센터 사업설명회</strong>
+							<p class="area_desc">
+									아이스크림홈런 학습센터에서 초등 및 중등회원 <br>
+									학습관리 업무를 진행할 홈런선생님을 모십니다.
+							</p>
+							<ul class="guide_list">
+								<li>
+									<strong>홈런학습센터란?</strong>
+									<p>아이스크림 콘텐츠를 기반으로 한 교과중심 학교교육 콘텐츠 수업을 진행하는 공부방 입니다.</p>
+								</li>
+								<li>
+									<strong>홈런선생님이란?</strong>
+									<p>아이스크림 홈런의 '홈런 선생님'은 아이들의 학습 코치와 관리에만 전념하는 진정한 교육 전문가입니다.</p>
+								</li>
+								<li>
+									<strong>아이스크림홈런 선생님의 혜택은?</strong>
+									<ul>
+										<li>
+											60만원 상당의 홈런학습기 3대 기본제공 (회원수에 따른 추가 무상제공)
+										</li>
+										<li>
+											첫 달 등록회원에 대한 정착지원금 제공 (20명 등록시, 100만원 지원) <span class="txtdesc">* 30만원 상당의 초도물품 제공</span>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+						<!-- // 20190620 수정 -->
+						<div class="inquire_area">
+							<dl>
+								<dt>카카오톡으로 문의하기 (친구추가)</dt>
+								<dd><a href="https://pf.kakao.com/_xflJxdd" target="_blank">ID : 아이스크림홈런학습센터</a></dd> <!--190503 카카오톡 플러스친구 링크 추가 -->
+							</dl>
+						</div>
+					</div>
+				</section>
+				<section class="section_business_schedule">
+					<div class="inner">
+						<ul class="schedule_list">
+							<li>
+								<strong class="location">서울</strong>
+								<ul class="schedule_info_list">
+									<li>
+										<em class="subject">일시</em>
+										<div class="cont_wrap">
+											<p>2019년 4월 19일(금) 오전 10:30</p>
+											<p>2019년 4월 26일(금) 오전 10:30</p>
+										</div>
+									</li>
+									<li>
+										<em class="subject">장소</em>
+										<div class="cont_wrap">
+											<p>서울시 강남구 영동대로 106길 41, (삼성동 동영빌딩)  시공교육 2F</p>
+										</div>
+									</li>
+									<li>
+										<em class="subject">전화</em>
+										<div class="cont_wrap">
+											<p>02) 3288-0910</p>
+										</div>
+									</li>
+								</ul>
+								<a href="javascript:void(0);" class="btn_ask" onclick="layerAct.layerShow('layer_ask')">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
+							</li>
+							<li>
+								<strong class="location">경북/구미</strong>
+								<ul class="schedule_info_list">
+									<li>
+										<em class="subject">일시</em>
+										<div class="cont_wrap">
+											<p>2019년 4월 19일(금) 오전 10:30</p>
+											<p>2019년 4월 26일(금) 오전 10:30</p>
+										</div>
+									</li>
+									<li>
+										<em class="subject">장소</em>
+										<div class="cont_wrap">
+											<p>경북 구미시 박정희로 599, 상가 402호 구미지국</p>
+										</div>
+									</li>
+									<li>
+										<em class="subject">전화</em>
+										<div class="cont_wrap">
+											<p>02) 3288-0910</p>
+										</div>
+									</li>
+								</ul>
+								<a href="javascript:void(0);" class="btn_ask" onclick="layerAct.layerShow('layer_ask')">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
+							</li>
+						</ul>
+					</div>
+				</section>
+			</div>
+		</div>
+		<!-- // contents-->
+	</div>
+	<!-- // container -->
+	<!-- footer -->
+	<%@ include file="/WEB-INF/views/user/common/footer.jsp"%>
+	<!-- // footer -->
+</div>
+<!--// wrap -->
+<!-- layer : 사업설명회 신청 -->
+<div class="layer_pop layer_ask" style="display:none;">
+	<div class="pop_wrap">
+		<div class="tit_area">
+			사업설명회 신청
+		</div>
+		<div class="cont_area">
+			<div class="area_inner">
+				<strong class="tit">2019년 4월 아이스크림 홈런 학습센터 사업설명회 신청</strong>
+				<ul class="input_list">
+						<li>
+							<strong class="subject">지역<span class="essential">*</span></strong>
+							<div class="form_group">
+								<div class="radio_wrap">
+									<input type="radio" id="test1" name="location" checked="">
+									<label for="test1">서울</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test2" name="location">
+									<label for="test2">부산</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test3" name="location">
+									<label for="test3">대구</label>
+								</div>
+							</div>
+						</li>
+						<li>
+							<strong class="subject">일시<span class="essential">*</span></strong>
+							<div class="form_group">
+								<div class="radio_wrap">
+									<input type="radio" id="test4" name="date" checked="">
+									<label for="test4">2019년 4월 19일(금) 오전 10:30</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test5" name="date">
+									<label for="test5">2019년 4월 26일(금) 오전 10:30</label>
+								</div>
+							</div>
+						</li>
+						<li>
+							<strong class="subject">연락처<span class="essential">*</span></strong>
+							<div class="form_group">
+								<div class="sel_wrap ip_phone3">
+									<button type="button" class="sel_style"><span>선택</span></button>
+									<ul class="sel_list">
+										<li><button type="button">010</button></li>
+									</ul>
+								</div>
+								<input type="text" class="ip_phone3" title="연락처 중간자리">
+								<input type="text" class="ip_phone3" title="연락처 끝자리">
+							</div>
+						</li>
+						<li>
+							<strong class="subject">이름<span class="essential">*</span></strong>
+							<input type="text" class="ip_name" title="이름" placeholder="이름을 입력해주세요">
+						</li>
+						<li>
+							<strong class="subject">활동희망지역<span class="essential">*</span></strong>
+							<input type="text" class="ip_name" title="활동희망지역" placeholder="예시) 서울시 서초구">
+						</li>
+						<li>
+							<strong class="subject">연령대<span class="essential">*</span></strong>
+							<div class="form_group">
+								<div class="radio_wrap">
+									<input type="radio" id="test6" name="age" checked="">
+									<label for="test6">20대</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test7" name="age">
+									<label for="test7">30대</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test8" name="age">
+									<label for="test8">40대</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test9" name="age">
+									<label for="test9">50대</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test10" name="age">
+									<label for="test10">기타</label>
+								</div>
+							</div>
+						</li>
+						<li>
+							<strong class="subject">유입경로</strong>
+							<div class="form_group">
+								<div class="radio_wrap">
+									<input type="radio" id="test11" name="inflow" checked="">
+									<label for="test11">온라인</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test12" name="inflow">
+									<label for="test12">오프라인</label>
+								</div>
+							</div>
+						</li>
+						<li>
+							<strong class="subject">상세 유입경로</strong>
+							<div class="form_group">
+								<div class="radio_wrap">
+									<input type="radio" id="test13" name="inflow2" checked="">
+									<label for="test13">아이스크림홈런 홈페이지</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test14" name="inflow2">
+									<label for="test14">네이버블로그</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test15" name="inflow2">
+									<label for="test15">네이버카페</label>
+								</div>
+							</div>
+							<div class="form_group">
+								<div class="radio_wrap">
+									<input type="radio" id="test16" name="inflow2">
+									<label for="test16">신문광고</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test17" name="inflow2">
+									<label for="test17">지인추천</label>
+								</div>
+								<div class="radio_wrap">
+									<input type="radio" id="test18" name="inflow2">
+									<label for="test18">기타</label>
+								</div>
+							</div>
+						</li>
+					</ul>
+				<div class="agree_box">
+					<div class="chk_wrap">
+						<input type="checkbox" id="agree">
+						<label for="agree">서비스 제공을 위한 개인정보 수집 및 이용에 동의 합니다.</label>
+						<a href="javascript:void(0);" class="show_content" onclick="layerAct.layerShow('layer_agree')">내용보기</a><!-- 190426 javascript:void(0); 오타수정 -->
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="btn_center_wrap">
+			<a href="javascript:void(0)" class="btn_cancel">초기화</a><!-- 190426 javascript:void(0) 추가 -->
+			<a href="javascript:void(0)" class="btn_regi">등록</a><!-- 190426 javascript:void(0) 추가 -->
+		</div>
+		<button type="button" class="btn_pop_close" onclick="layerAct.layerHide('layer_ask')"><span class="blind">닫기</span></button>
+	</div>
+	<div class="dim"></div>
+</div>
+<!-- // layer : 사업설명회 신청 -->
+<!-- layer : 개인정보 수집/이용 동의 -->
+<div class="layer_pop layer_agree" style="display:none;">
+	<div class="pop_wrap">
+		<div class="tit_area">
+			개인정보 수집/이용 동의
+		</div>
+		<div class="cont_area">
+			<strong class="tit">개인정보 제공 동의</strong>
+			<dl class="cont_list">
+				<dt>본 서비스 이행을 위해 개인정보(휴대전화번호)를 목적 달성 시 까지 수집/이용함을 동의합니다.</dt>
+				<dd>1. 수집 이용 목적: 문의 및 상담 접수에 따른 수집이용</dd>
+				<dd>2. 개인정보수집항목: 필수항목(이름,연락처,이메일)</dd>
+				<dd>3. 개인정보 보유 및 이용기간: 개인정보 수집 및 이용목적 달성후에는 해당정보 즉시 파기</dd>
+			</dl>
+			<p class="caution">*고객님께서는 동의를 거부하실 수 있으며, 동의하지 않을 경우 본 서비스는 이용할 수 없습니다.</p>
+		</div>
+		<div class="btn_center_wrap">
+			<a href="javascript:void(0);" class="btn_check" onclick="layerAct.layerHide('layer_agree')">확인</a><!-- 190426 javascript:void(0); 오타수정 -->
+		</div>
+	</div>
+	<div class="dim"></div>
+</div>
+<!-- // layer : 개인정보 수집/이용 동의 -->
+<script src="/resources/js/jquery-1.9.1.min.js"></script>
+<script src="/resources/js/default.js"></script>
+</body>
+</html>
