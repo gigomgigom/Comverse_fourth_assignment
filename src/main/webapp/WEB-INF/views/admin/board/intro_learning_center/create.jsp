@@ -78,13 +78,9 @@
 							      	</label>
 								</dd>
 							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">등록일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25 12:00:00</dd>
-							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
 										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
 								        <label class="custom-control-label ml-5" for="radio1">
@@ -123,10 +119,6 @@
 									<input type="date" class="ml-3 form-control col-sm-5" id="dateTo">
 								</dd>
 							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">조회수</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">64</dd>
-							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">내용</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border" style="min-height: 500px; max-height: 500px;">
@@ -139,7 +131,7 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">첨부파일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 border">
 									<div class="form-group">
-							            <label for="exampleInputFile">파일 업로드</label>
+							            <label for="exampleInputFile">추가 파일 업로드</label>
 							            <div class="input-group">
 								            <div class="custom-file">
 									            <input type="file" class="custom-file-input" id="input-attach" multiple>

@@ -13,7 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/resources/adminlte/adminlte/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<!-- Navbar -->
@@ -44,7 +44,53 @@
 			</section>
 
 			<!-- Main content -->
-			
+			<section class="content p-5">
+				<div class="card card-default">
+					<div class="card-body">
+						<div class="row">
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">위치명</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">경기 북부</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">전화</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">02-1234-4567</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">주소</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천시 서구 청라라임로 131 2층 503호</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">등록일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25 12:00:00</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지국 상태</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">활성화</dd>
+							</dl>
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">학습센터</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 border">
+									<div>
+										<ul class="m-0">
+											<li>노원 학습센터 - 서울시 노원구 상계동 330-26 3층</li>
+											<li>노원 학습센터 - 서울시 노원구 상계동 330-26 3층</li>
+											<li>노원 학습센터 - 서울시 노원구 상계동 330-26 3층</li>
+											<li>노원 학습센터 - 서울시 노원구 상계동 330-26 3층</li>
+										</ul>
+									</div>
+								</dd>
+							</dl>
+						</div>
+					</div>
+					<div class="card-footer bg-white py-5">
+						<div class="d-flex justify-content-center">
+							<a href="/admin/manage/location/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/manage/location/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+						</div>
+					</div>
+				</div>
+			</section>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->

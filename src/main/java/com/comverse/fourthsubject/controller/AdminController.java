@@ -305,13 +305,6 @@ public class AdminController {
 		
 		return "/admin/general/onetoone/detail";
 	}
-	//설정 - 문의 관리 - 수정
-	@GetMapping("/manage/one-to-one/edit")
-	public String oneToOneEdit(Model model) {
-		model.addAttribute("chNum", new SideBarModel(2, 4));
-		
-		return "/admin/general/onetoone/edit";
-	}
 	//설정 - 문의 관리 - 생성
 	@GetMapping("/manage/one-to-one/create")
 	public String oneToOneCreate(Model model) {

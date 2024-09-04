@@ -163,6 +163,27 @@
 						            </div>
 								</dd>
 							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">저장된 첨부파일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 border">
+									<div>
+										<ul class="m-0">
+											<li>첨부파일1.jpg<i class="ml-3 fas fa-times" style="cursor: pointer;"></i></li>
+											<li>첨부파일2.pdf<i class="ml-3 fas fa-times" style="cursor: pointer;"></i></li>
+										</ul>
+									</div>
+								</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">저장된 썸네일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 border">
+									<div>
+							            <ul class="m-0">
+							            	<li>썸네일.jpg<i class="ml-3 fas fa-times" style="cursor: pointer;"></i></li>
+							            </ul>
+						            </div>
+								</dd>
+							</dl>
 						</div>
 					</div>
 					<div class="card-footer bg-white py-5">

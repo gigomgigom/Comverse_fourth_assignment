@@ -13,7 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/resources/adminlte/adminlte/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<!-- Navbar -->
@@ -44,7 +44,74 @@
 			</section>
 
 			<!-- Main content -->
-			
+			<section class="content p-5">
+				<div class="card card-default">
+					<div class="card-body">
+						<div class="row">
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지원분야</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">학습센터 교사</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이름</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">심영조</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연락처</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">010-2810-4870</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">생년월일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2000-01-07</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">성별</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">남성</dd>
+							</dl>							
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이메일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">tlarlrma@naver.com</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">거주 지역</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">주소</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천시 서구 청라라임로 131</dd>
+							</dl>
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">
+									개인정보수집 동의
+								</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border" style="min-height: 500px; max-height: 500px; overflow: auto;">
+									<div>
+										<p><b>※ 접수 시 하단 개인정보 취급 방침의 내용을 설명하고 동의 받으시기 바랍니다.</b></p>
+										<br>
+										<p>[개인정보 제공 동의]</p>
+										<p>본 서비스 이행을 위해 개인정보(휴대전화번호)를 목적 달성 시까지 수집/이용함을 동의합니다.</p>
+										<p>1. 수집 이용 목적: 문의 및 상담 접수에 따른 수집 이용</p>
+										<p>2. 개인정보수집항목: 필수항목(이름, 연락처, 이메일)</p>
+										<p>3. 개인정보 보유 및 이용기간: 개인정보 수집 및 이용목적 달성 후에는 해당 정보 즉시 파기</p>
+										<br>
+										<p>*고객님께서는 동의를 거부하실 수 있으며, 동의하지 않을 경우 본 서비스는 이용할 수 없습니다.</p>
+										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1">
+								        <label class="form-control-label" for="checkbox1">
+								        	고객이 동의하였습니다.
+								      	</label>
+									</div>
+								</dd>
+							</dl>
+						</div>
+					</div>
+					<div class="card-footer bg-white py-5">
+						<div class="d-flex justify-content-center">
+							<a href="/admin/manage/join-center/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/manage/join-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+						</div>
+					</div>
+				</div>
+			</section>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->

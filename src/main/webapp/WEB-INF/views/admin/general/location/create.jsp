@@ -13,7 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/resources/adminlte/adminlte/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<!-- Navbar -->
@@ -44,7 +44,128 @@
 			</section>
 
 			<!-- Main content -->
-			
+			<section class="content p-5">
+				<div class="card card-default">
+					<div class="card-body">
+						<div class="row">
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">위치명</dt>
+								<dd class="col-md-10 px-3 py-0 m-0 d-flex align-items-center border">
+									<input type="text" class="form-control-sm w-100 border-0">
+								</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">전화</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+									<input type="text" class="form-control-sm w-100 border-0">
+								</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">주소</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+									<input type="text" class="form-control-sm w-100 border-0">
+								</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지국 상태</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+									<div class="custom-control custom-radio">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
+								        <label class="custom-control-label ml-5" for="radio1">
+								        	작성중
+								      	</label>
+									</div>
+							      	<div class="custom-control custom-radio">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio2" name="isWriting">
+								        <label class="custom-control-label ml-5" for="radio2">
+								        	작성완료
+								      	</label>
+									</div>
+								</dd>
+							</dl>
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">내용</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">
+									<div class="m-0 w-100">
+										<!-- 학습센터 정보 -->
+										<div class="card w-100">
+											<div class="card-body">
+												<div class="d-flex w-100 row">
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="학습센터 명">
+													</div>
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="주소">
+													</div>
+													<div class="col-lg-2 d-flex justify-content-center">
+														<button type="button" class="btn btn-sm">추가</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- 학습센터 정보 -->
+										<div class="card w-100">
+											<div class="card-body">
+												<div class="d-flex w-100 row">
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="학습센터 명">
+													</div>
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="주소">
+													</div>
+													<div class="col-lg-2 d-flex justify-content-center">
+														<button type="button" class="btn btn-sm">추가</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="card w-100">
+											<div class="card-body">
+												<div class="d-flex w-100 row">
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="학습센터 명">
+													</div>
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="주소">
+													</div>
+													<div class="col-lg-2 d-flex justify-content-center">
+														<button type="button" class="btn btn-sm">추가</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="card w-100">
+											<div class="card-body">
+												<div class="d-flex w-100 row">
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="학습센터 명">
+													</div>
+													<div class="col-lg-5">
+														<input type="text" class="form-control" placeholder="주소">
+													</div>
+													<div class="col-lg-2 d-flex justify-content-center">
+														<button type="button" class="btn btn-sm">추가</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										<!-- ============================================================================== -->
+									</div>
+								</dd>
+							</dl>
+						</div>
+					</div>
+					<div class="card-footer bg-white py-5">
+						<div class="d-flex justify-content-center">
+							<a href="/admin/manage/location/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+						</div>
+						<div class="d-flex justify-content-end">
+							<a href="/admin/manage/location/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
+							<a href="/admin/manage/location/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+						</div>
+					</div>
+				</div>
+			</section>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->

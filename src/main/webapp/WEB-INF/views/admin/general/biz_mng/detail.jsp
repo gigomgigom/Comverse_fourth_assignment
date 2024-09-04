@@ -13,7 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/resources/adminlte/adminlte/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layer-fixed">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<!-- Navbar -->
@@ -44,7 +44,61 @@
 			</section>
 
 			<!-- Main content -->
-			
+			<section class="content p-5">
+				<div class="card card-default">
+					<div class="card-body">
+						<div class="row">
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지부</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">서울시</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">등록일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2024.09.03</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 여부</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">비노출</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">모집 상태</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">모집중</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">작성 상태</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">작성완료</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 시작일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 종료일</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-28</dd>
+							</dl>
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">장소</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">사랑시 고백구 행복동</dd>
+							</dl>
+							<dl class="col-md-12 d-flex row">
+								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">일시</dt>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">
+									<ul class="m-0">
+										<li>2019.11.03</li>
+										<li>2019.12.03</li>
+									</ul>
+								</dd>
+							</dl>
+						</div>
+					</div>
+					<div class="card-footer bg-white py-5">
+						<div class="d-flex justify-content-center">
+							<a href="/admin/manage/biz/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/manage/biz/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+						</div>
+					</div>
+				</div>
+			</section>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
