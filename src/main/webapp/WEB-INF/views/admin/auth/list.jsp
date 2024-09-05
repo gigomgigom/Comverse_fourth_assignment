@@ -13,7 +13,7 @@
 <!-- Theme style -->
 <link rel="stylesheet" href="/resources/adminlte/adminlte/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed">
 	<!-- Site wrapper -->
 	<div class="wrapper">
 		<!-- Navbar -->
@@ -44,7 +44,101 @@
 			</section>
 
 			<!-- Main content -->
-			
+			<!-- Search -->
+			<section class="content">
+				<div class="container-fluid p-5">
+					<div class="card card-default">
+						<div class="card-body p-4">
+							<form>
+					            <div class="form-group row">
+					                <label class="col-sm-2 col-form-label">권한 상태</label>
+					                <div class="col-sm-10 d-flex align-items-center row">
+					                    <input id="status1" type="radio" name="" checked>
+					                    <label for="status1" class="mr-3 mb-0">전체</label>
+					                    <input id="status2" type="radio" name="">
+					                    <label for="status2" class="mr-3 mb-0">작성중</label>
+					                    <input id="status3" type="radio" name="">
+					                    <label for="status3" class="mr-3 mb-0">게시중</label>
+					                </div>
+					            </div>
+					            <div class="form-group row">
+					                <label class="col-sm-2 col-form-label">권한 명</label>
+					                <div class="col-sm-10 d-flex row">
+					                    <input type="text" class="form-control col-sm-12" id="keyword" placeholder="검색어를 입력하세요">
+					                </div>
+					            </div>
+					            <div class="form-group d-flex justify-content-center">
+					                <div>
+					                    <button type="submit" class="btn btn-lg btn-primary mr-3">검색</button>
+					                    <button type="reset" class="btn btn-lg btn-secondary">초기화</button>
+					                </div>
+					            </div>
+					        </form>
+						</div>
+					</div>
+				</div>			
+			</section>
+			<!-- search./ end -->
+			<section class="content">
+				<div class="container-fluid px-3">
+					<div class="d-flex justify-content-between row">
+						<div class="col-md-5">
+							<a href="/admin/manage/auth/create" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+						</div>
+						<div class="col-md-5 d-flex align-items-center justify-content-end">
+							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
+							<select class="form-control" style="max-width: 200px">
+		                        <option selected>10개씩 보기</option>
+		                        <option>50개씩 보기</option>
+		                        <option>100개씩 보기</option>
+		                        <option>500개씩 보기</option>
+		                    </select>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- table -->
+			<section class="content">
+				<div class="container-fluid p-3">
+					<div class="card card-default">
+						<div class="card-header bg-info">
+							검색 결과 : N개
+						</div>
+						<div class="card-body table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th class="text-center">ID</th>
+										<th class="text-center">권한명</th>
+										<th class="text-center">권한상태</th>
+										<th class="text-center">등록일</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="text-center">tlarlrma</td>
+										<td class="text-center"><a href="/admin/manage/auth/edit">총괄 관리자</a></td>
+										<td class="text-center">사용</td>
+										<td class="text-center">2019.03.19</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="card-footer bg-white d-flex justify-content-center">
+							<nav>
+							  <ul class="pagination">
+							    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+							    <li class="page-item"><a class="page-link" href="#">1</a></li>
+							    <li class="page-item"><a class="page-link" href="#">2</a></li>
+							    <li class="page-item"><a class="page-link" href="#">3</a></li>
+							    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+							  </ul>
+							</nav>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- table./ end -->
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
