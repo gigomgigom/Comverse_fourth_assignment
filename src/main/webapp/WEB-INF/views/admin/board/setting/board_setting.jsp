@@ -204,7 +204,7 @@
 									        </tr>
 									        <tr>
 									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>게시판 사용 여부</b></p>
+									            	<p><b>목록 개수</b></p>
 									            </td>
 									            <td>
 									            	<div class="d-flex pl-3 align-items-center">

@@ -52,13 +52,7 @@
 										</a>
 									</li>
 									<li class="nav-item">
-										<a href="/admin/board/manage/faq/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==3 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>FAQ</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/board/manage/notice/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==4 ? 'active' : ''}"> 
+										<a href="/admin/board/manage/notice/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==3 ? 'active' : ''}"> 
 											<i class="far fa-circle nav-icon"></i>
 											<p>알려드립니다</p>
 										</a>
@@ -101,6 +95,12 @@
 										<a href="/admin/manage/one-to-one/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==4 ? 'active' : ''}"> 
 											<i class="far fa-circle nav-icon"></i>
 											<p>문의 관리</p>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a href="/admin/manage/faq/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==5 ? 'active' : ''}"> 
+											<i class="far fa-circle nav-icon"></i>
+											<p>FAQ</p>
 										</a>
 									</li>
 								</ul>

@@ -71,7 +71,7 @@
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25 12:00:00</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지국 상태</dt>
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
 										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
