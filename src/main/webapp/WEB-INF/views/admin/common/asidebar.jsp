@@ -25,7 +25,7 @@
 					                게시판 설정
 					              </p>
 					            </a>
-					         </li>
+					        </li>
 							<li class="nav-item ${chNum.firstDepth==1 ? 'menu-is-opening menu-open' : ''}">
 								<a href="#" class="nav-link ${chNum.firstDepth==1 ? 'active' : ''}"> <i class="nav-icon fas fa-clipboard-list"></i>
 									<p>

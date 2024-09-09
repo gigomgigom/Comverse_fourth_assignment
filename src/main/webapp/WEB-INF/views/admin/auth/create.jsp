@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,24 +52,24 @@
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">권한명</dt>
 								<dd class="col-md-11 px-3 py-0 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="roleName">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">삭제 권한</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-				                    <input id="status1" type="radio" name="" checked>
+				                    <input id="status1" type="radio" name="roleRemovable">
 				                    <label for="status1" class="mr-3 mb-0">삭제 가능</label>
-				                    <input id="status2" type="radio" name="">
+				                    <input id="status2" type="radio" name="roleRemovable">
 				                    <label for="status2" class="mr-3 mb-0">삭제 불가</label>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">권한 상태</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input id="status1" type="radio" name="" checked>
+									<input id="status1" type="radio" name="roleEnabled">
 				                    <label for="status1" class="mr-3 mb-0">사용중</label>
-				                    <input id="status2" type="radio" name="">
+				                    <input id="status2" type="radio" name="roleEnabled">
 				                    <label for="status2" class="mr-3 mb-0">미사용</label>
 								</dd>
 							</dl>
@@ -82,84 +83,110 @@
 						                </tr>
 						            </thead>
 						            <tbody>
+						            	<c:forEach var="menu" items="${menuList}">
+						            		<tr>
+							                	<td>
+							                		<input id="other1" type="checkbox" name="menu">
+						                   			<label for="other1" class="mr-3">${menu.parent.name}</label>
+							                	</td>
+							                	<td>
+							                		<c:if test="${menu.parent.menuId == 2}">
+							                			<c:forEach var="child" items="${menu.children}">
+							                				<div>
+									                			<input id="other2" type="checkbox" name="menu">
+								                   				<label for="other2" class="mr-3">${child.ctgName}</label>
+									                		</div>
+							                			</c:forEach>
+							                		</c:if>
+							                		<c:if test="${menu.parent.menuId != 2}">
+							                			<c:forEach var="child" items="${menu.children}">
+							                				<div>
+									                			<input id="other2" type="checkbox" name="menu">
+								                   				<label for="other2" class="mr-3">${child.name}</label>
+									                		</div>
+							                			</c:forEach>
+							                		</c:if>
+							                	</td>
+							                </tr>
+						            	</c:forEach>
 						                <tr>
 						                	<td>
-						                		<input id="other1" type="checkbox" name="">
+						                		<input id="other1" type="checkbox" name="menu">
 					                   			<label for="other1" class="mr-3">게시판 설정</label>
 						                	</td>
 						                	<td>
-						                		<input id="other2" type="checkbox" name="">
+						                		<input id="other2" type="checkbox" name="menu">
 					                   			<label for="other2" class="mr-3">게시판 설정</label>
 						                	</td>
 						                </tr>
 						                <tr>
 						                	<td>
-						                		<input id="other3" type="checkbox" name="">
+						                		<input id="other3" type="checkbox" name="menu">
 					                   			<label for="other3" class="mr-3">게시판 관리</label>
 						                	</td>
 						                	<td>
 						                		<div>
-						                			<input id="other4" type="checkbox" name="">
-					                   				<label for="other4" class="mr-3">우주학습센터 소개</label>
+						                			<input id="other4" type="checkbox" name="menu">
+					                   				<label for="other4" class="mr-3">우수학습센터 소개</label>
 						                		</div>
 						                		<div>
-						                			<input id="other5" type="checkbox" name="">
+						                			<input id="other5" type="checkbox" name="menu">
 					                   				<label for="other5" class="mr-3">홈런학습센터 학습 후기</label>
 						                		</div>
 						                		<div>
-						                			<input id="other6" type="checkbox" name="">
+						                			<input id="other6" type="checkbox" name="menu">
 					                   				<label for="other6" class="mr-3">홈런학습센터 교사 후기</label>
 						                		</div>
 						                		<div>
-						                			<input id="other7" type="checkbox" name="">
+						                			<input id="other7" type="checkbox" name="menu">
 					                   				<label for="other7" class="mr-3">FAQ</label>
 						                		</div>
 						                		<div>
-						                			<input id="other8" type="checkbox" name="">
+						                			<input id="other8" type="checkbox" name="menu">
 					                   				<label for="other8" class="mr-3">알려드립니다.</label>
 						                		</div>
 						                	</td>
 						                </tr>
 						                <tr>
 						                	<td>
-						                		<input id="other9" type="checkbox" name="">
+						                		<input id="other9" type="checkbox" name="menu">
 					                   			<label for="other9" class="mr-3">설정</label>
 						                	</td>
 						                	<td>
 						                		<div>
-						                			<input id="other10" type="checkbox" name="">
+						                			<input id="other10" type="checkbox" name="menu">
 					                   				<label for="other10" class="mr-3">지국위치 안내</label>
 						                		</div>
 						                		<div>
-						                			<input id="other5" type="checkbox" name="">
+						                			<input id="other5" type="checkbox" name="menu">
 					                   				<label for="other5" class="mr-3">사업설명회 관리</label>
 						                		</div>
 						                		<div>
-						                			<input id="other6" type="checkbox" name="">
+						                			<input id="other6" type="checkbox" name="menu">
 					                   				<label for="other6" class="mr-3">사업설명회 신청</label>
 						                		</div>
 						                		<div>
-						                			<input id="other7" type="checkbox" name="">
+						                			<input id="other7" type="checkbox" name="menu">
 					                   				<label for="other7" class="mr-3">학습센터 개설</label>
 						                		</div>
 						                		<div>
-						                			<input id="other8" type="checkbox" name="">
+						                			<input id="other8" type="checkbox" name="menu">
 					                   				<label for="other8" class="mr-3">문의 관리</label>
 						                		</div>
 						                	</td>
 						                </tr>
 						                <tr>
 						                	<td>
-						                		<input id="other9" type="checkbox" name="">
+						                		<input id="other9" type="checkbox" name="menu">
 					                   			<label for="other9" class="mr-3">관리자 및 권한</label>
 						                	</td>
 						                	<td>
 						                		<div>
-						                			<input id="other10" type="checkbox" name="">
+						                			<input id="other10" type="checkbox" name="menu">
 					                   				<label for="other10" class="mr-3">관리자 관리</label>
 						                		</div>
 						                		<div>
-						                			<input id="other5" type="checkbox" name="">
+						                			<input id="other5" type="checkbox" name="menu">
 					                   				<label for="other5" class="mr-3">권한 관리</label>
 						                		</div>
 						                	</td>

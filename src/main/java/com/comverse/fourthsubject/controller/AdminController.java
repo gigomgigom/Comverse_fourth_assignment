@@ -1,18 +1,21 @@
 package com.comverse.fourthsubject.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.SideBarModel;
+import com.comverse.fourthsubject.service.admin.AuthService;
 import com.comverse.fourthsubject.service.admin.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -88,36 +91,36 @@ public class AdminController {
 	// -------------------------------------------------------
 	// -------------------------------------------------------
 	
-	// 게시판 관리 - 우주학습센터 소개 - 목록
-	@GetMapping("/board/manage/intro-learning-center/list")
-	public String boardIntroLearningCenterList(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 0));
+	// 게시판 관리 - 목록
+	@GetMapping("/board/manage/{boCtg}/list")
+	public String boardIntroLearningCenterList(@PathVariable int boCtg, Model model) {
+		model.addAttribute("chNum", new SideBarModel(1, boCtg));
 
-		return "/admin/board/intro_learning_center/list";
+		return "/admin/board/manage/list";
 	}
 
-	// 게시판 관리 - 우주학습센터 소개 - 상세
-	@GetMapping("/board/manage/intro-learning-center/detail")
-	public String boardIntroLearningCenterDetail(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 0));
+	// 게시판 관리 - 상세
+	@GetMapping("/board/manage/{boCtg}/detail")
+	public String boardIntroLearningCenterDetail(@PathVariable int boCtg, Model model) {
+		model.addAttribute("chNum", new SideBarModel(1, boCtg));
 
-		return "/admin/board/intro_learning_center/detail";
+		return "/admin/board/manage/detail";
 	}
 
-	// 게시판 관리 - 우주학습센터 소개 - 수정
-	@GetMapping("/board/manage/intro-learning-center/edit")
-	public String boardIntroLearningCenterEdit(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 0));
+	// 게시판 관리 - 수정
+	@GetMapping("/board/manage/{boCtg}/edit")
+	public String boardIntroLearningCenterEdit(@PathVariable int boCtg, Model model) {
+		model.addAttribute("chNum", new SideBarModel(1, boCtg));
 
-		return "/admin/board/intro_learning_center/edit";
+		return "/admin/board/manage/edit";
 	}
 
-	// 게시판 관리 - 우주학습센터 소개 - 생성
-	@GetMapping("/board/manage/intro-learning-center/create")
-	public String boardIntroLearningCenterCreate(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 0));
+	// 게시판 관리 - 생성
+	@GetMapping("/board/manage/{boCtg}/create")
+	public String boardIntroLearningCenterCreate(@PathVariable int boCtg, Model model) {
+		model.addAttribute("chNum", new SideBarModel(1, boCtg));
 
-		return "/admin/board/intro_learning_center/create";
+		return "/admin/board/manage/create";
 	}
 	// -------------------------------------------------------
 	// -------------------------------------------------------
@@ -310,12 +313,16 @@ public class AdminController {
 		return "/admin/board/faq/create";
 	}
 	// -------------------------------------------------------
+	
+	@Autowired
+	private AuthService authService;
+	
 	// -------------------------------------------------------
 	// 관리자 관리 - 목록
 	@GetMapping("/manage/manager/list")
 	public String managerList(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 0));
-
+		
 		return "/admin/manager/list";
 	}
 
@@ -323,7 +330,8 @@ public class AdminController {
 	@GetMapping("/manage/manager/create")
 	public String managerCreate(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 0));
-
+		
+		
 		return "/admin/manager/create";
 	}
 
@@ -340,19 +348,20 @@ public class AdminController {
 	@GetMapping("/manage/auth/list")
 	public String authList(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 1));
-
+		
 		return "/admin/auth/list";
 	}
 
-	// 권한 관리 - 생성
+	// 권한 관리 - 생성 페이지 이동
 	@GetMapping("/manage/auth/create")
 	public String authCreate(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 1));
-
+		authService.getMenuList(model);
+		
 		return "/admin/auth/create";
 	}
 
-	// 권한 관리 - 수정
+	// 권한 관리 - 수정 페이지 이동
 	@GetMapping("/manage/auth/edit")
 	public String authEdit(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 1));
