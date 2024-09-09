@@ -1,5 +1,6 @@
 package com.comverse.fourthsubject.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
@@ -21,8 +22,29 @@ import lombok.extern.slf4j.Slf4j;
 @EnableMethodSecurity
 public class WebSecurityConfig {
 	
+	@Autowired
+	private LoginSuccessHandler loginSuccessHandler;
+	@Autowired
+	private LoginFailureHandler loginFailureHandler;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.formLogin(formLogin -> formLogin
+				.loginPage("/icecream/login")
+				.usernameParameter("admId")
+				.passwordParameter("admPw")
+				.loginProcessingUrl("/login")
+				.successHandler(loginSuccessHandler)
+				.failureHandler(loginFailureHandler)
+		);
+		http.logout(logout -> logout
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/icecream/login")
+		);
+		http.authorizeHttpRequests((requests) ->
+			requests.requestMatchers("/admin/**").authenticated()
+					.anyRequest().permitAll()
+		);
 		return http.build();
 	}
 	//유저 권한 설정

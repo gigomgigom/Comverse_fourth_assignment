@@ -1,11 +1,19 @@
 package com.comverse.fourthsubject.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.SideBarModel;
+import com.comverse.fourthsubject.service.admin.BoardService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -13,6 +21,10 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	
+	@Autowired
+	private BoardService boardService;
+	
 	// 관리자 홈
 	@GetMapping("/main")
 	public String main(Model model) {
@@ -25,10 +37,54 @@ public class AdminController {
 	@GetMapping("/board/setting")
 	public String boardSetting(Model model) {
 		model.addAttribute("chNum", new SideBarModel(0, 0));
-
+		List<BoardCtgDto> ctgList = boardService.getBoardCtgList();
+		model.addAttribute("ctgList", ctgList);
 		return "/admin/board/setting/board_setting";
 	}
-
+	// 게시판 선택(상세 조회)
+	@ResponseBody
+	@GetMapping("/board/setting/show")
+	public ResponseEntity<?> getBoardCtgDetail(int ctgId) {
+		BoardCtgDto result = boardService.getBoardCtgDetail(ctgId);
+		if(result == null) {
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.ok(result);
+		}
+	}
+	// 게시판 생성
+	@ResponseBody
+	@GetMapping("/board/setting/create")
+	public ResponseEntity<?> createBoardCtg() {
+		int createdRow = boardService.createBoardCtg();
+		if(createdRow > 0) {
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	// 게시판 수정
+	@ResponseBody
+	@PostMapping("/board/setting/edit")
+	public ResponseEntity<?> editBoardCtg(BoardCtgDto boardCtgDto) {
+		int changedRow = boardService.editBoardCtg(boardCtgDto);
+		if(changedRow > 0) {
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+	// 게시판 삭제
+	@ResponseBody
+	@GetMapping("/board/setting/delete")
+	public ResponseEntity<?> deleteBoardCtg(int ctgId) {
+		int changedRow = boardService.removeBoardCtg(ctgId);
+		if(changedRow > 0) {
+			return ResponseEntity.ok().build();
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
 	// -------------------------------------------------------
 	// -------------------------------------------------------
 	
@@ -63,106 +119,6 @@ public class AdminController {
 
 		return "/admin/board/intro_learning_center/create";
 	}
-
-	// -------------------------------------------------------
-	// 게시판 관리 - 홈런학습센터 학습 후기 - 목록
-	@GetMapping("/board/manage/study-review/list")
-	public String boardStudyReviewList(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 1));
-
-		return "/admin/board/study_review/list";
-	}
-
-	// 게시판 관리 - 홈런학습센터 학습 후기 - 상세
-	@GetMapping("/board/manage/study-review/detail")
-	public String boardStudyReviewDetail(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 1));
-
-		return "/admin/board/study_review/detail";
-	}
-
-	// 게시판 관리 - 홈런학습센터 학습 후기 - 수정
-	@GetMapping("/board/manage/study-review/edit")
-	public String boardStudyReviewEdit(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 1));
-
-		return "/admin/board/study_review/edit";
-	}
-
-	// 게시판 관리 - 홈런학습센터 학습 후기 - 생성
-	@GetMapping("/board/manage/study-review/create")
-	public String boardStudyReviewCreate(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 1));
-
-		return "/admin/board/study_review/create";
-	}
-
-	// -------------------------------------------------------
-	// 게시판 관리 - 홈런학습센터 교사 후기 - 목록
-	@GetMapping("/board/manage/teacher-review/list")
-	public String boardTeacherReviewList(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 2));
-
-		return "/admin/board/teacher_review/list";
-	}
-
-	// 게시판 관리 - 홈런학습센터 교사 후기 - 상세
-	@GetMapping("/board/manage/teacher-review/detail")
-	public String boardTeacherReviewDetail(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 2));
-
-		return "/admin/board/teacher_review/detail";
-	}
-
-	// 게시판 관리 - 홈런학습센터 교사 후기 - 수정
-	@GetMapping("/board/manage/teacher-review/edit")
-	public String boardTeacherReviewEdit(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 2));
-
-		return "/admin/board/teacher_review/edit";
-	}
-
-	// 게시판 관리 - 홈런학습센터 교사 후기 - 생성
-	@GetMapping("/board/manage/teacher-review/create")
-	public String boardTeacherReviewCreate(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 2));
-
-		return "/admin/board/teacher_review/create";
-	}
-
-	// -------------------------------------------------------
-	// 게시판 관리 - 알려드립니다 - 목록
-	@GetMapping("/board/manage/notice/list")
-	public String noticeList(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 3));
-
-		return "/admin/board/notice/list";
-	}
-
-	// 게시판 관리 - 알려드립니다 - 상세
-	@GetMapping("/board/manage/notice/detail")
-	public String noticeDetail(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 3));
-
-		return "/admin/board/notice/detail";
-	}
-
-	// 게시판 관리 - 알려드립니다 - 수정
-	@GetMapping("/board/manage/notice/edit")
-	public String noticeEdit(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 3));
-
-		return "/admin/board/notice/edit";
-	}
-
-	// 게시판 관리 - 알려드립니다 - 생성
-	@GetMapping("/board/manage/notice/create")
-	public String noticeCreate(Model model) {
-		model.addAttribute("chNum", new SideBarModel(1, 3));
-
-		return "/admin/board/notice/create";
-	}
-
 	// -------------------------------------------------------
 	// -------------------------------------------------------
 	// 설정 - 지국위치 안내 - 목록

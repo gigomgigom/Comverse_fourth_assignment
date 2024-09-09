@@ -7,6 +7,7 @@
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 	<typeAliases>
-		
+		<typeAlias type="com.comverse.fourthsubject.dto.AdminDto" alias="admin"/>
+		<typeAlias type="com.comverse.fourthsubject.dto.BoardCtgDto" alias="boardCtgDto"/>
 	</typeAliases>
 </configuration>

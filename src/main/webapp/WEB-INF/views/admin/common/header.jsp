@@ -10,6 +10,11 @@
 	<ul class="navbar-nav ml-auto">
 		<li class="nav-item"><a class="nav-link disabled text-dark" role="button"> <i class="fas fa-user"></i><span class="ml-3">심영조님</span>
 		</a></li>
-		<li class="nav-item"><a class="nav-link text-dark" href="#"> 로그아웃 </a></li>
+		<li class="nav-item">
+			<form action="/logout" method="POST">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<button class="btn btn-sm text-dark"> 로그아웃 </button>
+			</form>
+		</li>
 	</ul>
 </nav>

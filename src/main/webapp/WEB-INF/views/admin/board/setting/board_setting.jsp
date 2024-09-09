@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,66 +52,18 @@
 								</div>
 								<div class="card-body" style="overflow: auto; min-height: 700px; max-height: 700px;">
 									<div id="board-list" >
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
-										<div class="card card-default">
-											<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
-												<h6 class="my-2">공지사항</h6>
-											</div>										
-										</div>
+										<c:forEach var="ctg" items="${ctgList}">
+											<div class="card card-default" style="cursor: pointer;" onclick="selectBoardCtg('${ctg.ctgId}')">
+												<div class="card-header" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis; word-break: break-all;">
+													<h6 class="my-2">${ctg.ctgName}</h6>
+												</div>
+											</div>		
+										</c:forEach>								
 									</div>
 								</div>
 								<div class="card-footer bg-white">
 									<div id="board-create" class="d-flex justify-content-center">
-										<button class="btn btn-lg btn-primary">새로 생성</button>
+										<button class="btn btn-lg btn-primary" onClick="createNewCtg()">새로 생성</button>
 									</div>
 								</div>
 							</div>
@@ -120,139 +73,82 @@
 								<div class="card-header bg-primary">
 									<h4 class="my-2">게시판 생성/수정</h4>
 								</div>
-								<div class="card-body">
-									<table class="table">
-									    <tbody>
-									        <tr class="py-1">
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>게시판 명</b></p>
-									            </td>
-									            <td class="border-0">
-									            	<input class="form-control" type="text" id="input-name" name="">
-									            </td>
-									        </tr>
-									        <tr>
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>게시판 코드</b></p>
-									            </td>
-									            <td>
-									            	<input class="form-control" type="text" id="input-code" name="">
-									            </td>
-									        </tr>
-									        <tr>
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>게시판 주소</b></p>
-									            </td>
-									            <td>
-									            	<input class="form-control" type="text" id="input-addr" name="">
-									            </td>
-									        </tr>
-									        <tr>
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>게시판 사용 여부</b></p>
-									            </td>
-									            <td>
-									            	<div class="d-flex pl-5 align-items-center">
-									            		<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-usable1" name="radioButton">
-										            		<label for="input-usable1">사용</label>
+								<form id="board-detail">
+									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+									<input type="hidden" name="ctgId"/>
+									<div class="card-body">
+										<table class="table">
+										    <tbody>
+										        <tr class="py-1">
+										            <td class="d-flex justify-content-center border-0 my-1">
+										            	<p><b>게시판 명</b></p>
+										            </td>
+										            <td class="border-0">
+										            	<input class="form-control" type="text" id="input-name" name="ctgName">
+										            </td>
+										        </tr>
+										        <tr class="py-1">
+										            <td class="d-flex justify-content-center border-0 my-1">
+										            	<p><b>게시판 위치</b></p>
+										            </td>
+										            <td class="pl-4">
+										            	<select class="form-control" id="input-pos" name="ctgMenu">
+										            		<option value=1>홈런학습센터 소개</option>
+										            		<option value=2>학습안내</option>
+										            		<option value=3>교사채용</option>
+										            		<option value=4>고객센터</option>
+										            	</select>
+										            </td>
+										        </tr>
+										        <tr>
+										            <td class="d-flex justify-content-center border-0 my-1">
+										            	<p><b>게시판 사용 여부</b></p>
+										            </td>
+										            <td>
+										            	<div class="d-flex pl-5 align-items-center">
+										            		<div class="d-flex justify-content-center mr-5">
+											            		<input class="form-check-input mr-5" type="radio" value=true id="input-usable1" name="ctgInUse">
+											            		<label for="input-usable1">사용</label>
+											            	</div>
+											            	<div class="d-flex justify-content-center">
+											            		<input class="form-check-input mr-5" type="radio" value=false id="input-usable2" name="ctgInUse">
+											            		<label for="input-usable2">미사용</label>
+											            	</div>
 										            	</div>
-										            	<div class="d-flex justify-content-center">
-										            		<input class="form-check-input mr-5" type="radio" id="input-usable2" name="radioButton">
-										            		<label for="input-usable2">미사용</label>
+										            </td>
+										        </tr>
+										        <tr>
+										            <td class="d-flex justify-content-center border-0 my-1">
+										            	<p><b>new 버튼 노출 여부</b></p>
+										            </td>
+										            <td>
+										            	<div class="d-flex pl-5">
+										            		<div class="d-flex justify-content-center mr-5">
+											            		<input class="form-check-input mr-5" type="radio" id="input-exposable1" value='true' name="newExpose">
+											            		<label for="input-exposable1">사용</label>
+											            	</div>
+											            	<div class="d-flex justify-content-center">
+											            		<input class="form-check-input mr-5" type="radio" id="input-exposable2" value='false' name="newExpose">
+											            		<label for="input-exposable2">미사용</label>
+											            	</div>
 										            	</div>
-									            	</div>
-									            </td>
-									        </tr>
-									        <tr>
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>new 버튼 노출 여부</b></p>
-									            </td>
-									            <td>
-									            	<div class="d-flex pl-5">
-									            		<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-exposable1" name="radioButton1">
-										            		<label for="input-exposable1">사용</label>
+										            	<div class="d-flex pl-3 mt-3">
+										            		<select class="form-control" id="input-period" name="exposePeriod">
+											            		<option value=5>5일</option>
+											            		<option value=10>10일</option>
+											            		<option value=15>15일</option>
+											            		<option value=20>20일</option>
+											            	</select>
 										            	</div>
-										            	<div class="d-flex justify-content-center">
-										            		<input class="form-check-input mr-5" type="radio" id="input-exposable2" name="radioButton1">
-										            		<label for="input-exposable2">미사용</label>
-										            	</div>
-									            	</div>
-									            	<div class="d-flex pl-3 mt-3">
-									            		<div class="mr-5">
-									            			<b>노출 기간</b>
-									            		</div>
-									            		<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-expose1" name="radioButton2">
-										            		<label for="input-expose1">5일</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-expose2" name="radioButton2">
-										            		<label for="input-expose2">10일</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-expose3" name="radioButton2">
-										            		<label for="input-expose3">15일</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center">
-										            		<input class="form-check-input mr-5" type="radio" id="input-expose4" name="radioButton2">
-										            		<label for="input-expose4">20일</label>
-										            	</div>
-									            	</div>
-									            </td>
-									        </tr>
-									        <tr>
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>목록 개수</b></p>
-									            </td>
-									            <td>
-									            	<div class="d-flex pl-3 align-items-center">
-									            		<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-rowCnt1" name="radioButton3">
-										            		<label for="input-rowCnt1" class="ml-4">기본 10개</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-rowCnt2" name="radioButton3">
-										            		<label for="input-rowCnt2">15개</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-rowCnt3" name="radioButton3">
-										            		<label for="input-rowCnt3">20개</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-rowCnt4" name="radioButton3">
-										            		<label for="input-rowCnt4">25개</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center mr-5">
-										            		<input class="form-check-input mr-5" type="radio" id="input-rowCnt5" name="radioButton3">
-										            		<label for="input-rowCnt5">30개</label>
-										            	</div>
-										            	<div class="d-flex justify-content-center">
-										            		<input class="form-check-input mr-5" type="radio" id="input-rowCnt6" name="radioButton3">
-										            		<label for="input-rowCnt6">50개</label>
-										            	</div>
-									            	</div>
-									            </td>
-									        </tr>
-									        <tr class="py-1">
-									            <td class="d-flex justify-content-center border-0 my-1">
-									            	<p><b>글쓰기 권한</b></p>
-									            </td>
-									            <td class="pl-4">
-									            	<select class="form-select">
-									            		<option value="user">전체</option>
-									            		<option value="user">회원</option>
-									            		<option value="user">관리자</option>
-									            	</select>
-									            </td>
-									        </tr>
-									    </tbody>
-									</table>
-								</div>
+										            </td>
+										        </tr>
+										    </tbody>
+										</table>
+									</div>
+								</form>
 								<div class="card-footer d-flex justify-content-center bg-white py-4">
-									<button class="btn btn-primary btn-lg mr-5">저장</button>
-									<button class="btn btn-danger btn-lg">삭제</button>
+									<button class="btn btn-primary btn-lg mr-5" onClick="editBoardCtg()">저장</button>
+									<button class="btn btn-danger btn-lg" onClick="removeBoardCtg()">삭제</button>
 								</div>
 							</div>
 						
@@ -275,9 +171,10 @@
 		<!-- /.control-sidebar -->
 	</div>
 	<!-- ./wrapper -->
-
 	<!-- jQuery -->
 	<script src="/resources/adminlte/jquery/jquery.min.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/board-setting.js"></script>
 	<!-- Bootstrap 4 -->
 	<script src="/resources/adminlte/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<!-- AdminLTE App -->

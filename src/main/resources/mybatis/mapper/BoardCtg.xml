@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comverse.fourthsubject.dao.BoardCtgDao">
+
+	<select id="selectBoardCtgList" resultType="boardCtgDto">
+		select 	ctg_id, ctg_name
+		from	board_ctg
+		where	ctg_enabled = 1
+	</select>
+	<select id="selectBoardCtgDetail" resultType="boardCtgDto">
+		select	*
+		from	board_ctg
+		where	ctg_id = #{ctgId}
+				and
+				ctg_enabled = 1
+	</select>
+	<insert id="insertBoardCtg" parameterType="boardCtgDto">
+		insert into	board_ctg(
+						ctg_name,
+						ctg_menu,
+						ctg_in_use, 
+						new_expose, 
+						ctg_enabled
+					)
+					values(
+						'새 게시판', 0, 0, 0, 1
+					)
+	</insert>
+	<update id="updateBoardCtgDetail" parameterType="boardCtgDto">
+		update	board_ctg
+		set		ctg_name = #{ctgName},
+				ctg_menu = #{ctgMenu},
+				ctg_in_use = #{ctgInUse},
+				new_expose = #{newExpose},
+				expose_period = #{exposePeriod}
+		where	ctg_id = #{ctgId}
+	</update>
+	<update id="updateBoardCtgEnabled">
+		update	board_ctg
+		set		ctg_enabled = 0
+		where	ctg_id = #{ctgId}
+	</update>
+	
+</mapper>
