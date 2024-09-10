@@ -5,8 +5,9 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class CreateRoleRequest {
+public class RoleRequest {
 	
+	private int roleId;
 	private String roleName;
 	private boolean roleEnabled;
 	private boolean roleRemovable;

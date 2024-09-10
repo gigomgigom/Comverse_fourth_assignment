@@ -5,12 +5,14 @@
 		insert into role 	(
 								role_name,
 								role_enabled,
-								role_removable
+								role_removable,
+								reg_date
 							)
 		values				(
 								#{roleName},
 								#{roleEnabled},
-								#{roleRemovable}
+								#{roleRemovable},
+								now()
 							)
 	</insert>
 	<insert id="insertRoleMenuAuth">
@@ -33,4 +35,69 @@
 										#{ctgId}
 									)
 	</insert>
+	<select id="selectRoleCnt" parameterType="searchIndex">
+		select	count(role_id)
+		from	role
+		<where>
+			<if test='keyword != null and !keyword.equals("")'>
+				and role_name like concat('%', #{keyword} ,'%')
+			</if>
+			<if test='stts != 0'>
+				<if test='stts == 1'>
+					and role_enabled = 1	
+				</if>
+				<if test='stts == 2'>
+					and role_enabled = 0
+				</if>
+			</if>
+		</where>
+	</select>
+	<select id="selectRoleList" parameterType="searchIndex" resultType="roleDto">
+		select	role_id, role_name, role_enabled, reg_date
+		from	role
+		<where>
+			<if test='keyword != null and !keyword.equals("")'>
+				and role_name like concat('%', #{keyword} ,'%')
+			</if>
+			<if test='stts != 0'>
+				<if test='stts == 1'>
+					and role_enabled = 1	
+				</if>
+				<if test='stts == 2'>
+					and role_enabled = 0
+				</if>
+			</if>
+		</where>
+		limit	#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectRoleDetailById">
+		select	*
+		from	role
+		where	role_id = #{detailId}
+	</select>
+	<select id="selectMenuListByRoleId">
+		select	menu_id
+		from	role_authority
+		where	role_id = #{detailId}
+	</select>
+	<select id="selectBoardListByRoleId">
+		select	ctg_id
+		from	admin_board
+		where	role_id = #{detailId}
+	</select>
+	<update id="updateRoleDetail" parameterType="roleDto">
+		update	role
+		set		role_name = #{roleName},
+				role_enabled = #{roleEnabled},
+				role_removable = #{roleRemovable}
+		where	role_id = #{roleId}
+	</update>
+	<delete id="deleteRoleBoardList">
+		delete from	admin_board
+		where		role_id = #{roleId}
+	</delete>
+	<delete id="deleteRoleMenuList">
+		delete from	role_authority
+		where		role_id = #{roleId}
+	</delete>
 </mapper>

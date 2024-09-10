@@ -7,6 +7,8 @@
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 	</settings>
 	<typeAliases>
+		<typeAlias type="com.comverse.fourthsubject.dto.nondb.SearchIndex" alias="searchIndex"/>
+	
 		<typeAlias type="com.comverse.fourthsubject.dto.AdminDto" alias="admin"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BoardCtgDto" alias="boardCtgDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.RoleDto" alias="roleDto"/>

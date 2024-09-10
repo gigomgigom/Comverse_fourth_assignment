@@ -16,7 +16,9 @@ import com.comverse.fourthsubject.dao.RoleDao;
 import com.comverse.fourthsubject.dto.AdminMenuDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.RoleDto;
-import com.comverse.fourthsubject.dto.nondb.CreateRoleRequest;
+import com.comverse.fourthsubject.dto.nondb.Pager;
+import com.comverse.fourthsubject.dto.nondb.RoleRequest;
+import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,7 +69,7 @@ public class AuthService {
 	}
 	//권한 생성
 	@Transactional
-	public boolean createRole(CreateRoleRequest crr) {
+	public boolean createRole(RoleRequest crr) {
 		RoleDto role = new RoleDto(0, crr.getRoleName(), crr.isRoleEnabled(), crr.isRoleRemovable());
 		//권한 생성 (생성된 권한의 식별자를 반환 받음)
 		roleDao.insertRole(role);
@@ -88,6 +90,48 @@ public class AuthService {
 		for(int ctgId : boardList) {
 			roleDao.insertRoleBoardAuth(roleId, ctgId);
 		}
+	}
+	//권한 목록 가져오기
+	public void getRoleList(SearchIndex searchIndex, Model model) {
+		//검색 결과의 총 갯수 가져오기
+		int totalRows = roleDao.selectRoleCnt(searchIndex);
+		//페이저 객체 생성
+		Pager pager = new Pager(searchIndex.getRowsPerPage(), 5, totalRows, Integer.parseInt(searchIndex.getPageNo()));
+		searchIndex.setPager(pager);
+		//현재 페이지에 보여질 권한 목록 가져오기
+		List<RoleDto> roleList = roleDao.selectRoleList(searchIndex);
+		//모델 속성 추가
+		model.addAttribute("roleList", roleList);
+		model.addAttribute("searchIndex", searchIndex);
+	}
+	//권한 상세 보기(권한 수정 화면)
+	public void getRoleDetail(String detailId, Model model) {
+		//메뉴 목록 가져오기
+		getMenuList(model);
+		//권한 정보 가져오기
+		RoleDto role = roleDao.selectRoleDetailById(detailId);
+		//설정된 메뉴 및 게시판 정보 가져오기
+		//메뉴
+		List<Integer> authMenuList = roleDao.selectMenuListByRoleId(detailId);
+		//게시판
+		List<Integer> authBoardList = roleDao.selectBoardListByRoleId(detailId);
+		model.addAttribute("role", role);
+		model.addAttribute("authMenuList", authMenuList);
+		model.addAttribute("authBoardList", authBoardList);
+	}
+	//권한 수정
+	@Transactional
+	public boolean editRole(RoleRequest crr) {
+		RoleDto roleDto = new RoleDto(crr.getRoleId(), crr.getRoleName(), crr.isRoleEnabled(), crr.isRoleRemovable());
+		//권한 정보 수정하기
+		roleDao.updateRoleDetail(roleDto);
+		//권한에 해당하는 메뉴, 게시물 정보 삭제하기
+		roleDao.deleteRoleBoardList(roleDto.getRoleId());
+		roleDao.deleteRoleMenuList(roleDto.getRoleId());
+		//새로운 권한 및 게시물 정보 넣어주기
+		insertRoleMenuAuth(roleDto.getRoleId(), crr.getMenuList());
+		insertRoleBoardAuth(roleDto.getRoleId(), crr.getBoardList());
+		return true;
 	}
 	
 }

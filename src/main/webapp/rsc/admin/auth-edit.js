@@ -29,6 +29,7 @@ const mainMenuEventHandler = (e) => {
 
 //권한 관련 데이터 세팅하는 작업
 const setRequestData = () => {
+	const roleId = $('#create-form [name=roleId]').val();
 	const roleName = $('#create-form [name=roleName]').val();
 	const roleEnabled = $('#create-form [name=roleEnabled]:checked').val();
 	const roleRemovable = $('#create-form [name=roleRemovable]:checked').val();
@@ -48,12 +49,14 @@ const setRequestData = () => {
 	const data = {
 		"menuList": menuVal,
 		"boardList": boardVal,
+		roleId,
 		isBoardEnabled,
 		roleName,
 		roleEnabled,
 		roleRemovable,
 		_csrf
 	}
+	console.log(data);
 	
 	return data;
 }
@@ -79,7 +82,8 @@ const createRole = () => {
 	const requestData = setRequestData();
 	//유효성 검사
 	const validateResult = validateData(requestData);
-
+	
+	console.log(requestData);
 	if(validateResult.result) {
 		$.ajaxSetup({
 			headers: {
@@ -87,12 +91,12 @@ const createRole = () => {
 			}
 		})
 		$.ajax({
-			url: '/admin/manage/auth/create-role',
+			url: '/admin/manage/auth/edit-role',
 			type: 'POST',
 			contentType: 'application/json',
 			data: JSON.stringify(requestData),
 			success: function(rs) {
-				alert('권한이 생성되었습니다.');
+				alert('권한이 수정되었습니다.');
 				location.href="/admin/manage/auth/list";
 			},
 			error: function(e) {

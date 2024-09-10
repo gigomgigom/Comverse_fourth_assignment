@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.comverse.fourthsubject.dto.BoardCtgDto;
-import com.comverse.fourthsubject.dto.nondb.CreateRoleRequest;
+import com.comverse.fourthsubject.dto.nondb.RoleRequest;
+import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 import com.comverse.fourthsubject.dto.nondb.SideBarModel;
 import com.comverse.fourthsubject.service.admin.AuthService;
 import com.comverse.fourthsubject.service.admin.BoardService;
@@ -347,9 +348,15 @@ public class AdminController {
 	// -------------------------------------------------------
 	// 권한 관리 - 목록
 	@GetMapping("/manage/auth/list")
-	public String authList(Model model) {
+	public String authList(Model model, SearchIndex searchIndex) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().equals("")) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
 		model.addAttribute("chNum", new SideBarModel(3, 1));
-		
+		authService.getRoleList(searchIndex, model);
 		return "/admin/auth/list";
 	}
 
@@ -364,7 +371,7 @@ public class AdminController {
 	// 권한 관리 - 권한 생성하기
 	@ResponseBody
 	@PostMapping("/manage/auth/create-role")
-	public ResponseEntity<?> createRole(@RequestBody CreateRoleRequest crr) {
+	public ResponseEntity<?> createRole(@RequestBody RoleRequest crr) {
 		boolean result = authService.createRole(crr);
 		return ResponseEntity.ok(result);
 		
@@ -372,10 +379,19 @@ public class AdminController {
 	
 	// 권한 관리 - 수정 페이지 이동
 	@GetMapping("/manage/auth/edit")
-	public String authEdit(Model model) {
+	public String authEdit(Model model, SearchIndex searchIndex) {
 		model.addAttribute("chNum", new SideBarModel(3, 1));
-
+		model.addAttribute("searchIndex", searchIndex);
+		authService.getRoleDetail(searchIndex.getDetailId(), model);
 		return "/admin/auth/edit";
+	}
+	
+	// 권한 관리 - 권한 수정하기
+	@ResponseBody
+	@PostMapping("/manage/auth/edit-role")
+	public ResponseEntity<?> editRole(@RequestBody RoleRequest crr) {
+		boolean result = authService.editRole(crr);
+		return ResponseEntity.ok(result);
 	}
 
 }

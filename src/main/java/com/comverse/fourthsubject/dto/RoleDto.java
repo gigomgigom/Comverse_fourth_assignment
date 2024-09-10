@@ -1,5 +1,7 @@
 package com.comverse.fourthsubject.dto;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -8,6 +10,7 @@ public class RoleDto {
 	private String roleName;
 	private boolean roleEnabled;
 	private boolean roleRemovable;
+	private Date regDate;
 	
 	public RoleDto() {}
 	
