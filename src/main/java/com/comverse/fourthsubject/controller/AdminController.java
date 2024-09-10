@@ -1,7 +1,6 @@
 package com.comverse.fourthsubject.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.comverse.fourthsubject.dto.BoardCtgDto;
-import com.comverse.fourthsubject.dto.SideBarModel;
+import com.comverse.fourthsubject.dto.nondb.CreateRoleRequest;
+import com.comverse.fourthsubject.dto.nondb.SideBarModel;
 import com.comverse.fourthsubject.service.admin.AuthService;
 import com.comverse.fourthsubject.service.admin.BoardService;
 
@@ -357,10 +358,18 @@ public class AdminController {
 	public String authCreate(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 1));
 		authService.getMenuList(model);
-		
 		return "/admin/auth/create";
 	}
-
+	
+	// 권한 관리 - 권한 생성하기
+	@ResponseBody
+	@PostMapping("/manage/auth/create-role")
+	public ResponseEntity<?> createRole(@RequestBody CreateRoleRequest crr) {
+		boolean result = authService.createRole(crr);
+		return ResponseEntity.ok(result);
+		
+	}
+	
 	// 권한 관리 - 수정 페이지 이동
 	@GetMapping("/manage/auth/edit")
 	public String authEdit(Model model) {

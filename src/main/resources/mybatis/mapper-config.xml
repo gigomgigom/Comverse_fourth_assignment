@@ -11,5 +11,6 @@
 		<typeAlias type="com.comverse.fourthsubject.dto.BoardCtgDto" alias="boardCtgDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.RoleDto" alias="roleDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.AdminMenuDto" alias="adminMenu"/>
+		<typeAlias type="com.comverse.fourthsubject.dto.RoleDto" alias="roleDto"/>
 	</typeAliases>
 </configuration>

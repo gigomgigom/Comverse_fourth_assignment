@@ -1,4 +1,4 @@
-package com.comverse.fourthsubject.dto;
+package com.comverse.fourthsubject.dto.nondb;
 
 import lombok.Data;
 
