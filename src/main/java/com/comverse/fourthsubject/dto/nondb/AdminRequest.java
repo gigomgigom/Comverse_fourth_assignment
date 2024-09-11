@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class AdminRequest {
+	private int admNo;
 	private String admName;
 	private String admId;
 	private String admPw;

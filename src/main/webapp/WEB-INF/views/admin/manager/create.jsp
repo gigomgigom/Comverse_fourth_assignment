@@ -137,7 +137,7 @@
 					                   	
 					                   		<div class="card col-xl-12">
 					                   			<div class="card-body row">
-					                   				<select id="category" class="form-control col-xl-9" name="roleList[]">
+					                   				<select class="form-control col-xl-9" name="roleList[]">
 								                        <option value=0>미정</option>
 								                        <c:forEach var="role" items="${roleList}">
 								                        	<option value="${role.roleId}">${role.roleName}</option>

@@ -48,5 +48,13 @@ public interface RoleDao {
 	public List<AdminDto> selectAdminList(SearchIndex searchIndex);
 	//관리자 관리 - 리스트 요소 별 팀 정보 가져오기
 	public TeamDto selectTeamByTeamId(int admTeam);
+	//관리자 관리 - 관리자 번호에 해당하는 관리자의 상세 정보 조회
+	public AdminDto selectManagerDetail(int admNo);
+	//관리자 관리 - 관리자 번호에 해당하는 관리자의 권한 목록 가져오기
+	public List<Integer> selectRoleListByAdminId(int admNo);
+	//관리자 관리 - 관리자 상세 정보 변경
+	public void updateManagerDetail(AdminDto admin);
+	//관리자 관리 - 관리자의 권한 목록 일괄 삭제
+	public void deleteManagerRole(int admNo);
 	
 }

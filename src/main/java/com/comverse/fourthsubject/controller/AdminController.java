@@ -336,7 +336,6 @@ public class AdminController {
 		if(searchIndex.getKeyword() == null && searchIndex.getTeam() == 0) {
 			searchIndex.setTeam(-1);
 		}
-		log.info(searchIndex.toString());
 		authService.getManagerList(model, searchIndex);
 		
 		return "/admin/manager/list";
@@ -372,12 +371,18 @@ public class AdminController {
 	}
 	// 관리자 관리 - 수정
 	@GetMapping("/manage/manager/edit")
-	public String managerEdit(Model model) {
+	public String managerEdit(Model model, SearchIndex searchIndex) {
 		model.addAttribute("chNum", new SideBarModel(3, 0));
-
+		model.addAttribute("searchIndex", searchIndex);
+		authService.getManagerDetail(model, searchIndex.getDetailId());
 		return "/admin/manager/edit";
 	}
-
+	@ResponseBody
+	@PostMapping("/manage/manager/edit-manager")
+	public ResponseEntity<?> editManager(@RequestBody AdminRequest ar) {
+		authService.editManager(ar);
+		return ResponseEntity.ok(null);
+	}
 	// -------------------------------------------------------
 	// 권한 관리 - 목록
 	@GetMapping("/manage/auth/list")

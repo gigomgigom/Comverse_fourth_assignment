@@ -182,10 +182,10 @@ public class AuthService {
 	}
 	//요청 데이터 가공하는 메소드
 	public Map<String, Object> handlingAdminRequestData(AdminRequest ar) {
-		log.info(ar.getAdmTeam()+"");
 		//관리자 정보 세팅
 		Map<String, Object> result = new HashMap<>();
 		AdminDto admin = new AdminDto();
+		admin.setAdmNo(ar.getAdmNo());
 		admin.setAdmName(ar.getAdmName());
 		admin.setAdmId(ar.getAdmId());
 		admin.setAdmTel(ar.getAdmTel());
@@ -193,7 +193,11 @@ public class AuthService {
 		admin.setAdmTeam(ar.getAdmTeam());
 		//비밀번호 암호화
 		PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		admin.setAdmPw(pe.encode(ar.getAdmPw()));
+		if(ar.getAdmPw() != null && !ar.getAdmPw().equals("")) {
+			admin.setAdmPw(pe.encode(ar.getAdmPw()));
+		} else {
+			admin.setAdmPw(null);
+		}
 		
 		if(!ar.getAdmStts().equals("")) {
 			admin.setAdmStts(ar.getAdmStts());
@@ -236,6 +240,38 @@ public class AuthService {
 			adm.setTeam(team);
 		}
 		model.addAttribute("admList", admList);
+	}
+	//---------------상세 조회
+	public void getManagerDetail(Model model, String detailId) {
+		AdminDto admin = roleDao.selectManagerDetail(Integer.parseInt(detailId));
+		List<RoleDto> roleList = getExistingRole();
+		List<TeamDto> teamList = getTeamList();
+		
+		List<Integer> manageRole = roleDao.selectRoleListByAdminId(Integer.parseInt(detailId));
+		
+		model.addAttribute("manageRole", manageRole);
+		model.addAttribute("roleList", roleList);
+		model.addAttribute("teamList", teamList);
+		model.addAttribute("admin", admin);
+	}
+	//------------------관리자 정보 수정
+	@Transactional
+	public void editManager(AdminRequest ar) {
+		Map<String, Object> data = handlingAdminRequestData(ar);
+		AdminDto admin = (AdminDto) data.get("admin");
+		roleDao.updateManagerDetail(admin);
+		
+		@SuppressWarnings("unchecked")
+		List<Integer> roleList = (List<Integer>) data.get("roleList");
+		
+		roleDao.deleteManagerRole(admin.getAdmNo());
+		
+		if(!roleList.isEmpty()) {
+			for(int roleId : roleList) {
+				//관리자 별 권한 목록 추가
+				roleDao.insertAdminRole(admin.getAdmNo(), roleId);
+			}
+		}
 	}
 	
 	

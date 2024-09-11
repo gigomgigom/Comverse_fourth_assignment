@@ -247,4 +247,37 @@
 		from	team
 		where	team_id = #{admTeam}
 	</select>
+	<select id="selectManagerDetail">
+		select	adm_no,
+				adm_id,
+				adm_name,
+				adm_tel,
+				adm_email,
+				adm_stts,
+				adm_team
+		from	admin
+		where	adm_no = #{admNo}
+	</select>
+	<select id="selectRoleListByAdminId" resultType="int">
+		select	role_id
+		from	admin_role
+		where	adm_id = #{admNo}
+	</select>
+	<update id="updateManagerDetail" parameterType="admin">
+		update	admin
+		set		adm_name = #{admName},
+				<if test="admPw != null">
+					adm_pw = #{admPw},
+				</if>
+				adm_tel = #{admTel},
+				adm_email = #{admEmail},
+				adm_stts = #{admStts},
+				adm_team = #{admTeam},
+				adm_enabled = #{admEnabled}
+		where	adm_no = #{admNo}
+	</update>
+	<delete id="deleteManagerRole">
+		delete from	admin_role
+		where		adm_id = #{admNo}
+	</delete>
 </mapper>
