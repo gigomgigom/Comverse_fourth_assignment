@@ -107,8 +107,6 @@
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
 										<select id="category" class="form-control w-100">
 					                        <option>미처리</option>
-					                        <option>전화 처리완료</option>
-					                        <option>이메일 처리완료</option>
 					                    </select>
 									</dd>
 								</dl>

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.comverse.fourthsubject.dto.AdminDto;
 import com.comverse.fourthsubject.dto.RoleDto;
+import com.comverse.fourthsubject.dto.TeamDto;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 
 @Mapper
@@ -29,5 +31,13 @@ public interface RoleDao {
 	//메뉴/게시판 권한 정보 삭제
 	public void deleteRoleBoardList(int roleId);
 	public void deleteRoleMenuList(int roleId);
-
+	
+	//관리자 관리 - 권한/팀 목록 가져오기
+	public List<RoleDto> selectRoleListForManager();
+	public List<TeamDto> selectTeamListForManager();
+	//관리자 관리 - DB에 존재하는 아이디/이메일인지 체크
+	public int selectIsLineExist(int ctg, String line);
+	//관리자 관리 - 관리자 및 관리자의 권한 삽입
+	public void insertAdmin(AdminDto admin);
+	public void insertAdminRole(int admNo, int roleId);
 }

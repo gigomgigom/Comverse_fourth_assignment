@@ -100,4 +100,60 @@
 		delete from	role_authority
 		where		role_id = #{roleId}
 	</delete>
+	<select id="selectRoleListForManager" resultType="roleDto">
+		select	role_id,
+				role_name
+		from	role
+		where	role_enabled = 1
+	</select>
+	<select id="selectTeamListForManager" resultType="teamDto">
+		select	*
+		from	team
+	</select>
+	<select id="selectIsLineExist">
+		select	count(adm_no)
+		from	admin
+		<where>
+			<if test="ctg == 1">
+				adm_id = #{line}
+			</if>
+			<if test="ctg == 2">
+				adm_email = #{line}
+			</if>
+		</where>
+	</select>
+	<insert id="insertAdmin" parameterType="admin" useGeneratedKeys="true" keyProperty="admNo">
+		insert into	admin	(
+								adm_name,
+								adm_id,
+								adm_pw,
+								adm_tel,
+								adm_email,
+								adm_stts,
+								reg_date,
+								adm_enabled,
+								adm_team
+							)
+		values				(
+								#{admName},
+								#{admId},
+								#{admPw},
+								#{admTel},
+								#{admEmail},
+								#{admStts},
+								now(),
+								#{admEnabled},
+								#{admTeam}								
+							)
+	</insert>
+	<insert id="insertAdminRole">
+		insert into admin_role	(
+									adm_id,
+									role_id
+								)
+		values					(
+									#{admNo},
+									#{roleId}
+								)
+	</insert>
 </mapper>

@@ -12,8 +12,8 @@ public class AdminDto {
 	private String admPw;
 	private String admTel;
 	private String admEmail;
-	private String admTeam;
 	private String admStts;
+	private int admTeam;
 	private Date regDate;
 	private boolean admEnabled;
 }

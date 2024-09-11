@@ -84,7 +84,7 @@
 					<div class="container-fluid px-3">
 						<div class="d-flex justify-content-between row">
 							<div class="col-md-5">
-								<a href="/admin/manage/auth/create" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+								<a href="/admin/manage/auth/create?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 							</div>
 							<div class="col-md-5 d-flex align-items-center justify-content-end">
 								<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>

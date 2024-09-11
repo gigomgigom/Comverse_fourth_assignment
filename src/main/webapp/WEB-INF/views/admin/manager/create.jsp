@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +45,8 @@
 			</section>
 
 			<!-- Main content -->
+			<form id="create-form">
+			<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<section class="content container-fluid row p-5">
 				<div class="col-xl-6">
 					<div class="card card-default">
@@ -52,14 +55,17 @@
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이름</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
-										<input type="text" class="form-control">
+										<input type="text" class="form-control" name="admName">
 									</dd>
 								</dl>
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">ID</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
 										<div class="w-100">
-											<input type="text" class="form-control">
+											<div class="d-flex align-items-center">
+												<input type="text" class="form-control mr-5 col-xl-7" name="admId">
+												<button type="button" id="id-check" class="btn btn-sm btn-info col-xl-2">중복확인</button>
+											</div>
 											<ul class="m-0">
 												<li>영문/숫자를 이용하여 4자리 ~ 16자리로 아이디를 생성해주세요.</li>
 												<li>아이디 첫글자는 반드시 영문으로 시작해야합니다.</li>
@@ -71,7 +77,7 @@
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">비밀번호</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
 										<div class="w-100">
-											<input type="password" class="form-control">
+											<input type="password" class="form-control" name="admPw">
 											<ul class="m-0">
 												<li>영문/숫자/특수문자를 2가지 이상 조합하여 8자리 ~ 16자리로 입력해 주세요.</li>
 											</ul>
@@ -81,14 +87,14 @@
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">tel</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
-										<input type="text" class="form-control">
+										<input type="text" class="form-control" name="admTel">
 									</dd>
 								</dl>
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">email</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
-										<input type="email" class="form-control mr-5 col-xl-7">
-										<button class="btn btn-sm btn-info col-xl-2">중복확인</button>
+										<input type="email" class="form-control mr-5 col-xl-7" name="admEmail">
+										<button type="button" id="email-check" class="btn btn-sm btn-info col-xl-2">중복확인</button>
 									</dd>
 								</dl>
 							</div>
@@ -105,53 +111,44 @@
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">소속팀</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
-										<select id="category" class="form-control w-100">
-					                        <option>미처리</option>
-					                        <option>전화 처리완료</option>
-					                        <option>이메일 처리완료</option>
+										<select id="team-input" class="form-control w-100" name="admTeam">
+					                        <option value=0>미정</option>
+					                        <c:forEach var="team" items="${teamList}">
+					                        	<option value="${team.teamId}">${team.teamName}</option>
+					                        </c:forEach>
 					                    </select>
 									</dd>
 								</dl>
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">관리자 상태</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
-					                    <select id="category" class="form-control">
-					                        <option selected>전체</option>
-					                        <option>승인완료</option>
-					                        <option>승인중</option>
-					                        <option>접근불가</option>
-					                        <option>휴면</option>
+					                    <select id="stts-input" class="form-control" name="admStts">
+					                        <option value="">미정</option>
+					                        <option value="승인완료">승인완료</option>
+					                        <option value="승인중">승인중</option>
+					                        <option value="접근불가">접근불가</option>
+					                        <option value="휴면">휴면</option>
 					                    </select>
 									</dd>
 								</dl>
 								<dl class="col-xl-12 d-flex row">
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">권한 설정</dt>
-									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border"  style="min-height: 350px; max-height: 350px; overflow:auto;">
-					                   	<div class="w-100 row">
+									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border" style="min-height: 350px; max-height: 350px; overflow:auto;">
+					                   	<div id="card-container" class="w-100 row">
+					                   	
 					                   		<div class="card col-xl-12">
 					                   			<div class="card-body row">
-					                   				<select id="category" class="form-control col-xl-9">
-								                        <option selected>전체</option>
-								                        <option>총괄 관리자</option>
-								                        <option>게시글 관리자</option>
-								                        <option>이벤트 관리자</option>
-								                        <option>서브 관리자</option>
+					                   				<select id="category" class="form-control col-xl-9" name="roleList[]">
+								                        <option value=0>미정</option>
+								                        <c:forEach var="role" items="${roleList}">
+								                        	<option value="${role.roleId}">${role.roleName}</option>
+								                        </c:forEach>
 								                    </select>
-								                    <button class="ml-3 col-xl-2 btn btn-sm btn-info">추가</button>
+								                    <button class="add-button ml-3 col-xl-1 btn btn-sm btn-info">추가</button>
+								                    <button class="remove-button ml-3 col-xl-1 btn btn-sm btn-danger">삭제</button>
 					                   			</div>
 					                   		</div>
-					                   		<div class="card col-xl-12">
-					                   			<div class="card-body row">
-					                   				<select id="category" class="form-control col-xl-9">
-								                        <option selected>전체</option>
-								                        <option>총괄 관리자</option>
-								                        <option>게시글 관리자</option>
-								                        <option>이벤트 관리자</option>
-								                        <option>서브 관리자</option>
-								                    </select>
-								                    <button class="ml-3 col-xl-2 btn btn-sm btn-info">삭제</button>
-					                   			</div>
-					                   		</div>
+					                   		
 					                   	</div>
 									</dd>
 								</dl>
@@ -160,10 +157,11 @@
 					</div>
 				</div>
 				<div class="col-xl-12 d-flex justify-content-end">
-					<button class="btn btn-lg btn-primary mr-3">등록</button>
+					<button type="button" id="register-button" class="btn btn-lg btn-primary mr-3">등록</button>
 					<a class="btn btn-lg btn-secondary">목록</a>
 				</div>
 			</section>
+			</form>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
@@ -182,6 +180,8 @@
 	<script src="/resources/adminlte/jquery/jquery.min.js"></script>
 	<!-- Bootstrap 4 -->
 	<script src="/resources/adminlte/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/manager-create.js"></script>
 	<!-- AdminLTE App -->
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->

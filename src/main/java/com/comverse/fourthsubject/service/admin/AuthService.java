@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -13,9 +15,12 @@ import org.springframework.ui.Model;
 import com.comverse.fourthsubject.dao.AdminMenuDao;
 import com.comverse.fourthsubject.dao.BoardCtgDao;
 import com.comverse.fourthsubject.dao.RoleDao;
+import com.comverse.fourthsubject.dto.AdminDto;
 import com.comverse.fourthsubject.dto.AdminMenuDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.RoleDto;
+import com.comverse.fourthsubject.dto.TeamDto;
+import com.comverse.fourthsubject.dto.nondb.AdminRequest;
 import com.comverse.fourthsubject.dto.nondb.Pager;
 import com.comverse.fourthsubject.dto.nondb.RoleRequest;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
@@ -133,5 +138,79 @@ public class AuthService {
 		insertRoleBoardAuth(roleDto.getRoleId(), crr.getBoardList());
 		return true;
 	}
-	
+	//=============================================================================
+	//관리자 관리
+	//권한/팀 목록 가져오기
+	public List<RoleDto> getExistingRole() {
+		List<RoleDto> roleList = roleDao.selectRoleListForManager();
+		return roleList;
+	}
+	public List<TeamDto> getTeamList() {
+		List<TeamDto> teamList = roleDao.selectTeamListForManager();
+		return teamList;
+	}
+	//Id, Email 존재 여부파악
+	public Boolean isThisLineExistInDb(int ctg, String line) {
+		int selectedRow = roleDao.selectIsLineExist(ctg, line);
+		if(selectedRow > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	//관리자 생성하기
+	@Transactional
+	public void createManager(AdminRequest ar) {
+		Map<String, Object> data = handlingAdminRequestData(ar);
+		AdminDto admin = (AdminDto) data.get("admin");
+		roleDao.insertAdmin(admin);
+		
+		@SuppressWarnings("unchecked")
+		List<Integer> roleList = (List<Integer>) data.get("roleList");
+		
+		if(!roleList.isEmpty()) {
+			for(int roleId : roleList) {
+				roleDao.insertAdminRole(admin.getAdmNo(), roleId);
+			}
+		}
+	}
+	//요청 데이터 가공하는 메소드
+	public Map<String, Object> handlingAdminRequestData(AdminRequest ar) {
+		log.info(ar.getAdmTeam()+"");
+		//관리자 정보 세팅
+		Map<String, Object> result = new HashMap<>();
+		AdminDto admin = new AdminDto();
+		admin.setAdmName(ar.getAdmName());
+		admin.setAdmId(ar.getAdmId());
+		admin.setAdmTel(ar.getAdmTel());
+		admin.setAdmEmail(ar.getAdmEmail());
+		admin.setAdmTeam(ar.getAdmTeam());
+		//비밀번호 암호화
+		PasswordEncoder pe = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+		admin.setAdmPw(pe.encode(ar.getAdmPw()));
+		
+		if(!ar.getAdmStts().equals("")) {
+			admin.setAdmStts(ar.getAdmStts());
+			String stts = admin.getAdmStts();
+			switch(stts) {
+				case "승인완료":
+					admin.setAdmEnabled(true);
+					break;
+				case "승인중":
+				case "접근불가":
+				case "휴면":
+					admin.setAdmEnabled(false);
+					break;
+			}
+		}
+		
+		//관리자의 권한 목록 세팅
+		List<Integer> roleList = ar.getRoleList();
+		roleList.removeIf(roleId -> roleId == 0);
+		
+		result.put("admin", admin);
+		result.put("roleList", roleList);
+		
+		return result;
+	}
 }

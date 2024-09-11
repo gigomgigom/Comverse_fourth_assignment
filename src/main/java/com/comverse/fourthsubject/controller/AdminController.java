@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.comverse.fourthsubject.dto.BoardCtgDto;
+import com.comverse.fourthsubject.dto.RoleDto;
+import com.comverse.fourthsubject.dto.TeamDto;
+import com.comverse.fourthsubject.dto.nondb.AdminRequest;
 import com.comverse.fourthsubject.dto.nondb.RoleRequest;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 import com.comverse.fourthsubject.dto.nondb.SideBarModel;
@@ -328,15 +331,34 @@ public class AdminController {
 		return "/admin/manager/list";
 	}
 
-	// 관리자 관리 - 생성
+	// 관리자 관리 - 생성 페이지 이동
 	@GetMapping("/manage/manager/create")
 	public String managerCreate(Model model) {
 		model.addAttribute("chNum", new SideBarModel(3, 0));
-		
-		
+		//팀 목록 가져오기
+		List<TeamDto> teamList = authService.getTeamList();
+		//현재 DB에 존재하고 있는 권한 목록을 모델에 세팅
+		List<RoleDto> roleList = authService.getExistingRole();
+		model.addAttribute("teamList", teamList);
+		model.addAttribute("roleList", roleList);
 		return "/admin/manager/create";
 	}
+	
+	//	관리자 관리 - 생성 페이지 내 중복 체크
+	@ResponseBody
+	@GetMapping("/manage/manager/is-exist")
+	public ResponseEntity<?> managerIsExist(int ctg, String line) {
+		Boolean result = authService.isThisLineExistInDb(ctg, line);
+		return ResponseEntity.ok(result);
+	}
 
+	// 관리자 관리 - 관리자 생성하기
+	@ResponseBody
+	@PostMapping("/manage/manager/create-manager")
+	public ResponseEntity<?> createManager(@RequestBody AdminRequest ar) {
+		authService.createManager(ar);
+		return ResponseEntity.ok(null);
+	}
 	// 관리자 관리 - 수정
 	@GetMapping("/manage/manager/edit")
 	public String managerEdit(Model model) {
@@ -362,8 +384,9 @@ public class AdminController {
 
 	// 권한 관리 - 생성 페이지 이동
 	@GetMapping("/manage/auth/create")
-	public String authCreate(Model model) {
+	public String authCreate(Model model, SearchIndex searchIndex) {
 		model.addAttribute("chNum", new SideBarModel(3, 1));
+		model.addAttribute("searchIndex", searchIndex);
 		authService.getMenuList(model);
 		return "/admin/auth/create";
 	}
