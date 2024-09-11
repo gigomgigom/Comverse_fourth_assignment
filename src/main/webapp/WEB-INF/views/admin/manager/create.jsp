@@ -112,7 +112,6 @@
 									<dt class="col-xl-3 px-3 py-2 bg-info d-flex justify-content-center align-items-center">소속팀</dt>
 									<dd class="col-xl-9 px-3 py-2 m-0 d-flex align-items-center border">
 										<select id="team-input" class="form-control w-100" name="admTeam">
-					                        <option value=0>미정</option>
 					                        <c:forEach var="team" items="${teamList}">
 					                        	<option value="${team.teamId}">${team.teamName}</option>
 					                        </c:forEach>

@@ -100,6 +100,11 @@
 		delete from	role_authority
 		where		role_id = #{roleId}
 	</delete>
+	<update id="updateLoginDate">
+		update	admin
+		set		login_date = now()
+		where	adm_id = #{name}
+	</update>
 	<select id="selectRoleListForManager" resultType="roleDto">
 		select	role_id,
 				role_name
@@ -156,4 +161,90 @@
 									#{roleId}
 								)
 	</insert>
+	<select id="selectManagerCnt" parameterType="searchIndex">
+		select	count(adm_no)
+		from	admin
+		<where>
+			<if test="team != -1">
+				and adm_team = #{team}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				<if test="keywordCtg == 1">
+					and adm_name like concat('%', #{keyword} , '%')
+				</if>
+				<if test="keywordCtg == 2">
+					and adm_id like concat('%', #{keyword} , '%')
+				</if>
+				<if test="keywordCtg == 3">
+					and adm_tel like concat('%', #{keyword} , '%')
+				</if>
+				<if test="keywordCtg == 4">
+					and adm_email like concat('%', #{keyword} , '%')
+				</if>
+			</if>
+			<if test="stts != 0">
+				<if test="stts == 1">
+					and adm_stts = '승인완료';
+				</if>
+				<if test="stts == 2">
+					and adm_stts = '승인중';
+				</if>
+				<if test="stts == 3">
+					and adm_stts = '접근불가';
+				</if>
+				<if test="stts == 4">
+					and adm_stts = '휴면';
+				</if>
+			</if>
+		</where>
+	</select>
+	<select id="selectAdminList" parameterType="searchIndex" resultType="admin">
+		select	adm_no,
+				adm_name,
+				adm_id,
+				adm_stts,
+				adm_team,
+				reg_date,
+				login_date
+		from	admin
+		<where>
+			<if test="team != -1">
+				and adm_team = #{team}
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+				<if test="keywordCtg == 1">
+					and adm_name like concat('%', #{keyword} , '%')
+				</if>
+				<if test="keywordCtg == 2">
+					and adm_id like concat('%', #{keyword} , '%')
+				</if>
+				<if test="keywordCtg == 3">
+					and adm_tel like concat('%', #{keyword} , '%')
+				</if>
+				<if test="keywordCtg == 4">
+					and adm_email like concat('%', #{keyword} , '%')
+				</if>
+			</if>
+			<if test="stts != 0">
+				<if test="stts == 1">
+					and adm_stts = '승인완료'
+				</if>
+				<if test="stts == 2">
+					and adm_stts = '승인중'
+				</if>
+				<if test="stts == 3">
+					and adm_stts = '접근불가'
+				</if>
+				<if test="stts == 4">
+					and adm_stts = '휴면'
+				</if>
+			</if>
+		</where>
+		limit	#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectTeamByTeamId">
+		select	*
+		from	team
+		where	team_id = #{admTeam}
+	</select>
 </mapper>

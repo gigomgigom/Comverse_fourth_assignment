@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,56 +46,51 @@
 			</section>
 
 			<!-- Main content -->
+			<form action="/admin/manage/manager/list" id="search-form">
 			<section class="content">
 				<div class="container-fluid p-5">
 					<div class="card card-default">
-						<div class="card-body p-4">
-							<form>
-					            <div class="form-group row">
-					                <label class="col-sm-2 col-form-label">소속팀</label>
-					                <div class="col-sm-10 d-flex row">
-					                    <select id="category" class="form-control col-sm-12">
-					                        <option selected>전체</option>
-					                        <option>고객감동팀</option>
-					                        <option>물류운영팀</option>
-					                        <option>서비스개발/기획팀</option>
-					                       	<option>교육출판사업팀</option>
-					                       	<option>루트</option>
-					                       	<option>채널마케팅팀</option>
-					                       	<option>미배정</option>
-					                    </select>
-					                </div>
-					            </div>
-					            <div class="form-group row">
-					                <label class="col-sm-2 col-form-label">검색 정보</label>
-					                <div class="col-sm-10 d-flex row">
-					                    <select id="category" class="form-control col-sm-2">
-					                        <option selected>검색 조건</option>
-					                        <option>이름</option>
-					                        <option>아이디</option>
-					                        <option>연락처</option>
-					                        <option>이메일</option>
-					                    </select>
-					                    <input type="text" class="form-control col-sm-10" id="keyword" placeholder="검색어를 입력하세요">
-					                </div>
-					            </div>
-					            <div class="form-group row">
-					                <label class="col-sm-2 col-form-label">승인 상태</label>
-					                <select id="category" class="form-control col-sm-2">
-				                        <option selected>전체</option>
-				                        <option>승인완료</option>
-				                        <option>승인중</option>
-				                        <option>접근불가</option>
-				                        <option>휴면</option>
+						<div class="card-body p-4">							
+				            <div class="form-group row">
+				                <label class="col-sm-2 col-form-label">소속팀</label>
+				                <div class="col-sm-10 d-flex row">
+				                    <select id="team-input" class="form-control col-sm-12" name="team">
+				                    	<option value=-1>전체</option>
+				                        <c:forEach var="team" items="${teamList}">
+				                        	<option value="${team.teamId}" ${searchIndex.team == team.teamId ? 'selected' : ''}>${team.teamName}</option>
+				                        </c:forEach>
 				                    </select>
-					            </div>
-					            <div class="form-group d-flex justify-content-center">
-					                <div>
-					                    <button type="submit" class="btn btn-lg btn-primary mr-3">검색</button>
-					                    <button type="reset" class="btn btn-lg btn-secondary">초기화</button>
-					                </div>
-					            </div>
-					        </form>
+				                </div>
+				            </div>
+				            <div class="form-group row">
+				                <label class="col-sm-2 col-form-label">검색 정보</label>
+				                <div class="col-sm-10 d-flex row">
+				                    <select id="category" class="form-control col-sm-2" name="keywordCtg">
+				                        <option value=0 ${searchIndex.keywordCtg == 0 ? 'selected' : ''}>검색 조건</option>
+				                        <option value=1 ${searchIndex.keywordCtg == 1 ? 'selected' : ''}>이름</option>
+				                        <option value=2 ${searchIndex.keywordCtg == 2 ? 'selected' : ''}>아이디</option>
+				                        <option value=3 ${searchIndex.keywordCtg == 3 ? 'selected' : ''}>연락처</option>
+				                        <option value=4 ${searchIndex.keywordCtg == 4 ? 'selected' : ''}>이메일</option>
+				                    </select>
+				                    <input type="text" class="form-control col-sm-10" id="keyword" name="keyword" value="${searchIndex.keyword}" placeholder="검색어를 입력하세요">
+				                </div>
+				            </div>
+				            <div class="form-group row">
+				                <label class="col-sm-2 col-form-label">승인 상태</label>
+				                <select id="category" class="form-control col-sm-2" name="stts">
+			                        <option value=0 ${searchIndex.stts == 0 ? 'selected' : ''}>전체</option>
+			                        <option value=1 ${searchIndex.stts == 1 ? 'selected' : ''}>승인완료</option>
+			                        <option value=2 ${searchIndex.stts == 2 ? 'selected' : ''}>승인중</option>
+			                        <option value=3 ${searchIndex.stts == 3 ? 'selected' : ''}>접근불가</option>
+			                        <option value=4 ${searchIndex.stts == 4 ? 'selected' : ''}>휴면</option>
+			                    </select>
+				            </div>
+				            <div class="form-group d-flex justify-content-center">
+				                <div>
+				                    <button type="submit" class="btn btn-lg btn-primary mr-3">검색</button>
+				                    <button type="reset" class="btn btn-lg btn-secondary">초기화</button>
+				                </div>
+				            </div>
 						</div>
 					</div>
 				</div>			
@@ -103,26 +100,27 @@
 				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between row">
 						<div class="col-md-5">
-							<a href="/admin/manage/manager/create" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+							<a href="/admin/manage/manager/create?pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
 							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
-							<select class="form-control" style="max-width: 200px">
-		                        <option selected>10개씩 보기</option>
-		                        <option>50개씩 보기</option>
-		                        <option>100개씩 보기</option>
-		                        <option>500개씩 보기</option>
+							<select class="form-control" style="max-width: 200px" name="rowsPerPage">
+		                        <option value=10 ${searchIndex.rowsPerPage == 10 ? 'selected' : ''}>10개씩 보기</option>
+		                        <option value=50 ${searchIndex.rowsPerPage == 50 ? 'selected' : ''}>50개씩 보기</option>
+		                        <option value=100 ${searchIndex.rowsPerPage == 100 ? 'selected' : ''}>100개씩 보기</option>
+		                        <option value=500 ${searchIndex.rowsPerPage == 500 ? 'selected' : ''}>500개씩 보기</option>
 		                    </select>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- table -->
 			<section class="content">
 				<div class="container-fluid p-3">
 					<div class="card card-default">
 						<div class="card-header bg-info">
-							검색 결과 : N개
+							검색 결과 : ${searchIndex.pager.totalRows}개
 						</div>
 						<div class="card-body table-responsive">
 							<table class="table">
@@ -139,29 +137,31 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td class="text-center">tlarlrma</td>
-										<td class="text-center">심영조</td>
-										<td class="text-center">tlarlrma</td>
-										<td class="text-center">승인완료</td>
-										<td class="text-center">마케팅팀</td>
-										<td class="text-center">2019.03.19</td>
-										<td class="text-center">2019.03.19</td>
-										<td class="text-center">
-											<a class="btn btn-sm btn-info" href="/admin/manage/manager/edit">정보 수정</a>
-										</td>
-									</tr>
+									<c:forEach var="admin" items="${admList}">
+										<tr>
+											<td class="text-center">${admin.admNo}</td>
+											<td class="text-center">${admin.admName}</td>
+											<td class="text-center">${admin.admId}</td>
+											<td class="text-center">${admin.admStts}</td>
+											<td class="text-center">${admin.team.teamName}</td>
+											<td class="text-center"><fmt:formatDate value="${admin.regDate}" type="date"/></td>
+											<td class="text-center"><fmt:formatDate value="${admin.loginDate}" type="date"/></td>
+											<td class="text-center">
+												<a class="btn btn-sm btn-info" href="/admin/manage/manager/edit?detailId=${admin.admNo}&pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">정보 수정</a>
+											</td>
+										</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>
 						<div class="card-footer bg-white d-flex justify-content-center">
 							<nav>
 							  <ul class="pagination">
-							    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-							    <li class="page-item"><a class="page-link" href="#">1</a></li>
-							    <li class="page-item"><a class="page-link" href="#">2</a></li>
-							    <li class="page-item"><a class="page-link" href="#">3</a></li>
-							    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/manager/list?pageNo=${searchIndex.pager.startPageNo - 1}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">Previous</a></li>
+							    <c:forEach var="pageNum" items="${searchIndex.pager.pageArray}">
+							    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/manage/manager/list?pageNo=${pageNum}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">${pageNum}</a></li>
+							    </c:forEach>
+							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : '' }"><a class="page-link" href="/admin/manage/manager/list?pageNo=${searchIndex.pager.endPageNo + 1}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">Next</a></li>
 							  </ul>
 							</nav>
 						</div>

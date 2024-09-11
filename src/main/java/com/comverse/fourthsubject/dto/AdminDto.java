@@ -16,4 +16,7 @@ public class AdminDto {
 	private int admTeam;
 	private Date regDate;
 	private boolean admEnabled;
+	private Date loginDate;
+	
+	private TeamDto team;
 }

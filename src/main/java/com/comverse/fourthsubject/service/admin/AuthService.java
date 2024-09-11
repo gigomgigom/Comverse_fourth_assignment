@@ -140,6 +140,11 @@ public class AuthService {
 	}
 	//=============================================================================
 	//관리자 관리
+	
+	//최종 접속일 업데이트
+	public void updateLoginDate(String name) {
+		roleDao.updateLoginDate(name);
+	}
 	//권한/팀 목록 가져오기
 	public List<RoleDto> getExistingRole() {
 		List<RoleDto> roleList = roleDao.selectRoleListForManager();
@@ -158,6 +163,7 @@ public class AuthService {
 			return false;
 		}
 	}
+	//------------------생성
 	//관리자 생성하기
 	@Transactional
 	public void createManager(AdminRequest ar) {
@@ -213,4 +219,37 @@ public class AuthService {
 		
 		return result;
 	}
+	//---------------목록
+	public void getManagerList(Model model, SearchIndex searchIndex) {
+		List<TeamDto> teamList = getTeamList();
+		model.addAttribute("teamList", teamList);
+		
+		//목록 조회
+		int totalRows = roleDao.selectManagerCnt(searchIndex);
+		Pager pager = new Pager(searchIndex.getRowsPerPage(), 5, totalRows, Integer.parseInt(searchIndex.getPageNo()));
+		searchIndex.setPager(pager);
+		model.addAttribute("searchIndex", searchIndex);
+		
+		List<AdminDto> admList = roleDao.selectAdminList(searchIndex);
+		for(AdminDto adm : admList) {
+			TeamDto team = roleDao.selectTeamByTeamId(adm.getAdmTeam());
+			adm.setTeam(team);
+		}
+		model.addAttribute("admList", admList);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

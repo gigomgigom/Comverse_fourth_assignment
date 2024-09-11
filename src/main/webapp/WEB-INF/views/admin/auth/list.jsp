@@ -104,7 +104,7 @@
 				<div class="container-fluid p-3">
 					<div class="card card-default">
 						<div class="card-header bg-info">
-							검색 결과 : N개
+							검색 결과 : ${searchIndex.pager.totalRows}개
 						</div>
 						<div class="card-body table-responsive">
 							<table class="table">

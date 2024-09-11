@@ -325,8 +325,19 @@ public class AdminController {
 	// -------------------------------------------------------
 	// 관리자 관리 - 목록
 	@GetMapping("/manage/manager/list")
-	public String managerList(Model model) {
+	public String managerList(Model model, SearchIndex searchIndex) {
 		model.addAttribute("chNum", new SideBarModel(3, 0));
+		if(searchIndex.getPageNo() == null) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		if(searchIndex.getKeyword() == null && searchIndex.getTeam() == 0) {
+			searchIndex.setTeam(-1);
+		}
+		log.info(searchIndex.toString());
+		authService.getManagerList(model, searchIndex);
 		
 		return "/admin/manager/list";
 	}

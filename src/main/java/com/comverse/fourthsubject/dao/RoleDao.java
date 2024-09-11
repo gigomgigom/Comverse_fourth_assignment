@@ -32,6 +32,8 @@ public interface RoleDao {
 	public void deleteRoleBoardList(int roleId);
 	public void deleteRoleMenuList(int roleId);
 	
+	//관리자 - 최종 접속일 업데이트
+	public void updateLoginDate(String name);
 	//관리자 관리 - 권한/팀 목록 가져오기
 	public List<RoleDto> selectRoleListForManager();
 	public List<TeamDto> selectTeamListForManager();
@@ -40,4 +42,11 @@ public interface RoleDao {
 	//관리자 관리 - 관리자 및 관리자의 권한 삽입
 	public void insertAdmin(AdminDto admin);
 	public void insertAdminRole(int admNo, int roleId);
+	//관리자 관리 - 검색한 관리자의 수를 조회
+	public int selectManagerCnt(SearchIndex searchIndex);
+	//관리자 관리 - 검색결과(관리자 목록) 조회
+	public List<AdminDto> selectAdminList(SearchIndex searchIndex);
+	//관리자 관리 - 리스트 요소 별 팀 정보 가져오기
+	public TeamDto selectTeamByTeamId(int admTeam);
+	
 }
