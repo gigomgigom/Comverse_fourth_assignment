@@ -46,7 +46,7 @@
 			</section>
 
 			<!-- Main content -->
-			<form action="/admin/manage/manager/list" id="search-form">
+			<form action="/admin/manage/role/manager/list" id="search-form">
 			<section class="content">
 				<div class="container-fluid p-5">
 					<div class="card card-default">
@@ -100,7 +100,7 @@
 				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between row">
 						<div class="col-md-5">
-							<a href="/admin/manage/manager/create?pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+							<a href="/admin/manage/role/manager/create?pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
 							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
@@ -147,7 +147,7 @@
 											<td class="text-center"><fmt:formatDate value="${admin.regDate}" type="date"/></td>
 											<td class="text-center"><fmt:formatDate value="${admin.loginDate}" type="date"/></td>
 											<td class="text-center">
-												<a class="btn btn-sm btn-info" href="/admin/manage/manager/edit?detailId=${admin.admNo}&pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">정보 수정</a>
+												<a class="btn btn-sm btn-info" href="/admin/manage/role/manager/edit?detailId=${admin.admNo}&pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">정보 수정</a>
 											</td>
 										</tr>
 									</c:forEach>
@@ -157,11 +157,11 @@
 						<div class="card-footer bg-white d-flex justify-content-center">
 							<nav>
 							  <ul class="pagination">
-							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/manager/list?pageNo=${searchIndex.pager.startPageNo - 1}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">Previous</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/role/manager/list?pageNo=${searchIndex.pager.startPageNo - 1}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">Previous</a></li>
 							    <c:forEach var="pageNum" items="${searchIndex.pager.pageArray}">
-							    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/manage/manager/list?pageNo=${pageNum}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">${pageNum}</a></li>
+							    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/manage/role/manager/list?pageNo=${pageNum}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">${pageNum}</a></li>
 							    </c:forEach>
-							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : '' }"><a class="page-link" href="/admin/manage/manager/list?pageNo=${searchIndex.pager.endPageNo + 1}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">Next</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : '' }"><a class="page-link" href="/admin/manage/role/manager/list?pageNo=${searchIndex.pager.endPageNo + 1}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">Next</a></li>
 							  </ul>
 							</nav>
 						</div>

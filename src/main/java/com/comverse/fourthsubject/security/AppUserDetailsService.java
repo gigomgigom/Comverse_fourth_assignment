@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.comverse.fourthsubject.dao.AdminDao;
+import com.comverse.fourthsubject.dao.AuthDao;
 import com.comverse.fourthsubject.dto.AdminDto;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 public class AppUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private AdminDao adminDao;
+	private AuthDao authDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		AdminDto admin = adminDao.selectAdminByAdminId(username);
+		AdminDto admin = authDao.selectAdminByAdminId(username);
 		if(admin == null) {
 			log.info("실패");
 		}

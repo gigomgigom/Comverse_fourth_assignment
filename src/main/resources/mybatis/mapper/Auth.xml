@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.comverse.fourthsubject.dao.RoleDao">
+<mapper namespace="com.comverse.fourthsubject.dao.AuthDao">
+	<select id="selectMenuListByAdmId" resultType="adminMenu">
+		SELECT 	* 
+		FROM 	admin_menu
+		where	menu_id in (
+								SELECT 	distinct menu_id
+								FROM	role_authority
+								where	role_id in ( 
+														SELECT 	role_id
+														from	admin_role
+														where	adm_id =	(
+																				SELECT	adm_no
+		                                                        	            from	admin
+		                                                                        where	adm_id = #{admId}
+																			)
+													)
+							)
+		order by grp, dpth, step
+	</select>
+	<select id="selectBoardListByAdmId" resultType="boardCtgDto">
+		select	ctg.ctg_id, ctg.ctg_name, ctg.ctg_menu, ctg.ctg_in_use, ctg.new_expose, ctg.expose_period, ctg.ctg_enabled
+		from	board_ctg ctg
+		join	(	
+					SELECT	distinct ctg_id
+					FROM	admin_board
+					where	role_id in	(
+											SELECT	role_id 
+											FROM 	admin_role
+											where	adm_id =	(
+																	SELECT 	adm_no 
+																	FROM 	admin
+																	where	adm_id = 'admin'
+																)
+										)
+				) bo_ctg
+		on		bo_ctg.ctg_id = ctg.ctg_id
+	</select>
+	<select id="selectAdminByAdminId" resultType="admin">
+		select 	*
+		from	admin
+		where	adm_id = #{username}
+	</select>	
+	<select id="selectMenuList" resultType="adminMenu">
+		select 		* 
+		from		admin_menu
+		order by 	grp, dpth, step;
+	</select>
 	<insert id="insertRole" parameterType="roleDto" useGeneratedKeys="true" keyProperty="roleId">
 		insert into role 	(
 								role_name,

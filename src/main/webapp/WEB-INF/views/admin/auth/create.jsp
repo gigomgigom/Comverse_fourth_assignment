@@ -122,7 +122,7 @@
 							<button id="submit-button" class="btn btn-lg btn-primary mr-5 px-4">등록</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/manage/auth/list?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/role/auth/list?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

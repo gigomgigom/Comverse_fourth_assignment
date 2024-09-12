@@ -9,4 +9,6 @@ public class AdminMenuDto {
 	private int grp;
 	private int dpth;
 	private int step;
+	private String url;
+	private String icon;
 }

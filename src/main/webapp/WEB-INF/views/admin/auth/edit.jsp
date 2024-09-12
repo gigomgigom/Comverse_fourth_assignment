@@ -130,7 +130,7 @@
 							</div>
 							<div class="d-flex justify-content-end">
 								<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">초기화</button>
-								<a href="/admin/manage/auth/list?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+								<a href="/admin/manage/role/auth/list?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 							</div>
 						</div>
 					</div>

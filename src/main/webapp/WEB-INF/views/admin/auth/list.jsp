@@ -47,7 +47,7 @@
 
 			<!-- Main content -->
 			<!-- Search -->
-			<form action="/admin/manage/auth/list" id="search-form">
+			<form action="/admin/manage/role/auth/list" id="search-form">
 				<section class="content">
 					<div class="container-fluid p-5">
 						<div class="card card-default">
@@ -84,7 +84,7 @@
 					<div class="container-fluid px-3">
 						<div class="d-flex justify-content-between row">
 							<div class="col-md-5">
-								<a href="/admin/manage/auth/create?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+								<a href="/admin/manage/role/auth/create?pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 							</div>
 							<div class="col-md-5 d-flex align-items-center justify-content-end">
 								<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
@@ -120,7 +120,7 @@
 									<c:forEach var="role" items="${roleList}">
 										<tr>
 											<td class="text-center">${role.roleId}</td>
-											<td class="text-center"><a href="/admin/manage/auth/edit?detailId=${role.roleId}&pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">${role.roleName}</a></td>
+											<td class="text-center"><a href="/admin/manage/role/auth/edit?detailId=${role.roleId}&pageNo=${searchIndex.pageNo}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">${role.roleName}</a></td>
 											<td class="text-center">${role.roleEnabled ? "사용중" : "미사용"}</td>
 											<td class="text-center"><fmt:formatDate value="${role.regDate}" type="date"/></fmt></td>
 										</tr>
@@ -131,11 +131,11 @@
 						<div class="card-footer bg-white d-flex justify-content-center">
 							<nav>
 							  <ul class="pagination">
-							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/auth/list?pageNo=${searchIndex.pager.startPageNo - 1}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">Previous</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/role/auth/list?pageNo=${searchIndex.pager.startPageNo - 1}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">Previous</a></li>
 							    <c:forEach var="pageNum" items="${searchIndex.pager.pageArray}">
-							    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/manage/auth/list?pageNo=${pageNum}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">${pageNum}</a></li>
+							    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/manage/role/auth/list?pageNo=${pageNum}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">${pageNum}</a></li>
 							    </c:forEach>
-							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/auth/list?pageNo=${searchIndex.pager.endPageNo + 1}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">Next</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/role/auth/list?pageNo=${searchIndex.pager.endPageNo + 1}&stts=${searchIndex.stts}&keyword=${searchIndex.keyword}&rowsPerPage=${searchIndex.rowsPerPage}">Next</a></li>
 							  </ul>
 							</nav>
 						</div>

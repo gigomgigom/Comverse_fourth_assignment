@@ -185,7 +185,7 @@
 				<div class="col-xl-12 d-flex justify-content-end">
 					<button type="button" id="register-button" class="btn btn-lg btn-primary mr-3">저장</button>
 					<button type="button" class="btn btn-lg btn-secondary mr-3">삭제</button>
-					<a class="btn btn-lg btn-secondary">목록</a>
+					<a class="btn btn-lg btn-secondary" href="/admin/manage/role/manager/list?pageNo=${searchIndex.pageNo}&team=${searchIndex.team}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}">목록</a>
 				</div>
 			</section>
 			</form>

@@ -5,13 +5,23 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.comverse.fourthsubject.dto.AdminDto;
+import com.comverse.fourthsubject.dto.AdminMenuDto;
+import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.RoleDto;
 import com.comverse.fourthsubject.dto.TeamDto;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 
 @Mapper
-public interface RoleDao {
+public interface AuthDao {
 	
+	//AOP - 관리자 아이디가 접근 가능한 메뉴 정보 가져오기
+	public List<AdminMenuDto> selectMenuListByAdmId(String admId);
+	//AOP - 관리자 아이디가 접근 가능한 게시판 정보 가져오기
+	public List<BoardCtgDto> selectBoardListByAdmId(String admId);
+	//login
+	public AdminDto selectAdminByAdminId(String username);
+	//권한 관리 - 생성, 수정 - 메뉴 목록 조회
+	public List<AdminMenuDto> selectMenuList();
 	//권한 생성
 	public void insertRole(RoleDto role);
 	//메뉴/게시판 권한 정보 생성
@@ -56,5 +66,6 @@ public interface RoleDao {
 	public void updateManagerDetail(AdminDto admin);
 	//관리자 관리 - 관리자의 권한 목록 일괄 삭제
 	public void deleteManagerRole(int admNo);
+	
 	
 }

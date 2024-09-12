@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!-- Main Sidebar Container -->
 		<aside class="main-sidebar sidebar-dark-warning elevation-4">
 			<!-- Brand Logo -->
@@ -18,115 +19,59 @@
 					<!-- Sidebar Menu -->
 					<nav>
 						<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-							<li class="nav-item">
-					            <a href="/admin/board/setting" class="nav-link ${chNum.firstDepth==0 ? 'active' : ''}">
-					              <i class="nav-icon fas fa-list"></i>
-					              <p>
-					                게시판 설정
-					              </p>
-					            </a>
-					        </li>
-							<li class="nav-item ${chNum.firstDepth==1 ? 'menu-is-opening menu-open' : ''}">
-								<a href="#" class="nav-link ${chNum.firstDepth==1 ? 'active' : ''}"> <i class="nav-icon fas fa-clipboard-list"></i>
-									<p>
-										게시판 관리 <i class="right fas fa-angle-left"></i>
-									</p>
-								</a>
-								<ul class="nav nav-treeview">
-									<li class="nav-item">
-										<a href="/admin/board/manage/intro-learning-center/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==0 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>우주학습센터 소개</p>
+							
+							<c:forEach var="menu" items="${allowedMenuList}">
+								<c:if test="${menu.parent.menuId != 2}">
+									<li class="nav-item ${chNum.firstDepth==menu.parent.menuId ? 'menu-is-opening menu-open' : ''}">
+										<a href="#" class="nav-link ${chNum.firstDepth==menu.parent.menuId ? 'active' : ''}"> <i class="nav-icon fas ${menu.parent.icon}"></i>
+											<p>
+												${menu.parent.name} <i class="right fas fa-angle-left"></i>
+											</p>
 										</a>
+										<ul class="nav nav-treeview">
+											<c:if test="${menu.parent.menuId != 1}">
+												<c:forEach var="child" items="${menu.children}">
+													<li class="nav-item">
+														<a href="/admin${child.url}list" class="nav-link ${chNum.firstDepth==menu.parent.menuId && chNum.secondDepth==child.menuId ? 'active' : ''}"> 
+															<i class="far fa-circle nav-icon"></i>
+															<p>${child.name}</p>
+														</a>
+													</li>
+												</c:forEach>
+											</c:if>
+											<c:if test="${menu.parent.menuId == 1}">
+												<c:forEach var="child" items="${menu.children}">
+													<li class="nav-item">
+														<a href="/admin${child.url}" class="nav-link ${chNum.firstDepth==menu.parent.menuId && chNum.secondDepth==child.menuId ? 'active' : ''}"> 
+															<i class="far fa-circle nav-icon"></i>
+															<p>${child.name}</p>
+														</a>
+													</li>
+												</c:forEach>
+											</c:if>																
+										</ul>
 									</li>
-									<li class="nav-item">
-										<a href="/admin/board/manage/study-review/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==1 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>홈런학습센터 학습 후기</p>
+								</c:if>
+								<c:if test="${menu.parent.menuId == 2}">
+									<li class="nav-item ${chNum.firstDepth==menu.parent.menuId ? 'menu-is-opening menu-open' : ''}">
+										<a href="#" class="nav-link ${chNum.firstDepth==menu.parent.menuId ? 'active' : ''}"> <i class="nav-icon fas ${menu.parent.icon}"></i>
+											<p>
+												${menu.parent.name} <i class="right fas fa-angle-left"></i>
+											</p>
 										</a>
+										<ul class="nav nav-treeview">
+											<c:forEach var="child" items="${menu.children}">
+												<li class="nav-item">
+													<a href="/admin${menu.parent.url}${child.ctgId}/list" class="nav-link ${chNum.firstDepth==menu.parent.menuId && chNum.boardDepth==child.ctgId ? 'active' : ''}"> 
+														<i class="far fa-circle nav-icon"></i>
+														<p>${child.ctgName}</p>
+													</a>
+												</li>
+											</c:forEach>											
+										</ul>
 									</li>
-									<li class="nav-item">
-										<a href="/admin/board/manage/teacher-review/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==2 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>홈런학습센터 교사 후기</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/board/manage/notice/list" class="nav-link ${chNum.firstDepth==1 && chNum.secondDepth==3 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>알려드립니다</p>
-										</a>
-									</li>
-								</ul>
-							</li>
-							<li class="nav-item ${chNum.firstDepth==2 ? 'menu-is-opening menu-open' : ''}">
-								<a href="#" class="nav-link ${chNum.firstDepth==2 ? 'active' : ''}">
-									<i class="nav-icon fas fa-edit"></i>
-									<p>
-										설정 <i class="right fas fa-angle-left"></i>
-									</p>
-								</a>
-								<ul class="nav nav-treeview">
-									<li class="nav-item">
-										<a href="/admin/manage/location/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==0 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>지국위치 안내</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/manage/biz/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==1 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>사업설명회 관리</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/manage/biz-apply/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==2 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>사업설명회 신청</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/manage/join-center/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==3 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>학습센터 개설</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/manage/one-to-one/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==4 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>문의 관리</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/manage/faq/list" class="nav-link ${chNum.firstDepth==2 && chNum.secondDepth==5 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>FAQ</p>
-										</a>
-									</li>
-								</ul>
-							</li>
-							<li class="nav-item ${chNum.firstDepth==3 ? 'menu-is-opening menu-open' : ''}">
-								<a href="#" class="nav-link ${chNum.firstDepth==3 ? 'active' : ''}">
-									<i class="nav-icon fas fa-user"></i>
-									<p>
-										관리자 및 권한 <i class="right fas fa-angle-left"></i>
-									</p>
-								</a>
-								<ul class="nav nav-treeview">
-									<li class="nav-item">
-										<a href="/admin/manage/manager/list" class="nav-link ${chNum.firstDepth==3 && chNum.secondDepth==0 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>관리자 관리</p>
-										</a>
-									</li>
-									<li class="nav-item">
-										<a href="/admin/manage/auth/list" class="nav-link ${chNum.firstDepth==3 && chNum.secondDepth==1 ? 'active' : ''}"> 
-											<i class="far fa-circle nav-icon"></i>
-											<p>권한 관리</p>
-										</a>
-									</li>
-								</ul>
-							</li>
+								</c:if>
+							</c:forEach>							
 						</ul>
 					</nav>
 					<!-- /.sidebar-menu -->
