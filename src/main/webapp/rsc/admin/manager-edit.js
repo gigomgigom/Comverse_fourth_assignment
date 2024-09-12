@@ -5,7 +5,7 @@ $(document).ready(function () {
 	
 	function checkAdminInfoExist(ctg, line) {
 		$.ajax({
-			url: '/admin/manage/manager/is-exist?ctg='+ctg+'&line='+line,
+			url: '/admin/manage/role/manager/is-exist?ctg='+ctg+'&line='+line,
 			type: 'GET',
 			success: function(rs) {
 				if(ctg === 1) {
@@ -124,13 +124,13 @@ $(document).ready(function () {
 		})
 		
 		$.ajax({
-			url: '/admin/manage/manager/edit-manager',
+			url: '/admin/manage/role/manager/edit-manager',
 			type: 'POST',
 			contentType: 'application/json',
 			data: JSON.stringify(data),
 			success: function() {
 				alert('관리자정보가 수정되었습니다.');
-				location.href="/admin/manage/manager/list";
+				location.href="/admin/manage/role/manager/list";
 			},
 			error: function(e) {
 				alert('에러발생');

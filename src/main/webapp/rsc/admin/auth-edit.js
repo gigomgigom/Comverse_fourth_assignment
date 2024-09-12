@@ -91,13 +91,13 @@ const createRole = () => {
 			}
 		})
 		$.ajax({
-			url: '/admin/manage/auth/edit-role',
+			url: '/admin/manage/role/auth/edit-role',
 			type: 'POST',
 			contentType: 'application/json',
 			data: JSON.stringify(requestData),
 			success: function(rs) {
 				alert('권한이 수정되었습니다.');
-				location.href="/admin/manage/auth/list";
+				location.href="/admin/manage/role/auth/list";
 			},
 			error: function(e) {
 				console.log(e);
