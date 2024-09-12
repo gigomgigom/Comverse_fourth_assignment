@@ -46,7 +46,10 @@ $(document).ready(function () {
 	        const newCard = $(this).closest('.card').clone();
 
 	        // 기존 카드에서 추가 버튼 제거
-	        $(this).closest('.card').find('.add-button').remove();
+			const prevCard = $(this).closest('.card');
+	        // 기존 카드에서 추가 버튼 제거
+	        prevCard.find('.add-button').remove();
+			prevCard.find('.remove-button').removeClass('d-none');
 
 	        // 복사한 카드를 카드 컨테이너에 추가
 	        $('#card-container').append(newCard);
@@ -81,9 +84,11 @@ $(document).ready(function () {
 		const admTeam = $('#create-form [name=admTeam]').val();
 		const admStts = $('#create-form [name=admStts]').val();
 		const _csrf = $('#csrf').val();
-		const roleList = $('select[name="roleList[]"]').map(function() {
-			return $(this).val();
-		}).get();
+		const role = $('select[name="roleList[]"]').map(function() {
+					return $(this).val();
+				}).get();
+		const roleSet = new Set(role);
+		const roleList = [...roleSet];
 		
 		return {
 			admName, admId, admPw, admTel, admEmail, admTeam, admStts, roleList, _csrf

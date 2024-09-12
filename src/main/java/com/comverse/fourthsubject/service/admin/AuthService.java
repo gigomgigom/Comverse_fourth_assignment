@@ -254,7 +254,7 @@ public class AuthService {
 		model.addAttribute("teamList", teamList);
 		model.addAttribute("admin", admin);
 	}
-	//------------------관리자 정보 수정
+	//---------------관리자 정보 수정
 	@Transactional
 	public void editManager(AdminRequest ar) {
 		Map<String, Object> data = handlingAdminRequestData(ar);
