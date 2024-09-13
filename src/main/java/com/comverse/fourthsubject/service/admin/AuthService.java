@@ -87,6 +87,8 @@ public class AuthService {
 		//관리자의 권한이 접근할 수 있는 메뉴라면
 		if(rowCnt > 0) {
 			result = true;
+		} else if(requestUri.equals("/admin/main")) {
+			result = true;
 		}
 		
 		return result;

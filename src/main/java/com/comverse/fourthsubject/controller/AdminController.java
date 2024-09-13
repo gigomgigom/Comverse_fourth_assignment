@@ -97,8 +97,12 @@ public class AdminController {
 	
 	// 게시판 관리 - 목록
 	@GetMapping("/board/manage/{boCtg}/list")
-	public String boardIntroLearningCenterList(@PathVariable int boCtg, Model model, HttpServletRequest rq) {
-
+	public String boardIntroLearningCenterList(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
+		//boardService.getBoardList(boCtg, searchIndex, model);
+		
+		//임시 코드임 위의 서비스 메소드 구현되고 나면 삭제하도록
+		model.addAttribute("searchIndex", searchIndex);
+		model.addAttribute("boCtg", boCtg);
 		return "/admin/board/manage/list";
 	}
 
@@ -118,8 +122,8 @@ public class AdminController {
 
 	// 게시판 관리 - 생성
 	@GetMapping("/board/manage/{boCtg}/create")
-	public String boardIntroLearningCenterCreate(@PathVariable int boCtg, Model model, HttpServletRequest rq) {
-
+	public String boardIntroLearningCenterCreate(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
+		
 		return "/admin/board/manage/create";
 	}
 	// -------------------------------------------------------

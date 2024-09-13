@@ -3,6 +3,8 @@ package com.comverse.fourthsubject.dto.nondb;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -19,9 +21,11 @@ public class SearchIndex {
 	//일자 분류 0, 1, 2...
 	private int dateCtg;
 	//시작 일자
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date startDate;
 	//종료 일자
-	private Date EndDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date endDate;
 	//지역(지부)
 	private int location;
 	//상태
