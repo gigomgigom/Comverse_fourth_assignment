@@ -14,6 +14,11 @@ import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 @Mapper
 public interface AuthDao {
 	
+	//Interceptor - 요청 경로에 해당하는 메뉴정보 찾기
+	public List<AdminMenuDto> selectMenuIdListByUri(String requestUri);
+	//Interceptor - 권한에 해당하는 메뉴/게시판 정보가 있는지 확인
+	public int selectRowCntOfBoardWhereRoleId(int menuId, List<Integer> roleIdList);
+	public int selectRowCntOfMenuWhereRoleId(int menuId, List<Integer> roleIdList);
 	//AOP - 관리자 아이디가 접근 가능한 메뉴 정보 가져오기
 	public List<AdminMenuDto> selectMenuListByAdmId(String admId);
 	//AOP - 관리자 아이디가 접근 가능한 게시판 정보 가져오기
@@ -66,6 +71,5 @@ public interface AuthDao {
 	public void updateManagerDetail(AdminDto admin);
 	//관리자 관리 - 관리자의 권한 목록 일괄 삭제
 	public void deleteManagerRole(int admNo);
-	
 	
 }

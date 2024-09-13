@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comverse.fourthsubject.dao.AuthDao">
+	<select id="selectMenuIdListByUri" resultType="adminMenu">
+		select	*
+		from	admin_menu
+		where	locate(url , #{requestUri}) > 0
+	</select>
+	<select id="selectRowCntOfBoardWhereRoleId" resultType="int">
+		select	count(*)
+		from	admin_board
+		<where>
+				ctg_id = #{menuId}
+				and
+				<foreach item="roleId" index="index" collection="roleIdList"
+						 open="role_id in (" separator="," close=")">
+					#{roleId}
+				</foreach>
+		</where>
+	</select>
+	<select id="selectRowCntOfMenuWhereRoleId" resultType="int">
+		select	count(*)
+		from	role_authority
+		<where>
+				menu_id = #{menuId}
+				and
+				<foreach item="roleId" index="index" collection="roleIdList"
+						 open="role_id in (" separator="," close=")">
+					#{roleId}
+				</foreach>
+		</where>
+	</select>
 	<select id="selectMenuListByAdmId" resultType="adminMenu">
 		SELECT 	* 
 		FROM 	admin_menu

@@ -46,7 +46,6 @@ public class SettingMenuAspect {
 			
 			//관리자에게 허용된 메뉴 리스트 조회
 			menuList = authService.getManagerAllowedMenuList(auth.getName());
-			log.info(menuList.toString());
 			
 			//대상 메소드의 매개변수에서 request찾기
 			//요청 경로에 맞춰 좌측 사이드바 특정 메뉴탭 활성화
@@ -61,12 +60,10 @@ public class SettingMenuAspect {
 							
 							//부모메뉴 탭 정보
 							AdminMenuDto parentMenu = (AdminMenuDto) map.get("parent");
-							log.info(parentMenu.toString());
 							//현재 경로가 부모메뉴 탭의 경로라면
 							if(uri.contains(parentMenu.getUrl())) {
 								//게시판 관리 경로가 아니라면
 								if(parentMenu.getMenuId() != 2) {
-									log.info("boardx");
 									//자식메뉴목록 - 타입 체크 생략함
 									@SuppressWarnings("unchecked")
 									List<AdminMenuDto> children = (List<AdminMenuDto>) map.get("children");
@@ -80,7 +77,6 @@ public class SettingMenuAspect {
 									}	
 								//게시판 관리 경로라면
 								} else {
-									log.info("boardo");
 									//자식메뉴목록 - 타입 체크 생략함
 									@SuppressWarnings("unchecked")
 									List<BoardCtgDto> children = (List<BoardCtgDto>) map.get("children");
@@ -96,7 +92,6 @@ public class SettingMenuAspect {
 							}
 						}
 					}
-					log.info(uri);
 				}
 			}
 			//대상 메소드의 매개변수에서 Model찾기
@@ -104,7 +99,6 @@ public class SettingMenuAspect {
 			for(Object arg : args) {
 				if(arg instanceof Model) {
 					model = (Model) arg;
-					log.info(sideBarModel.toString());
 					model.addAttribute("allowedMenuList", menuList);
 					model.addAttribute("chNum", sideBarModel);
 					break;

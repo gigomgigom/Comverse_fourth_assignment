@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -35,6 +36,61 @@ public class AuthService {
 	@Autowired
 	private AuthDao authDao;
 	
+	//요청한 경로가 로그인한 관리자에게 허용되어있는지 체크
+	public boolean checkRequestUriAllowedToAdmin(String adminId, String requestUri) {
+		//메뉴 || 게시판 번호
+		int menuId = 0;
+		//게시판관리의 경로인지 여부 체크
+		boolean isRequestUriForBoard = false;
+		//결과
+		boolean result = false;
+		
+		//아이디에 설정된 권한 번호의 목록 가져오기
+		int admNo = authDao.selectAdminByAdminId(adminId).getAdmNo();
+		List<Integer> roleIdList = authDao.selectRoleListByAdminId(admNo);
+		
+		//경로에 해당하는 메뉴정보 가져오기
+		List<AdminMenuDto> menuList = authDao.selectMenuIdListByUri(requestUri);
+		for(AdminMenuDto menu : menuList) {
+			//부모 계층 찾기
+			if(menu.getDpth() == 1) {
+				//만약 부모계층이 게시판 관리라면
+				if(menu.getMenuId() == 2) {
+					isRequestUriForBoard = true;
+					//게시판 번호 찾기
+					StringTokenizer st = new StringTokenizer(requestUri, "/");
+					while(st.hasMoreElements()) {
+						try {
+							//게시판 번호 세팅
+							menuId = Integer.parseInt(st.nextToken());
+						} catch (NumberFormatException e) {
+							//예외 처리
+						}						
+					}
+				} else {
+					menuList.remove(menu);
+					//메뉴 번호 세팅
+					menuId = menuList.get(0).getMenuId();
+				}
+			}
+		}
+		
+		//관리자의 권한이 접근할 수 있는 메뉴인지 여부
+		int rowCnt = 0;
+		
+		if(isRequestUriForBoard) { //요청경로가 게시판 관리일경우
+			rowCnt = authDao.selectRowCntOfBoardWhereRoleId(menuId, roleIdList);
+		} else { //요청 경로가 게시판 관리 이외의 메뉴 경로일 경우
+			rowCnt = authDao.selectRowCntOfMenuWhereRoleId(menuId, roleIdList);
+		}
+		
+		//관리자의 권한이 접근할 수 있는 메뉴라면
+		if(rowCnt > 0) {
+			result = true;
+		}
+		
+		return result;
+	}	
 	//-----------------------------------------------------------
 	//로그인한 관리자에게 허용된 메뉴 리스트 찾아주기
 	public List<Map<String, Object>> getManagerAllowedMenuList(String admId) {
@@ -312,20 +368,4 @@ public class AuthService {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
