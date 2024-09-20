@@ -1,8 +1,10 @@
 package com.comverse.fourthsubject.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,12 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.RoleDto;
 import com.comverse.fourthsubject.dto.TeamDto;
 import com.comverse.fourthsubject.dto.nondb.AdminRequest;
+import com.comverse.fourthsubject.dto.nondb.BoardFormRequest;
 import com.comverse.fourthsubject.dto.nondb.RoleRequest;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 import com.comverse.fourthsubject.service.admin.AuthService;
@@ -97,34 +102,89 @@ public class AdminController {
 	
 	// 게시판 관리 - 목록
 	@GetMapping("/board/manage/{boCtg}/list")
-	public String boardIntroLearningCenterList(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
-		//boardService.getBoardList(boCtg, searchIndex, model);
+	public String boardList(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		log.info(searchIndex.toString());
+		boardService.getBoardList(boCtg, searchIndex, model);
 		
-		//임시 코드임 위의 서비스 메소드 구현되고 나면 삭제하도록
-		model.addAttribute("searchIndex", searchIndex);
-		model.addAttribute("boCtg", boCtg);
 		return "/admin/board/manage/list";
 	}
 
 	// 게시판 관리 - 상세
 	@GetMapping("/board/manage/{boCtg}/detail")
-	public String boardIntroLearningCenterDetail(@PathVariable int boCtg, Model model, HttpServletRequest rq) {
-
+	public String boardDetail(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
+		log.info(searchIndex.toString());
 		return "/admin/board/manage/detail";
 	}
 
 	// 게시판 관리 - 수정
 	@GetMapping("/board/manage/{boCtg}/edit")
-	public String boardIntroLearningCenterEdit(@PathVariable int boCtg, Model model, HttpServletRequest rq) {
-
+	public String boardEdit(@PathVariable int boCtg, Model model, HttpServletRequest rq) {
+		
 		return "/admin/board/manage/edit";
 	}
 
-	// 게시판 관리 - 생성
+	// 게시판 관리 - 생성페이지 이동
 	@GetMapping("/board/manage/{boCtg}/create")
-	public String boardIntroLearningCenterCreate(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
-		
+	public String boardCreate(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
+		model.addAttribute("boCtg", boCtg);
+		model.addAttribute("searchIndex", searchIndex);
 		return "/admin/board/manage/create";
+	}
+	// 게시판 관리 - 게시글 생성하기
+	@ResponseBody
+	@PostMapping("/board/manage/{boCtg}/create-board")
+	public ResponseEntity<?> createBoard(@PathVariable int boCtg, BoardFormRequest boardForm) {
+		try {
+			boardService.createBoard(boCtg, boardForm);
+			return ResponseEntity.ok(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
+	// 게시판 관리 - 생성, 수정시 업로드되는 이미지파일 서버로컬에 저장
+	@ResponseBody
+	@PostMapping("/board/manage/{boCtg}/upload-image")
+	public ResponseEntity<?> boardUploadImage(@PathVariable int boCtg, @RequestParam("file") MultipartFile mf) {
+		if(mf.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is Empty");
+		}
+		try {
+			String imageDownloadUrl = boardService.uploadImageFile(mf, boCtg);
+			return ResponseEntity.ok(imageDownloadUrl);
+		} catch(IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Could not upload file");
+		}
+	}
+	// 게시판 관리 - 게시글 내 이미지파일 삭제
+	@ResponseBody
+	@GetMapping("/board/manage/{boCtg}/delete-image/{date}/{fileName}")
+	public ResponseEntity<?> boardDeleteImage(@PathVariable String date, @PathVariable String fileName) {
+		try {
+			return boardService.boardDeleteImage(date, fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	// 게시판 관리 - 게시글 내 이미지파일 다운로드
+	@ResponseBody
+	@GetMapping("/board/manage/{boCtg}/download-image/{date}/{fileName}")
+	public ResponseEntity<?> boardDownladImage(@PathVariable String date, @PathVariable String fileName) {
+		try {
+			return boardService.boardDownloadImage(date, fileName);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
 	}
 	// -------------------------------------------------------
 	// -------------------------------------------------------

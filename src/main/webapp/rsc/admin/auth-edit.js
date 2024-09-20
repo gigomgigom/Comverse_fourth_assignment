@@ -5,7 +5,7 @@ $(document).ready(() => {
 	})
 	
 	$('#submit-button').click(function() {
-		createRole();	
+		createRole();
 	})
 })
 

@@ -23,9 +23,11 @@ public class SearchIndex {
 	//시작 일자
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date startDate;
+	private String startDateSdf;
 	//종료 일자
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date endDate;
+	private String endDateSdf;
 	//지역(지부)
 	private int location;
 	//상태

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,11 +35,11 @@
 							<ol class="breadcrumb float-sm-left pl-5 pt-4">
 								<li class="breadcrumb-item"><a href="#">홈</a></li>
 								<li class="breadcrumb-item"><a href="#">게시판 관리</a></li>
-								<li class="breadcrumb-item active">우주학습센터 소개</li>
+								<li class="breadcrumb-item active">${boardCtg.ctgName}</li>
 							</ol>
 						</div>
 						<div class="col-sm-12 pl-5 pt-4">
-							<h1>우주학습센터 소개 - 생성</h1>
+							<h1>${boardCtg.ctgName} - 생성</h1>
 						</div>
 					</div>
 				</div>
@@ -46,6 +47,9 @@
 			</section>
 
 			<!-- Main content -->
+			<form id="create-form">
+			<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" id="ctg" value="${boCtg}" name="boCtg"/>
 			<section class="content p-5">
 				<div class="card card-default">
 					<div class="card-body">
@@ -53,18 +57,22 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">제목</dt>
 								<dd class="col-md-10 px-3 py-0 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="boTitle">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">작성자</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">심영조</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+									<sec:authentication property="principal.username" var="username"/>
+									${username}
+									<input type="hidden" class="form-control-sm w-100 border-0" value="${username}" name="boWriter"/>
+								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 고정 유무</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox1">
-							        <label class="custom-control-label ml-5" for="checkbox1">
+									<input class="custom-control-input ml-3 mr-5" type="checkbox" id="pinned" name="boPinned">
+							        <label class="custom-control-label ml-5" for="pinned">
 							        	프론트 화면에 최신 게시물로 노출됩니다.
 							      	</label>
 								</dd>
@@ -72,8 +80,8 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">댓글 등록가능</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox2">
-							        <label class="custom-control-label ml-5" for="checkbox2">
+									<input class="custom-control-input ml-3 mr-5" type="checkbox" id="replyable" name="boReplyable">
+							        <label class="custom-control-label ml-5" for="replyable">
 							        	댓글 등록 가능
 							      	</label>
 								</dd>
@@ -82,14 +90,14 @@
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
-								        <label class="custom-control-label ml-5" for="radio1">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="on" id="writing1" name="boWriting">
+								        <label class="custom-control-label ml-5" for="writing1">
 								        	작성중
 								      	</label>
 									</div>
 							      	<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio2" name="isWriting">
-								        <label class="custom-control-label ml-5" for="radio2">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="writing2" name="boWriting">
+								        <label class="custom-control-label ml-5" for="writing2">
 								        	작성완료
 								      	</label>
 									</div>
@@ -99,32 +107,30 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 시작일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div>
-										<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox3">
-								        <label class="custom-control-label ml-5" for="checkbox3">
+										<input class="custom-control-input ml-3 mr-5" type="checkbox" id="expose-start-check">
+								        <label class="custom-control-label ml-5" for="expose-start-check">
 								        	시작일 설정
 								      	</label>
 									</div>
-									<input type="date" class="ml-3 form-control col-sm-5" id="dateFrom">
+									<input id="expose-start" type="date" class="ml-3 form-control col-sm-5" name="exposeStart" disabled>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 종료일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div>
-										<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox4">
-								        <label class="custom-control-label ml-5" for="checkbox4">
+										<input class="custom-control-input ml-3 mr-5" type="checkbox" id="expose-end-check">
+								        <label class="custom-control-label ml-5" for="expose-end-check">
 								        	종료일 설정
 								      	</label>
 									</div>
-									<input type="date" class="ml-3 form-control col-sm-5" id="dateTo">
+									<input id="expose-end" type="date" class="ml-3 form-control col-sm-5" name="exposeEnd" disabled>
 								</dd>
 							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">내용</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border" style="min-height: 500px; max-height: 500px;">
-									<div class="m-0 w-100" style="min-height: 500px; max-height: 500px; overflow: auto;">
-										<textarea id="summernote"></textarea>
-									</div>
+									<textarea id="summernote" style="width: 100%; height: 100%; box-sizing: border-box; resize: none;" name="boContent"></textarea>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
@@ -138,6 +144,9 @@
 									            <label class="custom-file-label" for="input-attach">첨부파일 업로드</label>
 								            </div>
 							            </div>
+							            <div>
+							            	<ul id="file-list"></ul>
+							            </div>
 						            </div>
 								</dd>
 							</dl>
@@ -148,7 +157,7 @@
 							            <label for="exampleInputFile">썸네일 업로드</label>
 							            <div class="input-group">
 								            <div class="custom-file">
-									            <input type="file" class="custom-file-input" id="input-attach">
+									            <input type="file" class="custom-file-input" id="input-thumbnail" name="boThumbnail">
 									            <label class="custom-file-label" for="input-attach">썸네일 업로드</label>
 								            </div>
 							            </div>
@@ -159,15 +168,16 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/board/manage/intro-learning-center/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+							<button id="submit-button" type="button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/board/manage/intro-learning-center/edit" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
-							<a href="/admin/board/manage/intro-learning-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">초기화</button>
+							<a href="/admin/board/manage/${boCtg}/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
@@ -193,18 +203,7 @@
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/resources/adminlte/adminlte/js/demo.js"></script>
-	<script>
-		$(function () {
-		  bsCustomFileInput.init();
-		});
-		
-		$(function () {
-			$('#summernote').summernote( {
-				height: 450,
-				minHeight: 450,
-				lang: "ko-KR"
-			});
-		});
-	</script>
+	<!-- JS -->
+	<script src="/rsc/admin/board-create.js"></script>
 </body>
 </html>

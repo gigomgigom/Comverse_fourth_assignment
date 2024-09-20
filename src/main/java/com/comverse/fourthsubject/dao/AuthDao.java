@@ -14,6 +14,9 @@ import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 @Mapper
 public interface AuthDao {
 	
+	//아이디에 해당하는 PK 번호값 가져오기
+	
+	
 	//Interceptor - 요청 경로에 해당하는 메뉴정보 찾기
 	public List<AdminMenuDto> selectMenuIdListByUri(String requestUri);
 	//Interceptor - 권한에 해당하는 메뉴/게시판 정보가 있는지 확인

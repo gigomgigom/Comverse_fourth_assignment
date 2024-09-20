@@ -2,6 +2,396 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.comverse.fourthsubject.dao.BoardDao">
 	<select id="selectRowCnt" resultType="int">
-		
+		select 	count(*)
+		from	(
+					select 		bo.*, 
+								coalesce(boat.cnt, 0) as attach_cnt
+					from		(
+									select 	board.*, 
+											adm.adm_id as adm_id
+									from	board board
+									join	admin adm
+									on		board.bo_writer = adm.adm_no
+								) bo
+					left join	(
+									select 		bo_id, count(*) as cnt
+									from 		board_attach
+									group by 	bo_id
+								) boat
+					on			bo.bo_id = boat.bo_id
+					where		bo.bo_ctg = #{boCtg} and bo_enabled = 1
+				) rs
+		<where>			
+			<if test="searchIndex.isExpose != 0">
+				<choose>
+					<when test="searchIndex.isExpose == 1">
+							and bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</when>
+					<when test="searchIndex.isExpose == 2">
+							and bo_writing = 1
+						<![CDATA[
+							or
+								(
+									bo_writing = 0
+									and
+									(
+										(CURRENT_DATE() < expose_start)
+										or 
+										(CURRENT_DATE() > expose_end)
+									)
+								)
+						]]>
+					</when>
+				</choose>				
+			</if>
+			<if test="searchIndex.keyword != null and !searchIndex.keyword.equals('')">
+				<choose>
+					<when test="searchIndex.keywordCtg == 1">
+						and bo_title like concat('%', #{searchIndex.keyword}, '%')
+					</when>
+					<when test="searchIndex.keywordCtg == 2">
+						and 	(
+									bo_title like concat('%', #{searchIndex.keyword}, '%')
+									or
+									content like concat('%', #{searchIndex.keyword}, '%')
+								)
+					</when>
+					<when test="searchIndex.keywordCtg == 3">
+						and	adm_id like concat('%', #{searchIndex.keyword}, '%')
+					</when>
+				</choose>				
+			</if>
+			<if test="searchIndex.dateCtg != 0 and (searchIndex.startDate != null or searchIndex.endDate != null)">
+				<choose>
+					<when test="searchIndex.dateCtg == 1">
+						<if test="searchIndex.startDate != null and searchIndex.endDate != null">
+							<![CDATA[
+								and reg_date >= #{searchIndex.startDate}
+								and reg_date <= #{searchIndex.endDate}
+							]]>
+						</if>
+						<if test="searchIndex.startDate == null or searchIndex.endDate == null">
+							<if test="searchIndex.startDate == null">
+								<![CDATA[
+									and reg_date <= #{searchIndex.endDate}
+								]]>
+							</if>
+							<if test="searchIndex.endDate == null">
+								<![CDATA[
+									and reg_date >= #{searchIndex.startDate}
+								]]>
+							</if>
+						</if>	
+					</when>
+					<when test="searchIndex.dateCtg == 2">
+						<if test="searchIndex.startDate != null and searchIndex.endDate != null">
+							<![CDATA[
+								and expose_start >= #{searchIndex.startDate}
+								and expose_start <= #{searchIndex.endDate}
+							]]>
+						</if>
+						<if test="searchIndex.startDate == null or searchIndex.endDate == null">
+							<if test="searchIndex.startDate == null">
+								<![CDATA[
+									and expose_start <= #{searchIndex.endDate}
+								]]>
+							</if>
+							<if test="searchIndex.endDate == null">
+								<![CDATA[
+									and expose_start >= #{searchIndex.startDate}
+								]]>
+							</if>
+						</if>
+					</when>
+					<when test="searchIndex.dateCtg == 3">
+						<if test="searchIndex.startDate != null and searchIndex.endDate != null">
+							<![CDATA[
+								and expose_end >= #{searchIndex.startDate}
+								and expose_end <= #{searchIndex.endDate}
+							]]>
+						</if>
+						<if test="searchIndex.startDate == null or searchIndex.endDate == null">
+							<if test="searchIndex.startDate == null">
+								<![CDATA[
+									and expose_end <= #{searchIndex.endDate}
+								]]>
+							</if>
+							<if test="searchIndex.endDate == null">
+								<![CDATA[
+									and expose_end >= #{searchIndex.startDate}
+								]]>
+							</if>
+						</if>
+					</when>
+				</choose>
+			</if>
+			<if test="searchIndex.stts != 0">
+				<choose>
+					<when test="searchIndex.stts == 1">
+						and bo_writing = 1
+					</when>
+					<when test="searchIndex.stts == 2">
+							and bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</when>
+					<when test="searchIndex.stts == 3">
+						and bo_writing = 0
+						and expose_end is null
+					</when>
+					<when test="searchIndex.stts == 4">
+						<![CDATA[
+							and CURRENT_DATE() > expose_end
+						]]>
+					</when>
+				</choose>
+			</if>
+			<if test="searchIndex.others != null and searchIndex.others.size != 0">
+				<foreach item="other" index="index" collection="searchIndex.others">
+					<if test="other == 1">
+						and bo_pinned = 1
+					</if>
+					<if test="other == 2">
+						<![CDATA[
+							and attach_cnt > 0
+						]]>
+					</if>
+					<if test="other == 3">
+						and bo_replyable = 1
+					</if>
+				</foreach>
+			</if>
+		</where>
 	</select>
+	<select id="selectBoardList" resultType="boardDto">
+		select	bo_id,
+				bo_title,
+				reg_date,
+				bo_writing,
+				expose_start,
+				expose_end,
+				attach_cnt
+		from	(
+					select 		bo.*, 
+								coalesce(boat.cnt, 0) as attach_cnt
+					from		(
+									select 	board.*, 
+											adm.adm_id as adm_id
+									from	board board
+									join	admin adm
+									on		board.bo_writer = adm.adm_no
+								) bo
+					left join	(
+									select 		bo_id, count(*) as cnt
+									from 		board_attach
+									group by 	bo_id
+								) boat
+					on			bo.bo_id = boat.bo_id
+					where		bo.bo_ctg = #{boCtg} and bo_enabled = 1
+				) rs
+		<where>			
+			<if test="searchIndex.isExpose != 0">
+				<choose>
+					<when test="searchIndex.isExpose == 1">
+							and bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</when>
+					<when test="searchIndex.isExpose == 2">
+							and bo_writing = 1
+						<![CDATA[
+							or
+								(
+									bo_writing = 0
+									and
+									(
+										(CURRENT_DATE() < expose_start)
+										or 
+										(CURRENT_DATE() > expose_end)
+									)
+								)
+						]]>
+					</when>
+				</choose>				
+			</if>
+			<if test="searchIndex.keyword != null and !searchIndex.keyword.equals('')">
+				<choose>
+					<when test="searchIndex.keywordCtg == 1">
+						and bo_title like concat('%', #{searchIndex.keyword}, '%')
+					</when>
+					<when test="searchIndex.keywordCtg == 2">
+						and 	(
+									bo_title like concat('%', #{searchIndex.keyword}, '%')
+									or
+									content like concat('%', #{searchIndex.keyword}, '%')
+								)
+					</when>
+					<when test="searchIndex.keywordCtg == 3">
+						and	adm_id like concat('%', #{searchIndex.keyword}, '%')
+					</when>
+				</choose>				
+			</if>
+			<if test="searchIndex.dateCtg != 0 and (searchIndex.startDate != null or searchIndex.endDate != null)">
+				<choose>
+					<when test="searchIndex.dateCtg == 1">
+						<if test="searchIndex.startDate != null and searchIndex.endDate != null">
+							<![CDATA[
+								and reg_date >= #{searchIndex.startDate}
+								and reg_date <= #{searchIndex.endDate}
+							]]>
+						</if>
+						<if test="searchIndex.startDate == null or searchIndex.endDate == null">
+							<if test="searchIndex.startDate == null">
+								<![CDATA[
+									and reg_date <= #{searchIndex.endDate}
+								]]>
+							</if>
+							<if test="searchIndex.endDate == null">
+								<![CDATA[
+									and reg_date >= #{searchIndex.startDate}
+								]]>
+							</if>
+						</if>	
+					</when>
+					<when test="searchIndex.dateCtg == 2">
+						<if test="searchIndex.startDate != null and searchIndex.endDate != null">
+							<![CDATA[
+								and expose_start >= #{searchIndex.startDate}
+								and expose_start <= #{searchIndex.endDate}
+							]]>
+						</if>
+						<if test="searchIndex.startDate == null or searchIndex.endDate == null">
+							<if test="searchIndex.startDate == null">
+								<![CDATA[
+									and expose_start <= #{searchIndex.endDate}
+								]]>
+							</if>
+							<if test="searchIndex.endDate == null">
+								<![CDATA[
+									and expose_start >= #{searchIndex.startDate}
+								]]>
+							</if>
+						</if>
+					</when>
+					<when test="searchIndex.dateCtg == 3">
+						<if test="searchIndex.startDate != null and searchIndex.endDate != null">
+							<![CDATA[
+								and expose_end >= #{searchIndex.startDate}
+								and expose_end <= #{searchIndex.endDate}
+							]]>
+						</if>
+						<if test="searchIndex.startDate == null or searchIndex.endDate == null">
+							<if test="searchIndex.startDate == null">
+								<![CDATA[
+									and expose_end <= #{searchIndex.endDate}
+								]]>
+							</if>
+							<if test="searchIndex.endDate == null">
+								<![CDATA[
+									and expose_end >= #{searchIndex.startDate}
+								]]>
+							</if>
+						</if>
+					</when>
+				</choose>
+			</if>
+			<if test="searchIndex.stts != 0">
+				<choose>
+					<when test="searchIndex.stts == 1">
+						and bo_writing = 1
+					</when>
+					<when test="searchIndex.stts == 2">
+							and bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</when>
+					<when test="searchIndex.stts == 3">
+						and bo_writing = 0
+						and expose_end is null
+					</when>
+					<when test="searchIndex.stts == 4">
+						<![CDATA[
+							and CURRENT_DATE() > expose_end
+						]]>
+					</when>
+				</choose>
+			</if>
+			<if test="searchIndex.others != null and searchIndex.others.size != 0">
+				<foreach item="other" index="index" collection="searchIndex.others">
+					<if test="other == 1">
+						and bo_pinned = 1
+					</if>
+					<if test="other == 2">
+						<![CDATA[
+							and attach_cnt > 0
+						]]>
+					</if>
+					<if test="other == 3">
+						and bo_replyable = 1
+					</if>
+				</foreach>
+			</if>
+		</where>
+		order by	bo_id desc
+		limit		#{searchIndex.pager.startRowIndex}, #{searchIndex.pager.rowsPerPage}
+	</select>
+	<select id="selectBoardAttachListByBoId" resultType="boardAttachDto">
+	
+	</select>
+	<insert id="insertBoard" parameterType="boardDto" useGeneratedKeys="true" keyProperty="boId">
+		insert into	board	(
+								bo_ctg,
+								bo_writer,
+								bo_title,
+								bo_pinned,
+								bo_replyable,
+								bo_writing,
+								expose_start,
+								expose_end,
+								content,
+								reg_date,
+								hit_cnt,
+								bo_enabled,
+								bo_thumbnail
+							)
+		values				(
+								#{boCtg},
+								#{boWriter},
+								#{boTitle},
+								#{boPinned},
+								#{boReplyable},
+								#{boWriting},
+								#{exposeStart},
+								#{exposeEnd},
+								#{content},
+								now(),
+								#{hitCnt},
+								1,
+								#{boThumbnail}
+							)
+	</insert>
+	<insert id="insertBoardAttach" parameterType="boardAttachDto">
+		insert into board_attach	(
+										bo_id,
+										attach_url,
+										attach_o_name,
+										attach_type
+									)
+		values						(
+										#{boId},
+										#{attachUrl},
+										#{attachOName},
+										#{attachType}
+									)
+	</insert>
 </mapper>

@@ -25,8 +25,10 @@ public class BoardDto {
 	private Date regDate;
 	private int hitCnt;
 	private boolean boEnabled;
-	private String boThumbnailUrl;
+	private boolean boThumbnail;
 	
+	//게시물의 첨부파일 갯수
+	private int attachCnt;
 	//게시물의 첨부파일 목록
 	private List<BoardAttachDto> boAttachList;
 	

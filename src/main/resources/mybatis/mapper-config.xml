@@ -16,5 +16,6 @@
 		<typeAlias type="com.comverse.fourthsubject.dto.RoleDto" alias="roleDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.TeamDto" alias="teamDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BoardDto" alias="boardDto"/>
+		<typeAlias type="com.comverse.fourthsubject.dto.BoardAttachDto" alias="boardAttachDto"/>
 	</typeAliases>
 </configuration>
