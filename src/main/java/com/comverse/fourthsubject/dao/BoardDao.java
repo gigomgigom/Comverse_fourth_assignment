@@ -22,6 +22,10 @@ public interface BoardDao {
 	public void insertBoard(BoardDto board);
 	//게시물 생성 - 첨부파일 정보 생성
 	public void insertBoardAttach(BoardAttachDto boardAttach);
+	//게시물 상세 - 게시물 상세 조회
+	public BoardDto selectBoardDetailByBoId(int boId);
+	//게시물 상세 - 게시물 조회수 1 증가
+	public void updateBoardHitCnt(int boId);
 	
 
 }

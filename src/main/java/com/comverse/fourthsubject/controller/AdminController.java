@@ -118,7 +118,7 @@ public class AdminController {
 	// 게시판 관리 - 상세
 	@GetMapping("/board/manage/{boCtg}/detail")
 	public String boardDetail(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
-		log.info(searchIndex.toString());
+		boardService.getBoardDetail(boCtg, searchIndex, model);
 		return "/admin/board/manage/detail";
 	}
 
@@ -174,18 +174,7 @@ public class AdminController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		}
-	}
-	// 게시판 관리 - 게시글 내 이미지파일 다운로드
-	@ResponseBody
-	@GetMapping("/board/manage/{boCtg}/download-image/{date}/{fileName}")
-	public ResponseEntity<?> boardDownladImage(@PathVariable String date, @PathVariable String fileName) {
-		try {
-			return boardService.boardDownloadImage(date, fileName);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-		}
-	}
+	}	
 	// -------------------------------------------------------
 	// -------------------------------------------------------
 	// 설정 - 지국위치 안내 - 목록

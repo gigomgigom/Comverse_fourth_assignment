@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.comverse.fourthsubject.dao.AuthDao;
 import com.comverse.fourthsubject.dao.BoardCtgDao;
 import com.comverse.fourthsubject.dao.BoardDao;
+import com.comverse.fourthsubject.dto.AdminDto;
 import com.comverse.fourthsubject.dto.BoardAttachDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.BoardDto;
@@ -115,7 +116,7 @@ public class BoardService {
 		Files.copy(mf.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 		
 		//다운로드 경로 생성
-		String fileDownloadUrl = "/admin/board/manage/" + boCtg + "/download-image/" + today + "/" + fileName;
+		String fileDownloadUrl = "/board/download-image/" + today + "/" + fileName;
 		
 		return fileDownloadUrl;
 	}
@@ -146,6 +147,23 @@ public class BoardService {
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
 		}
+	}
+	//서버 로컬에 저장된 썸네일 파일 다운로드
+	public ResponseEntity<?> boardDownloadThumbnailImage(int boId) throws IOException {
+		BoardDto board = boardDao.selectBoardDetailByBoId(boId);
+		if(board.getBoThumbnail() != null && !board.getBoThumbnail().equals("")) {
+			String boardDir = uploadDir + "/attach/" + boId;
+			Path filePath = Paths.get(boardDir).resolve(board.getBoThumbnail()).normalize();
+			Resource rsc = new UrlResource(filePath.toUri());
+			
+			if(rsc.exists()) {
+				return ResponseEntity.ok()
+							.contentType(MediaType.parseMediaType(Files.probeContentType(filePath)))
+							.body(rsc);
+			}
+		}		
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Image file");
 	}
 	// 게시판 생성하기
 	@Transactional
@@ -187,7 +205,12 @@ public class BoardService {
 		board.setExposeStart(boardForm.getExposeStart());
 		board.setExposeEnd(boardForm.getExposeEnd());
 		board.setContent(boardForm.getBoContent());
-		board.setBoThumbnail(boardForm.getBoThumbnail()!=null&&!boardForm.getBoThumbnail().isEmpty());
+		
+		if(boardForm.getBoThumbnail() != null) {
+			String oName = boardForm.getBoThumbnail().getOriginalFilename();
+			board.setBoThumbnail("thumbnail."+oName.substring(oName.lastIndexOf(".")+1));
+		}
+		
 		return board;
 	}
 	// Board 썸네일 이미지 파일을 서버 로컬에 업로드
@@ -221,5 +244,17 @@ public class BoardService {
 			
 			boardDao.insertBoardAttach(boardAttach);
 		}
+	}
+	//게시글 상세조회
+	public void getBoardDetail(int boCtg, SearchIndex searchIndex, Model model) {
+		int boId = Integer.parseInt(searchIndex.getDetailId());
+		BoardDto board = boardDao.selectBoardDetailByBoId(boId);
+		List<BoardAttachDto> boardAttachList = boardDao.selectBoardAttachListByBoId(boId);
+		board.setBoAttachList(boardAttachList);		
+		AdminDto admin = authDao.selectManagerDetail(board.getBoWriter());
+		
+		model.addAttribute("boCtg", boCtg);
+		model.addAttribute("boWriter", admin.getAdmId());
+		model.addAttribute("board", board);
 	}
 }

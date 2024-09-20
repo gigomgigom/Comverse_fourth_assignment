@@ -346,7 +346,9 @@
 		limit		#{searchIndex.pager.startRowIndex}, #{searchIndex.pager.rowsPerPage}
 	</select>
 	<select id="selectBoardAttachListByBoId" resultType="boardAttachDto">
-	
+		select	*
+		from	board_attach
+		where	bo_id = #{boId}
 	</select>
 	<insert id="insertBoard" parameterType="boardDto" useGeneratedKeys="true" keyProperty="boId">
 		insert into	board	(
@@ -394,4 +396,14 @@
 										#{attachType}
 									)
 	</insert>
+	<select id="selectBoardDetailByBoId" resultType="boardDto">
+		select	*
+		from	board
+		where	bo_id = #{boId}
+	</select>
+	<update id="updateBoardHitCnt">
+		update	board
+		set		hit_cnt = hit_cnt + 1
+		where	bo_id = #{boId}
+	</update>
 </mapper>
