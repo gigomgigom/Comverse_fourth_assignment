@@ -188,11 +188,11 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/board/manage/intro-learning-center/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+							<button type="button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/board/manage/intro-learning-center/edit" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
-							<a href="/admin/board/manage/intro-learning-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="#" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
+							<a href="/admin/board/manage/${boCtg}/list?pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

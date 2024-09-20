@@ -117,7 +117,7 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/board/manage/${boCtg}/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/board/manage/${boCtg}/edit?detailId=${board.boId}&pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
 							<a href="/admin/board/manage/${boCtg}/list?pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>

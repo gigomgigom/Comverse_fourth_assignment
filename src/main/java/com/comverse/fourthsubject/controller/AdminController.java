@@ -124,7 +124,7 @@ public class AdminController {
 
 	// 게시판 관리 - 수정
 	@GetMapping("/board/manage/{boCtg}/edit")
-	public String boardEdit(@PathVariable int boCtg, Model model, HttpServletRequest rq) {
+	public String boardEdit(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
 		
 		return "/admin/board/manage/edit";
 	}
