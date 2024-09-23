@@ -363,7 +363,6 @@ public class AuthService {
 		
 		authDao.deleteManagerRole(admin.getAdmNo());
 		
-		
 		if(!roleList.isEmpty()) {
 			for(int roleId : roleList) {
 				//관리자 별 권한 목록 추가
