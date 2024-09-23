@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +46,9 @@
 			</section>
 
 			<!-- Main content -->
+			<form id="edit-form">
+			<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			<input type="hidden" name="brId" value="${searchIndex.detailId}">
 			<section class="content p-5">
 				<div class="card card-default">
 					<div class="card-body">
@@ -51,36 +56,36 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">위치명</dt>
 								<dd class="col-md-10 px-3 py-0 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="location" value="${branch.location}">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">전화</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="tel" value="${branch.tel}">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">주소</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="adr" value="${branch.adr}">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">등록일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25 12:00:00</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border"><fmt:formatDate value="${branch.regDate}" type="date"></fmt:formatDate></dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="작성중" id="radio1" name="stts" ${branch.stts eq '작성중' ? 'checked':'' }>
 								        <label class="custom-control-label ml-5" for="radio1">
 								        	작성중
 								      	</label>
 									</div>
 							      	<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio2" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="작성완료" id="radio2" name="stts" ${branch.stts eq '작성중' ? '':'checked' }>
 								        <label class="custom-control-label ml-5" for="radio2">
 								        	작성완료
 								      	</label>
@@ -90,70 +95,66 @@
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">내용</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">
-									<div class="m-0 w-100">
-										<!-- 학습센터 정보 -->
-										<div class="card w-100">
-											<div class="card-body">
-												<div class="d-flex w-100 row">
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="학습센터 명">
-													</div>
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="주소">
-													</div>
-													<div class="col-lg-2 d-flex justify-content-center">
-														<button type="button" class="btn btn-sm">추가</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<!-- 학습센터 정보 -->
-										<div class="card w-100">
-											<div class="card-body">
-												<div class="d-flex w-100 row">
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="학습센터 명">
-													</div>
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="주소">
-													</div>
-													<div class="col-lg-2 d-flex justify-content-center">
-														<button type="button" class="btn btn-sm">추가</button>
+									<div id="card-container" class="m-0 w-100">
+										<c:if test="${empty subBranchList}">
+											<!-- 학습센터 정보 -->
+											<div class="card w-100">
+												<div class="card-body">
+													<div class="d-flex w-100 row">
+														<div class="col-lg-5">
+															<input type="text" class="center-name form-control" placeholder="학습센터 명">
+														</div>
+														<div class="col-lg-5">
+															<input type="text" class="center-adr form-control" placeholder="주소">
+														</div>
+														<div class="col-lg-2 d-flex justify-content-center">
+															<button type="button" class="add-button btn btn-sm btn-info">추가</button>
+															<button type="button" class="remove-button btn btn-sm btn-danger d-none">삭제</button>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class="card w-100">
-											<div class="card-body">
-												<div class="d-flex w-100 row">
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="학습센터 명">
-													</div>
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="주소">
-													</div>
-													<div class="col-lg-2 d-flex justify-content-center">
-														<button type="button" class="btn btn-sm">추가</button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<div class="card w-100">
-											<div class="card-body">
-												<div class="d-flex w-100 row">
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="학습센터 명">
-													</div>
-													<div class="col-lg-5">
-														<input type="text" class="form-control" placeholder="주소">
-													</div>
-													<div class="col-lg-2 d-flex justify-content-center">
-														<button type="button" class="btn btn-sm">추가</button>
+										</c:if>
+										<c:forEach var="subBranch" items="${subBranchList}" varStatus="status">
+											<c:if test="${status.last}">
+												<!-- 학습센터 정보 -->
+												<div class="card w-100">
+													<div class="card-body">
+														<div class="d-flex w-100 row">
+															<div class="col-lg-5">
+																<input type="text" class="center-name form-control" placeholder="학습센터 명" value="${subBranch.subName}">
+															</div>
+															<div class="col-lg-5">
+																<input type="text" class="center-adr form-control" placeholder="주소" value="${subBranch.subAdr}">
+															</div>
+															<div class="col-lg-2 d-flex justify-content-center">
+																<button type="button" class="add-button btn btn-sm btn-info">추가</button>
+																<button type="button" class="remove-button btn btn-sm btn-danger d-none">삭제</button>
+															</div>
+														</div>
 													</div>
 												</div>
-											</div>
-										</div>
-										<!-- ============================================================================== -->
+											</c:if>
+											<c:if test="${!status.last}">
+												<!-- 학습센터 정보 -->
+												<div class="card w-100">
+													<div class="card-body">
+														<div class="d-flex w-100 row">
+															<div class="col-lg-5">
+																<input type="text" class="center-name form-control" placeholder="학습센터 명" value="${subBranch.subName}">
+															</div>
+															<div class="col-lg-5">
+																<input type="text" class="center-adr form-control" placeholder="주소" value="${subBranch.subAdr}">
+															</div>
+															<div class="col-lg-2 d-flex justify-content-center">
+																<button type="button" class="remove-button btn btn-sm btn-danger">삭제</button>
+															</div>
+														</div>
+													</div>
+												</div>
+											</c:if>
+										</c:forEach>
+																			
 									</div>
 								</dd>
 							</dl>
@@ -161,15 +162,16 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/manage/location/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+							<button id="register-button" type="button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/manage/location/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
-							<a href="/admin/manage/location/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">초기화</button>
+							<a href="/admin/manage/location/list?pageNo=${searchIndex.pageNo}&rowsPerpage=${searchIndex.rowsPerPage}&isExpose=${searchIndex.isExpose}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
@@ -192,5 +194,7 @@
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/resources/adminlte/adminlte/js/demo.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/location-edit.js"></script>
 </body>
 </html>

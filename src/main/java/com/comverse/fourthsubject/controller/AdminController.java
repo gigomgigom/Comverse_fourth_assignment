@@ -1,11 +1,11 @@
 package com.comverse.fourthsubject.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.comverse.fourthsubject.dto.BoardCtgDto;
+import com.comverse.fourthsubject.dto.BranchDto;
 import com.comverse.fourthsubject.dto.RoleDto;
 import com.comverse.fourthsubject.dto.TeamDto;
 import com.comverse.fourthsubject.dto.nondb.AdminRequest;
@@ -27,6 +28,7 @@ import com.comverse.fourthsubject.dto.nondb.RoleRequest;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 import com.comverse.fourthsubject.service.admin.AuthService;
 import com.comverse.fourthsubject.service.admin.BoardService;
+import com.comverse.fourthsubject.service.admin.BranchService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -110,7 +112,6 @@ public class AdminController {
 		if(searchIndex.getRowsPerPage() == 0) {
 			searchIndex.setRowsPerPage(10);
 		}
-		log.info(searchIndex.toString());
 		boardService.getBoardList(boCtg, searchIndex, model);
 		
 		return "/admin/board/manage/list";
@@ -198,35 +199,67 @@ public class AdminController {
 		}
 	}	
 	// -------------------------------------------------------
+	
+	@Autowired
+	BranchService branchService;
+	
 	// -------------------------------------------------------
 	// 설정 - 지국위치 안내 - 목록
 	@GetMapping("/manage/general/location/list")
-	public String locationList(Model model, HttpServletRequest rq) {
-
+	public String locationList(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().isEmpty()) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		branchService.getBranchList(model, searchIndex);
 		return "/admin/general/location/list";
 	}
 
 	// 설정 - 지국위치 안내 - 상세
 	@GetMapping("/manage/general/location/detail")
-	public String locationDetail(Model model, HttpServletRequest rq) {
-
+	public String locationDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		branchService.getBranchDetail(model, searchIndex);
 		return "/admin/general/location/detail";
 	}
 
 	// 설정 - 지국위치 안내 - 수정
 	@GetMapping("/manage/general/location/edit")
-	public String locationEdit(Model model, HttpServletRequest rq) {
-
+	public String locationEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		branchService.getBranchDetail(model, searchIndex);		
 		return "/admin/general/location/edit";
+	}
+	
+	// 설정 - 지국위치 안내 - 수정하기
+	@ResponseBody
+	@PostMapping("/manage/general/location/edit-branch")
+	public ResponseEntity<?> editBranch(BranchDto branch) {
+		return branchService.editBranch(branch);
 	}
 
 	// 설정 - 지국위치 안내 - 생성
 	@GetMapping("/manage/general/location/create")
-	public String locationCreate(Model model, HttpServletRequest rq) {
-
+	public String locationCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getEndDate()));
+		}
+		
+		model.addAttribute("searchIndex", searchIndex);
 		return "/admin/general/location/create";
 	}
 
+	// 설정 - 지국위치 안내 - 생성하기
+	@ResponseBody
+	@PostMapping("/manage/general/location/create-branch")
+	public ResponseEntity<?> createBranch(BranchDto branch) {
+		return branchService.createBranch(branch);
+	}
 	// -------------------------------------------------------
 	// 설정 - 사업설명회 관리 - 목록
 	@GetMapping("/manage/general/biz/list")

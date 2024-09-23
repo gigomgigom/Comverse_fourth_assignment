@@ -140,7 +140,7 @@
 				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between row">
 						<div class="col-md-5">
-							<a href="/admin/board/manage/${boCtg}/create?pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+							<a href="/admin/board/manage/${boCtg}/create?pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
 							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
@@ -180,7 +180,7 @@
 									<c:forEach var="board" items="${boardList}">
 										<tr>
 											<td class="text-center">${board.boId}</td>
-											<td class="text-center"><a href="/admin/board/manage/${boCtg}/detail?detailId=${board.boId}&pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>">${board.boTitle}</a></td>
+											<td class="text-center"><a href="/admin/board/manage/${boCtg}/detail?detailId=${board.boId}&pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>">${board.boTitle}</a></td>
 											<td class="text-center"><fmt:formatDate type="date" value="${board.regDate}"/></td>
 											<td class="text-center">${!board.boWriting && (now > board.exposeStart || board.exposeStart == null) && (now < board.exposeEnd || board.exposeEnd == null) ? '노출' : '비노출' }</td>
 											<td class="text-center"><fmt:formatDate type="date" value="${board.exposeStart}"/></td>
@@ -194,11 +194,11 @@
 						<div class="card-footer bg-white d-flex justify-content-center">
 							<nav>
 							  <ul class="pagination">
-							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/board/manage/${boCtg}/list?pageNo=${searchIndex.pager.startPageNo - 1}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>">Previous</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/board/manage/${boCtg}/list?pageNo=${searchIndex.pager.startPageNo - 1}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>">Previous</a></li>
 							    	<c:forEach var="pageNum" items="${searchIndex.pager.pageArray}">
-								    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/board/manage/${boCtg}/list?pageNo=${pageNum}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&other%5B%5D=${other}</c:forEach>">${pageNum}</a></li>
+								    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/board/manage/${boCtg}/list?pageNo=${pageNum}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&other%5B%5D=${other}</c:forEach>">${pageNum}</a></li>
 								    </c:forEach>
-							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : ''}"><a class="page-link" href="/admin/board/manage/${boCtg}/list?pageNo=${searchIndex.pager.endPageNo + 1}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDate}&endDate=${searchIndex.endDate}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&other%5B%5D=${other}</c:forEach>">Next</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : ''}"><a class="page-link" href="/admin/board/manage/${boCtg}/list?pageNo=${searchIndex.pager.endPageNo + 1}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&other%5B%5D=${other}</c:forEach>">Next</a></li>
 							  </ul>
 							</nav>
 						</div>

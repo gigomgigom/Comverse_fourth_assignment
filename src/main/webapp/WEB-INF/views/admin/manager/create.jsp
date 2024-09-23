@@ -144,7 +144,7 @@
 								                        </c:forEach>
 								                    </select>
 								                    <button class="add-button ml-3 col-xl-1 btn btn-sm btn-info">추가</button>
-								                    <button class="remove-button ml-3 col-xl-1 btn btn-sm btn-danger">삭제</button>
+								                    <button class="remove-button ml-3 col-xl-1 btn btn-sm btn-danger d-none">삭제</button>
 					                   			</div>
 					                   		</div>
 					                   		

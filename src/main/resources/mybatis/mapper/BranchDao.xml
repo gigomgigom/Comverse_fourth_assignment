@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comverse.fourthsubject.dao.BranchDao">
+	<select id="selectRowCnt" parameterType="searchIndex">
+		select	count(*)
+		from	branch
+		<where>
+			<if test="isExpose != 0">
+				<choose>
+					<when test="isExpose == 1">
+						and stts = '작성완료'
+					</when>
+					<when test="isExpose == 2">
+						and stts =  '작성중'
+					</when>
+				</choose>
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+					and location like concat('%', #{keyword}, '%')
+			</if>
+			<if test="startDate != null or endDate != null">
+				<if test="startDate != null and endDate != null">
+					<![CDATA[
+						and reg_date >= #{startDate}
+						and reg_date <= #{endDate}
+					]]>
+				</if>
+				<if test="startDate == null or endDate == null">
+					<if test="startDate == null">
+						<![CDATA[
+							and reg_date <= #{endDate}
+						]]>
+					</if>
+					<if test="endDate == null">
+						<![CDATA[
+							and reg_date >= #{startDate}
+						]]>
+					</if>
+				</if>
+			</if>			
+		</where>
+	</select>
+	<select id="selectBranchList">
+		select	*
+		from	branch
+		<where>
+			<if test="isExpose != 0">
+				<choose>
+					<when test="isExpose == 1">
+						and stts = '작성완료'
+					</when>
+					<when test="isExpose == 2">
+						and stts =  '작성중'
+					</when>
+				</choose>
+			</if>
+			<if test="keyword != null and !keyword.equals('')">
+					and location like concat('%', #{keyword}, '%')
+			</if>
+			<if test="startDate != null or endDate != null">
+				<if test="startDate != null and endDate != null">
+					<![CDATA[
+						and reg_date >= #{startDate}
+						and reg_date <= #{endDate}
+					]]>
+				</if>
+				<if test="startDate == null or endDate == null">
+					<if test="startDate == null">
+						<![CDATA[
+							and reg_date <= #{endDate}
+						]]>
+					</if>
+					<if test="endDate == null">
+						<![CDATA[
+							and reg_date >= #{startDate}
+						]]>
+					</if>
+				</if>
+			</if>			
+		</where>
+		order by	br_id desc
+		limit		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<insert id="insertBranch" parameterType="branchDto" useGeneratedKeys="true" keyProperty="brId">
+		insert into 	branch	(
+									location,
+									adr,
+									stts,
+									tel,
+									reg_date
+								)
+		values					(
+									#{location},
+									#{adr},
+									#{stts},
+									#{tel},
+									now()
+								)
+	</insert>
+	<insert id="insertSubBranch" parameterType="subBranchDto">
+		insert into		branch_sub	(
+										br_id,
+										sub_adr,
+										sub_name
+									)
+		values						(
+										#{brId},
+										#{subAdr},
+										#{subName}
+									)
+	</insert>
+	<select id="selectBranchDetail" resultType="branchDto">
+		select	*
+		from	branch
+		where	br_id = #{brId}
+	</select>
+	<select id="selectSubBranchList" resultType="subBranchDto">
+		select 	*
+		from	branch_sub
+		where	br_id = #{brId}
+	</select>
+	<update id="updateBranch" parameterType="branchDto">
+		update	branch
+		<set>
+				location = #{location},
+				tel = #{tel},
+				adr = #{adr},
+				stts = #{stts}
+		</set>
+		where	br_id = #{brId}
+	</update>
+	<delete id="deleteSubBranch">
+		delete
+		from	branch_sub
+		where	br_id = #{brId}
+	</delete>
+</mapper>
