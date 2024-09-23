@@ -144,9 +144,6 @@
 									            <label class="custom-file-label" for="input-attach">첨부파일 업로드</label>
 								            </div>
 							            </div>
-							            <div>
-							            	<ul id="file-list"></ul>
-							            </div>
 						            </div>
 								</dd>
 							</dl>

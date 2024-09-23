@@ -385,13 +385,13 @@
 	<insert id="insertBoardAttach" parameterType="boardAttachDto">
 		insert into board_attach	(
 										bo_id,
-										attach_url,
+										attach_name,
 										attach_o_name,
 										attach_type
 									)
 		values						(
 										#{boId},
-										#{attachUrl},
+										#{attachName},
 										#{attachOName},
 										#{attachType}
 									)
@@ -406,4 +406,30 @@
 		set		hit_cnt = hit_cnt + 1
 		where	bo_id = #{boId}
 	</update>
+	<update id="updateBoardDetail" parameterType="boardDto">
+		update	board
+		<set>
+			bo_title = #{boTitle},
+			bo_pinned = #{boPinned},
+			bo_replyable = #{boReplyable},
+			bo_writing = #{boWriting},
+			expose_start = #{exposeStart},
+			expose_end = #{exposeEnd},
+			content = #{content},
+			<if test="boThumbnail != null">
+				bo_thumbnail = #{boThumbnail},
+			</if>
+		</set>
+		where	bo_id = #{boId}
+	</update>
+	<delete id="deleteBoardAttach">
+		delete
+		from	board_attach
+		where	bo_id = #{boId}
+				and
+				attach_id not in
+				<foreach item="item" index="index" collection="selectedSavedAttach" open="(" separator="," close=")">
+			        #{item}
+			  	</foreach>				
+	</delete>
 </mapper>

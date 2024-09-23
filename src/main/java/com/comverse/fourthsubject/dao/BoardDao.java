@@ -26,6 +26,9 @@ public interface BoardDao {
 	public BoardDto selectBoardDetailByBoId(int boId);
 	//게시물 상세 - 게시물 조회수 1 증가
 	public void updateBoardHitCnt(int boId);
-	
+	//게시물 수정 - 게시물 정보 수정하기
+	public void updateBoardDetail(BoardDto board);
+	//게시물 수정 - 게시물 첨부파일 삭제하기
+	public void deleteBoardAttach(int boId, List<Integer> selectedSavedAttach);
 
 }

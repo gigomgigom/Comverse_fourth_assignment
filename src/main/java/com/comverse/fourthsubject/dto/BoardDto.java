@@ -19,8 +19,10 @@ public class BoardDto {
 	private boolean boWriting;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date exposeStart;
+	private String exposeStartSdf;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date exposeEnd;
+	private String exposeEndSdf;
 	private String content;
 	private Date regDate;
 	private int hitCnt;

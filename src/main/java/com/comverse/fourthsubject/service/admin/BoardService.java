@@ -173,7 +173,6 @@ public class BoardService {
 		BoardDto board = settingBoardFromBoardForm(boCtg, boardForm);
 		board.setHitCnt(0);
 		boardDao.insertBoard(board);
-		log.info(board.getBoId()+"");
 		
 		//게시물 파일 저장----------------------
 		//게시물 파일 저장 경로
@@ -196,8 +195,13 @@ public class BoardService {
 	// BoardFormRequest객체에 있는 값을 BoardDto에 맞춰서 세팅해주기
 	public BoardDto settingBoardFromBoardForm(int boCtg, BoardFormRequest boardForm) {
 		BoardDto board = new BoardDto();
+		board.setBoId(boardForm.getBoId());
 		board.setBoCtg(boCtg);
-		board.setBoWriter(authDao.selectAdminByAdminId(boardForm.getBoWriter()).getAdmNo());
+		
+		if(boardForm.getBoWriter() != null) {
+			board.setBoWriter(authDao.selectAdminByAdminId(boardForm.getBoWriter()).getAdmNo());
+		}
+		
 		board.setBoTitle(boardForm.getBoTitle());
 		board.setBoPinned(boardForm.getBoPinned() != null && boardForm.getBoPinned().equals("on"));
 		board.setBoReplyable(boardForm.getBoReplyable() != null && boardForm.getBoReplyable().equals("on"));
@@ -206,7 +210,7 @@ public class BoardService {
 		board.setExposeEnd(boardForm.getExposeEnd());
 		board.setContent(boardForm.getBoContent());
 		
-		if(boardForm.getBoThumbnail() != null) {
+		if(boardForm.getBoThumbnail() != null && !boardForm.getBoThumbnail().isEmpty()) {
 			String oName = boardForm.getBoThumbnail().getOriginalFilename();
 			board.setBoThumbnail("thumbnail."+oName.substring(oName.lastIndexOf(".")+1));
 		}
@@ -232,15 +236,15 @@ public class BoardService {
 			String fileName = UUID.randomUUID().toString() + "_" + oName;
 			Path filePath = folderPath.resolve(fileName);
 			
-			//파일을 지정된 경로로 저장
+			//파일을 지정된 경로로 저장 /download-attach/{boId}/{fileName}
 			Files.copy(mf.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-			String fileDownloadUrl = "/admin/board/manage/" + boardForm.getBoCtg() + "/download-attach/" + boId + "/" + fileName;
 			
 			BoardAttachDto boardAttach = new BoardAttachDto();
 			boardAttach.setBoId(boId);
-			boardAttach.setAttachUrl(fileDownloadUrl);
+			boardAttach.setAttachName(fileName);
 			boardAttach.setAttachOName(oName);
 			boardAttach.setAttachType(type);
+			log.info(boardAttach.toString());
 			
 			boardDao.insertBoardAttach(boardAttach);
 		}
@@ -252,9 +256,53 @@ public class BoardService {
 		List<BoardAttachDto> boardAttachList = boardDao.selectBoardAttachListByBoId(boId);
 		board.setBoAttachList(boardAttachList);		
 		AdminDto admin = authDao.selectManagerDetail(board.getBoWriter());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
+		if(board.getExposeStart() != null) {
+			board.setExposeStartSdf(sdf.format(board.getExposeStart()));
+		}
+		if(board.getExposeEnd() != null) {
+			board.setExposeEndSdf(sdf.format(board.getExposeEnd()));
+		}
+		 
 		model.addAttribute("boCtg", boCtg);
 		model.addAttribute("boWriter", admin.getAdmId());
 		model.addAttribute("board", board);
+	}
+	//게시글 내용 조회
+	public ResponseEntity<?> getBoardContent(int boId) {
+		BoardDto board = boardDao.selectBoardDetailByBoId(boId);
+		if(board != null && !board.getContent().isEmpty()) {
+			return ResponseEntity.ok(board.getContent());
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	//게시글 수정하기
+	@Transactional
+	public void editBoardDetail(BoardFormRequest boardForm) throws IOException {
+		//게시물 정보 수정하기
+		BoardDto board = settingBoardFromBoardForm(boardForm.getBoCtg(), boardForm);
+		boardDao.updateBoardDetail(board);
+		log.info(boardForm.toString());
+		
+		//썸네일 저장하기
+		//게시물 파일 저장----------------------
+		//게시물 파일 저장 경로
+		String attachDir = uploadDir+"/attach";
+		//폴더 경로
+		Path folderPath = Paths.get(attachDir, board.getBoId()+"");
+		
+		//썸네일 파일 저장하기
+		if(boardForm.getBoThumbnail() != null && !boardForm.getBoThumbnail().isEmpty()) {
+			saveBoardThumbnailFile(folderPath, boardForm.getBoThumbnail());
+		}
+		//첨부파일 삭제하기
+		if(boardForm.getSelectedSavedAttach() != null && !boardForm.getSelectedSavedAttach().isEmpty()) {
+			boardDao.deleteBoardAttach(board.getBoId(), boardForm.getSelectedSavedAttach());
+		}
+		//첨부파일 저장하기
+		if(boardForm.getBoAttach() != null && !boardForm.getBoAttach().isEmpty()) {
+			saveBoardAttachFile(folderPath, board.getBoId(), boardForm);
+		}		
 	}
 }

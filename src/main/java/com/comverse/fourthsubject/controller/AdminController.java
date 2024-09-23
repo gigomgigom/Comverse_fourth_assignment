@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,20 +116,41 @@ public class AdminController {
 		return "/admin/board/manage/list";
 	}
 
-	// 게시판 관리 - 상세
+	// 게시판 관리 - 상세 화면 이동
 	@GetMapping("/board/manage/{boCtg}/detail")
 	public String boardDetail(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
 		boardService.getBoardDetail(boCtg, searchIndex, model);
 		return "/admin/board/manage/detail";
 	}
 
-	// 게시판 관리 - 수정
+	// 게시판 관리 - 수정 화면 이동
 	@GetMapping("/board/manage/{boCtg}/edit")
 	public String boardEdit(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {
-		
+		boardService.getBoardDetail(boCtg, searchIndex, model);
 		return "/admin/board/manage/edit";
 	}
-
+	
+	//게시판 관리 - 수정.1 게시글 내용 전달
+	@ResponseBody
+	@GetMapping("/board/manage/{boCtg}/get-board-content")
+	public ResponseEntity<?> sendBoardContent(@PathVariable int boCtg, int boId, HttpServletRequest rq) {
+		return boardService.getBoardContent(boId);
+	}
+	
+	// 게시판 관리 - 수정하기
+	@ResponseBody
+	@PostMapping("/board/manage/{boCtg}/edit-board-detail")
+	public ResponseEntity<?> editBoardDetail(@PathVariable int boCtg, BoardFormRequest boardForm) {
+		try {			
+			boardService.editBoardDetail(boardForm);
+			return ResponseEntity.ok(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
 	// 게시판 관리 - 생성페이지 이동
 	@GetMapping("/board/manage/{boCtg}/create")
 	public String boardCreate(@PathVariable int boCtg, SearchIndex searchIndex, Model model, HttpServletRequest rq) {

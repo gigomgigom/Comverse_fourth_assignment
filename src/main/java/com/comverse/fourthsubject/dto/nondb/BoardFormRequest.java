@@ -10,6 +10,7 @@ import lombok.Data;
 
 @Data
 public class BoardFormRequest {
+	private int boId;
 	private String boTitle;
 	private String boWriter;
 	private int boCtg;
@@ -23,4 +24,5 @@ public class BoardFormRequest {
 	private Date exposeEnd;
 	private List<MultipartFile> boAttach;
 	private MultipartFile boThumbnail;
+	private List<Integer> selectedSavedAttach;
 }

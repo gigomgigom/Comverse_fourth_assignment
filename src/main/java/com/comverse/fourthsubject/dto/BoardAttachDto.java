@@ -7,7 +7,7 @@ public class BoardAttachDto {
 	
 	private int attachId;
 	private int boId;
-	private String attachUrl;
+	private String attachName;
 	private String attachOName;
 	private String attachType;
 	
