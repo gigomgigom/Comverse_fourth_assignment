@@ -98,5 +98,9 @@ public class BranchService {
 		}
 		return ResponseEntity.ok(null);
 	}
+	//다른 서비스에서 사용 - 지국 목록 가져오기
+	public List<BranchDto> getBranchListForOther() {
+		return branchDao.selectBranchListForSearch();
+	}
 
 }

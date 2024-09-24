@@ -134,4 +134,9 @@
 		from	branch_sub
 		where	br_id = #{brId}
 	</delete>
+	<select id="selectBranchListForSearch" resultType="branchDto">
+		select	*
+		from	branch
+		where	stts = '작성완료'
+	</select>
 </mapper>

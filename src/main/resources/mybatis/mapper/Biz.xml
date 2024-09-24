@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comverse.fourthsubject.dao.BizDao">
+	<select id="selectTotalRows" parameterType="searchIndex">
+		select	count(*)
+		from	biz_pr
+		<where>
+			<choose>
+				<when test="isExpose != 0">
+					<if test="isExpose == 1">
+						and bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</if>
+					<if test="isExpose == 2">
+						and bo_writing = 1
+						<![CDATA[
+							or
+								(
+									bo_writing = 0
+									and
+									(
+										(CURRENT_DATE() < expose_start)
+										or 
+										(CURRENT_DATE() > expose_end)
+									)
+								)
+						]]>
+					</if>
+				</when>
+				<when test="location != 0">
+					and br_id = #{location}
+				</when>
+				<when test="dateCtg != 0 and (startDate != null or endDate != null)">
+					<choose>
+						<when test="dateCtg == 1">
+							<if test="startDate != null and endDate != null">
+								<![CDATA[
+									and reg_date >= #{startDate}
+									and reg_date <= #{endDate}
+								]]>
+							</if>
+							<if test="startDate == null or endDate == null">
+								<if test="startDate == null">
+									<![CDATA[
+										and reg_date <= #{endDate}
+									]]>
+								</if>
+								<if test="endDate == null">
+									<![CDATA[
+										and reg_date >= #{startDate}
+									]]>
+								</if>
+							</if>
+						</when>
+						<when test="dateCtg == 2">
+							<if test="startDate != null and endDate != null">
+								<![CDATA[
+									and expose_start >= #{startDate}
+									and expose_start <= #{endDate}
+								]]>
+							</if>
+							<if test="startDate == null or endDate == null">
+								<if test="startDate == null">
+									<![CDATA[
+										and expose_start <= #{endDate}
+									]]>
+								</if>
+								<if test="endDate == null">
+									<![CDATA[
+										and expose_start >= #{startDate}
+									]]>
+								</if>
+							</if>
+						</when>
+						<when test="dateCtg == 3">
+							<if test="startDate != null and endDate != null">
+								<![CDATA[
+									and expose_end >= #{startDate}
+									and expose_end <= #{endDate}
+								]]>
+							</if>
+							<if test="startDate == null or endDate == null">
+								<if test="startDate == null">
+									<![CDATA[
+										and expose_end <= #{endDate}
+									]]>
+								</if>
+								<if test="endDate == null">
+									<![CDATA[
+										and expose_end >= #{startDate}
+									]]>
+								</if>
+							</if>
+						</when>
+					</choose>
+				</when>
+				<when test="stts != 0">
+					<if test="stts == 1">
+						and is_writing = 1
+					</if>
+					<if test="stts == 2">
+						and is_writing = 0
+					</if>
+				</when>
+			</choose>
+		</where>
+	</select>
+	<select id="selectBizList" parameterType="searchIndex">
+		select	*
+		from	biz_pr
+		<where>
+			<choose>
+				<when test="isExpose != 0">
+					<if test="isExpose == 1">
+						and bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</if>
+					<if test="isExpose == 2">
+						and bo_writing = 1
+						<![CDATA[
+							or
+								(
+									bo_writing = 0
+									and
+									(
+										(CURRENT_DATE() < expose_start)
+										or 
+										(CURRENT_DATE() > expose_end)
+									)
+								)
+						]]>
+					</if>
+				</when>
+				<when test="location != 0">
+					and br_id = #{location}
+				</when>
+				<when test="dateCtg != 0 and (startDate != null or endDate != null)">
+					<choose>
+						<when test="dateCtg == 1">
+							<if test="startDate != null and endDate != null">
+								<![CDATA[
+									and reg_date >= #{startDate}
+									and reg_date <= #{endDate}
+								]]>
+							</if>
+							<if test="startDate == null or endDate == null">
+								<if test="startDate == null">
+									<![CDATA[
+										and reg_date <= #{endDate}
+									]]>
+								</if>
+								<if test="endDate == null">
+									<![CDATA[
+										and reg_date >= #{startDate}
+									]]>
+								</if>
+							</if>
+						</when>
+						<when test="dateCtg == 2">
+							<if test="startDate != null and endDate != null">
+								<![CDATA[
+									and expose_start >= #{startDate}
+									and expose_start <= #{endDate}
+								]]>
+							</if>
+							<if test="startDate == null or endDate == null">
+								<if test="startDate == null">
+									<![CDATA[
+										and expose_start <= #{endDate}
+									]]>
+								</if>
+								<if test="endDate == null">
+									<![CDATA[
+										and expose_start >= #{startDate}
+									]]>
+								</if>
+							</if>
+						</when>
+						<when test="dateCtg == 3">
+							<if test="startDate != null and endDate != null">
+								<![CDATA[
+									and expose_end >= #{startDate}
+									and expose_end <= #{endDate}
+								]]>
+							</if>
+							<if test="startDate == null or endDate == null">
+								<if test="startDate == null">
+									<![CDATA[
+										and expose_end <= #{endDate}
+									]]>
+								</if>
+								<if test="endDate == null">
+									<![CDATA[
+										and expose_end >= #{startDate}
+									]]>
+								</if>
+							</if>
+						</when>
+					</choose>
+				</when>
+				<when test="stts != 0">
+					<if test="stts == 1">
+						and is_writing = 1
+					</if>
+					<if test="stts == 2">
+						and is_writing = 0
+					</if>
+				</when>
+			</choose>
+		</where>
+		order by	pr_id desc
+		limit		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectBizScheduleByPrId" resultType="bizSchDto">
+		select	*
+		from	biz_pr_sch
+		where	pr_id = #{prId}
+	</select>
+	<insert id="insertBizPr" parameterType="bizDto" useGeneratedKeys="true" keyProperty="prId">
+		insert into	biz_pr	(
+								br_id,
+								location,
+								writing,
+								expose_start,
+								expose_end,
+								reg_date
+							)
+		values				(
+								#{brId},
+								#{location},
+								#{writing},
+								#{exposeStart},
+								#{exposeEnd},
+								now()	
+							)
+	</insert>
+	<insert id="insertBizSchedule" parameterType="bizSchDto">
+		insert into biz_pr_sch	(
+									pr_id,
+									pr_date
+								)
+		values					(
+									#{prId},
+									#{prDate}
+								)
+	</insert>
+	<select id="selectBizDetailByPrId">
+		select	*
+		from	biz_pr
+		where	pr_id = #{prId}
+	</select>
+	<update id="updateBizPr" parameterType="bizDto">
+		update	biz_pr
+		<set>
+				br_id = #{brId},
+				location = #{location},
+				writing = #{writing},
+				expose_start = #{exposeStart},
+				expose_end = #{exposeEnd}
+		</set>
+		where	pr_id = #{prId}
+	</update>
+	<delete id="deleteBizSch">
+		delete
+		from	biz_pr_sch
+		where	pr_id = #{prId}
+	</delete>
+</mapper>

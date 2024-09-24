@@ -22,5 +22,8 @@ public interface BranchDao {
 	//지국 정보 수정
 	void updateBranch(BranchDto branch);
 	void deleteSubBranch(int brId);
+	
+	//사업설명회 검색을 위한 지부 목록 가져오기
+	List<BranchDto> selectBranchListForSearch();
 
 }

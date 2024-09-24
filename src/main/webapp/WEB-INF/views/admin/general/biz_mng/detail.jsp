@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,42 +52,41 @@
 						<div class="row">
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지부</dt>
-								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">서울시</dd>
+								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">${branch.location}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">등록일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2024.09.03</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border"><fmt:formatDate value="${biz.regDate}" type="date"/></dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
+								<c:set var="now" value="<%= new java.util.Date() %>"/>
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 여부</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">비노출</dd>
-							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">모집 상태</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">모집중</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${!biz.writing && (now > biz.exposeStart || biz.exposeStart == null) && (now < biz.exposeEnd || biz.exposeEnd == null) ? '노출' : '비노출' }</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">작성 상태</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">작성완료</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${biz.writing ? '작성중' : '작성완료' }</dd>
+							</dl>
+							<dl class="col-md-6 d-flex row">
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">장소</dt>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${biz.location}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 시작일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border"><fmt:formatDate value="${biz.exposeStart}" type="date"/></dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 종료일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-28</dd>
-							</dl>
-							<dl class="col-md-12 d-flex row">
-								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">장소</dt>
-								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">사랑시 고백구 행복동</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border"><fmt:formatDate value="${biz.exposeEnd}" type="date"/></dd>
 							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">일시</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">
 									<ul class="m-0">
-										<li>2019.11.03</li>
-										<li>2019.12.03</li>
+										<c:forEach var="sch" items="${dateList}">
+											<fmt:formatDate value="${ sch }" pattern="yyyy-MM-dd HH:mm" var="parsedDateTime"/>
+											<li>${parsedDateTime}</li>
+										</c:forEach>
 									</ul>
 								</dd>
 							</dl>
@@ -93,8 +94,8 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/manage/biz/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
-							<a href="/admin/manage/biz/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/general/biz/edit?detailId=${searchIndex.detailId}&pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&division=${searchIndex.division}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/manage/general/biz/list?&pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&division=${searchIndex.division}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

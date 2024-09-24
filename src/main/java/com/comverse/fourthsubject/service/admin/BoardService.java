@@ -79,7 +79,6 @@ public class BoardService {
 		int totalRows = boardDao.selectRowCnt(boCtg, searchIndex);
 		Pager pager = new Pager(searchIndex.getRowsPerPage(), 5, totalRows, Integer.parseInt(searchIndex.getPageNo()));
 		searchIndex.setPager(pager);
-		log.info(searchIndex.getPager().toString());
 		List<BoardDto> boardList = boardDao.selectBoardList(boCtg, searchIndex);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		

@@ -1,6 +1,7 @@
 package com.comverse.fourthsubject.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.comverse.fourthsubject.dto.BizDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.BranchDto;
 import com.comverse.fourthsubject.dto.RoleDto;
@@ -27,6 +29,7 @@ import com.comverse.fourthsubject.dto.nondb.BoardFormRequest;
 import com.comverse.fourthsubject.dto.nondb.RoleRequest;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 import com.comverse.fourthsubject.service.admin.AuthService;
+import com.comverse.fourthsubject.service.admin.BizService;
 import com.comverse.fourthsubject.service.admin.BoardService;
 import com.comverse.fourthsubject.service.admin.BranchService;
 
@@ -261,34 +264,76 @@ public class AdminController {
 		return branchService.createBranch(branch);
 	}
 	// -------------------------------------------------------
+	
+	@Autowired
+	BizService bizService;
+	
 	// 설정 - 사업설명회 관리 - 목록
 	@GetMapping("/manage/general/biz/list")
-	public String businessList(Model model, HttpServletRequest rq) {
-
+	public String businessList(SearchIndex searchIndex, Model model, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().isEmpty()) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		bizService.getBusinessList(searchIndex, model);
 		return "/admin/general/biz_mng/list";
 	}
 
 	// 설정 - 사업설명회 관리 - 상세
 	@GetMapping("/manage/general/biz/detail")
-	public String businessDetail(Model model, HttpServletRequest rq) {
-
+	public String businessDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		bizService.getBusinessDetail(model, searchIndex);
 		return "/admin/general/biz_mng/detail";
 	}
 
 	// 설정 - 사업설명회 관리 - 수정
 	@GetMapping("/manage/general/biz/edit")
-	public String businessEdit(Model model, HttpServletRequest rq) {
-
+	public String businessEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		bizService.getBusinessDetail(model, searchIndex);
 		return "/admin/general/biz_mng/edit";
 	}
-
+	
+	// 설정 - 사업설명회 관리 - 수정하기
+	@ResponseBody
+	@PostMapping("/manage/general/biz/edit-biz")
+	public ResponseEntity<?> editBiz(BizDto biz) {
+		try {
+			return bizService.editBiz(biz);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	
 	// 설정 - 사업설명회 관리 - 생성
 	@GetMapping("/manage/general/biz/create")
-	public String businessCreate(Model model, HttpServletRequest rq) {
-
+	public String businessCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		List<BranchDto> branchList = branchService.getBranchListForOther();		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getEndDate()));
+		}
+		model.addAttribute("branchList", branchList);
+		model.addAttribute("searchIndex", searchIndex);
 		return "/admin/general/biz_mng/create";
 	}
-
+	
+	@ResponseBody
+	@PostMapping("/manage/general/biz/create-biz")
+	public ResponseEntity<?> createBiz(BizDto biz) {
+		try {
+			return bizService.createBizPr(biz);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
 	// -------------------------------------------------------
 	// 설정 - 사업설명회 신청 - 목록
 	@GetMapping("/manage/general/biz-apply/list")
