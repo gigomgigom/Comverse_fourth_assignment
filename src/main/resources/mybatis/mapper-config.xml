@@ -17,9 +17,12 @@
 		<typeAlias type="com.comverse.fourthsubject.dto.TeamDto" alias="teamDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BoardDto" alias="boardDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BoardAttachDto" alias="boardAttachDto"/>
+		
 		<typeAlias type="com.comverse.fourthsubject.dto.BranchDto" alias="branchDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.SubBranchDto" alias="subBranchDto"/>
+		
 		<typeAlias type="com.comverse.fourthsubject.dto.BizDto" alias="bizDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BizSchDto" alias="bizSchDto"/>
+		<typeAlias type="com.comverse.fourthsubject.dto.BizAplDto" alias="bizAplDto"/>
 	</typeAliases>
 </configuration>

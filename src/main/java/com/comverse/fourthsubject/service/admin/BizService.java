@@ -7,7 +7,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 
 import com.comverse.fourthsubject.dao.BizDao;
 import com.comverse.fourthsubject.dao.BranchDao;
+import com.comverse.fourthsubject.dto.BizAplDto;
 import com.comverse.fourthsubject.dto.BizDto;
 import com.comverse.fourthsubject.dto.BizSchDto;
 import com.comverse.fourthsubject.dto.BranchDto;
@@ -123,6 +126,32 @@ public class BizService {
 		bizDao.updateBizPr(biz);
 		bizDao.deleteBizSch(biz.getPrId());
 		createBizSch(biz);
+		return ResponseEntity.ok(null);
+	}
+	//---------------------------------------------------------------------------------
+	//사업설명회신청 생성 데이터 조회
+	public void getBusinessListForApply(Model model) {
+		List<BizDto> bizList = bizDao.selectBizListForApply();
+		List<Map<String, Object>> bizModelList = new ArrayList<>();
+		for(BizDto biz : bizList) {
+			Map<String, Object> bizModel = new HashMap<>();
+			BranchDto branch = branchDao.selectBranchDetail(biz.getBrId());
+			bizModel.put("branch", branch.getLocation());
+			bizModel.put("location", biz.getLocation());
+			bizModel.put("bizId", biz.getPrId());
+			
+			bizModelList.add(bizModel);
+		}
+		model.addAttribute("bizModelList", bizModelList);
+	}
+	//사업설명회 별 일정 조회
+	public ResponseEntity<?> getBizSchForApply(int prId) {
+		List<BizSchDto> bizSchList = bizDao.selectBizScheduleByPrId(prId);
+		return ResponseEntity.ok(bizSchList);
+	}
+	//사업설명회신청 생성
+	public ResponseEntity<?> createBizApply(BizAplDto bizApl) {
+		bizDao.insertBizApply(bizApl);
 		return ResponseEntity.ok(null);
 	}
 }

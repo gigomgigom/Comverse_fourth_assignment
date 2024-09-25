@@ -45,6 +45,7 @@
 
 			<!-- Main content -->
 			<!-- Search -->
+			<form>
 			<section class="content">
 				<div class="container-fluid p-5">
 					<div class="card card-default">
@@ -53,46 +54,43 @@
 					            <div class="form-group row">
 					                <label class="col-sm-2 col-form-label">신청자 정보</label>
 					                <div class="col-sm-10 d-flex row">
-					                    <select id="category" class="form-control col-sm-2">
-					                        <option selected>검색 조건</option>
-					                        <option>이름</option>
-					                        <option>연락처</option>
+					                    <select id="category" class="form-control col-sm-2" name="keywordCtg">
+					                        <option value=0 ${searchIndex.keywordCtg == 0 ? 'selected' : '' }>검색 조건</option>
+					                        <option value=1 ${searchIndex.keywordCtg == 1 ? 'selected' : '' }>이름</option>
+					                        <option value=2 ${searchIndex.keywordCtg == 2 ? 'selected' : '' }>연락처</option>
 					                    </select>
-					                    <input type="text" class="form-control col-sm-10" id="keyword" placeholder="검색어를 입력하세요">
+					                    <input type="text" class="form-control col-sm-10" id="keyword" placeholder="검색어를 입력하세요" name="keyword" value="${searchIndex.keyword}">
 					                </div>
 					            </div>
 					            <div class="form-group row">
 					                <label class="col-sm-2 col-form-label">지역 검색</label>
 					                <div class="col-sm-10 d-flex row">
-					                	<select class="form-control col-sm-2">
-					                        <option selected>검색 조건</option>
-					                        <option>서울</option>
-					                        <option>인천</option>
-					                        <option>경기</option>
+					                	<select class="form-control col-sm-2" name="location">
+					                        <option value=0 ${searchIndex.location == 0 ? 'selected' : '' }>검색 조건</option>
 					                    </select>
 					                </div>
 					            </div>
 					            <div class="form-group row">
 					                <label class="col-sm-2 col-form-label">일자 검색</label>
 					                <div class="col-sm-10 d-flex row">
-					                	<select class="form-control col-sm-2">
-					                        <option selected>검색 조건</option>
-					                        <option>게시물 등록일</option>
-					                        <option>노출 시작일</option>
-					                        <option>노출 종료일</option>
+					                	<select class="form-control col-sm-2" name="dateCtg">
+					                        <option value=0 ${searchIndex.dateCtg == 0 ? 'selected' : '' }>검색 조건</option>
+					                        <option value=1 ${searchIndex.dateCtg == 1 ? 'selected' : '' }>게시물 등록일</option>
+					                        <option value=2 ${searchIndex.dateCtg == 2 ? 'selected' : '' }>노출 시작일</option>
+					                        <option value=3 ${searchIndex.dateCtg == 3 ? 'selected' : '' }>노출 종료일</option>
 					                    </select>
-					                    <input type="date" class="form-control col-sm-5" id="dateFrom">
-					                    <input type="date" class="form-control col-sm-5" id="dateTo">
+					                    <input type="date" class="form-control col-sm-5" id="dateFrom" name="startDate">
+					                    <input type="date" class="form-control col-sm-5" id="dateTo" name="endDate">
 					                </div>
 					            </div>
 					            <div class="form-group row">
 					                <div class="col-sm-2"></div>
 					                <div class="col-sm-10">
-					                    <button type="button" class="btn btn-sm btn-primary">1주</button>
-					                    <button type="button" class="btn btn-sm btn-primary">1개월</button>
-					                    <button type="button" class="btn btn-sm btn-primary">3개월</button>
-					                    <button type="button" class="btn btn-sm btn-primary">금월</button>
-					                    <button type="button" class="btn btn-sm btn-primary">전월</button>
+					                    <button type="button" onClick="pickDate(1)" class="btn btn-sm btn-primary">1주</button>
+					                    <button type="button" onClick="pickDate(12)" class="btn btn-sm btn-primary">1개월</button>
+					                    <button type="button" onClick="pickDate(36)" class="btn btn-sm btn-primary">3개월</button>
+					                    <button type="button" onClick="pickDate(2)" class="btn btn-sm btn-primary">금월</button>
+					                    <button type="button" onClick="pickDate(-1)" class="btn btn-sm btn-primary">전월</button>
 					                </div>
 					            </div>
 					            <div class="form-group d-flex justify-content-center">
@@ -111,20 +109,21 @@
 				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between row">
 						<div class="col-md-5">
-							<a href="/admin/manage/biz-apply/create" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+							<a href="/admin/manage/general/biz-apply/create" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
 							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
-							<select class="form-control" style="max-width: 200px">
-		                        <option selected>10개씩 보기</option>
-		                        <option>50개씩 보기</option>
-		                        <option>100개씩 보기</option>
-		                        <option>500개씩 보기</option>
+							<select class="form-control" style="max-width: 200px" name="rowsPerPage">
+		                        <option value=10 ${searchIndex.rowsPerPage == 10 ? 'selected' : '' }>10개씩 보기</option>
+		                        <option value=50 ${searchIndex.rowsPerPage == 50 ? 'selected' : '' }>50개씩 보기</option>
+		                        <option value=100 ${searchIndex.rowsPerPage == 100 ? 'selected' : '' }>100개씩 보기</option>
+		                        <option value=500 ${searchIndex.rowsPerPage == 500 ? 'selected' : '' }>500개씩 보기</option>
 		                    </select>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- table -->
 			<section class="content">
 				<div class="container-fluid p-3">
@@ -193,5 +192,7 @@
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/resources/adminlte/adminlte/js/demo.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/biz-list.js"></script>
 </body>
 </html>

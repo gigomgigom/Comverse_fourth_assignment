@@ -156,8 +156,8 @@
 							<button type="button" id="submit-button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/manage/biz/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
-							<a href="/admin/manage/biz/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/general/biz/detail?detailId=${searchIndex.detailId}&pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&division=${searchIndex.division}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
+							<a href="/admin/manage/general/biz/list?pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&division=${searchIndex.division}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

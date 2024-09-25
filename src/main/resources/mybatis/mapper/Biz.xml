@@ -8,14 +8,14 @@
 			<choose>
 				<when test="isExpose != 0">
 					<if test="isExpose == 1">
-						and bo_writing = 0
+						and writing = 0
 						<![CDATA[
 							and (CURRENT_DATE() >= expose_start or expose_start is null)
 							and (CURRENT_DATE() <= expose_end or expose_end is null)
 						]]>
 					</if>
 					<if test="isExpose == 2">
-						and bo_writing = 1
+						and writing = 1
 						<![CDATA[
 							or
 								(
@@ -99,10 +99,10 @@
 				</when>
 				<when test="stts != 0">
 					<if test="stts == 1">
-						and is_writing = 1
+						and writing = 1
 					</if>
 					<if test="stts == 2">
-						and is_writing = 0
+						and writing = 0
 					</if>
 				</when>
 			</choose>
@@ -115,14 +115,14 @@
 			<choose>
 				<when test="isExpose != 0">
 					<if test="isExpose == 1">
-						and bo_writing = 0
+						and writing = 0
 						<![CDATA[
 							and (CURRENT_DATE() >= expose_start or expose_start is null)
 							and (CURRENT_DATE() <= expose_end or expose_end is null)
 						]]>
 					</if>
 					<if test="isExpose == 2">
-						and bo_writing = 1
+						and writing = 1
 						<![CDATA[
 							or
 								(
@@ -206,10 +206,10 @@
 				</when>
 				<when test="stts != 0">
 					<if test="stts == 1">
-						and is_writing = 1
+						and writing = 1
 					</if>
 					<if test="stts == 2">
-						and is_writing = 0
+						and writing = 0
 					</if>
 				</when>
 			</choose>
@@ -271,4 +271,42 @@
 		from	biz_pr_sch
 		where	pr_id = #{prId}
 	</delete>
+	<select id="selectBizListForApply">
+		select	*
+		from	biz_pr
+		where	writing = 0
+			<![CDATA[
+				and (CURRENT_DATE() >= expose_start or expose_start is null)
+				and (CURRENT_DATE() <= expose_end or expose_end is null)
+			]]>
+	</select>
+	<insert id="insertBizApply" parameterType="bizAplDto">
+		insert into	biz_pr_apply	(
+										sch_id,
+										pr_id,
+										name,
+										hope_area,
+										age,
+										channel,
+										funnel,
+										funnel_sub,
+										agree,
+										apl_date,
+										tel
+									)
+		values						(
+										#{schId},
+										#{prId},
+										#{name},
+										#{hopeArea},
+										#{age},
+										#{channel},
+										#{funnel},
+										#{funnelSub},
+										#{agree},
+										now(),
+										#{tel}
+									)
+		
+	</insert>
 </mapper>

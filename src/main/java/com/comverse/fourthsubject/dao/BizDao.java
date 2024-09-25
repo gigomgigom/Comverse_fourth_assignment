@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.comverse.fourthsubject.dto.BizAplDto;
 import com.comverse.fourthsubject.dto.BizDto;
 import com.comverse.fourthsubject.dto.BizSchDto;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
@@ -22,4 +23,8 @@ public interface BizDao {
 	//수정하기
 	void updateBizPr(BizDto biz);
 	void deleteBizSch(int prId);
+	
+	//신청-------------------------------------------------
+	List<BizDto> selectBizListForApply();
+	void insertBizApply(BizAplDto bizApl);
 }

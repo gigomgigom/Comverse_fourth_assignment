@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.comverse.fourthsubject.dto.BizAplDto;
 import com.comverse.fourthsubject.dto.BizDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.BranchDto;
@@ -323,7 +324,7 @@ public class AdminController {
 		model.addAttribute("searchIndex", searchIndex);
 		return "/admin/general/biz_mng/create";
 	}
-	
+	// 설정 - 사업설명회 관리 - 생성하기
 	@ResponseBody
 	@PostMapping("/manage/general/biz/create-biz")
 	public ResponseEntity<?> createBiz(BizDto biz) {
@@ -337,30 +338,49 @@ public class AdminController {
 	// -------------------------------------------------------
 	// 설정 - 사업설명회 신청 - 목록
 	@GetMapping("/manage/general/biz-apply/list")
-	public String applyBizList(Model model, HttpServletRequest rq) {
-
+	public String applyBizList(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().isBlank()) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
 		return "/admin/general/biz_apply/list";
 	}
 
 	// 설정 - 사업설명회 신청 - 상세
 	@GetMapping("/manage/general/biz-apply/detail")
-	public String applyBizDetail(Model model, HttpServletRequest rq) {
+	public String applyBizDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
 
 		return "/admin/general/biz_apply/detail";
 	}
 
 	// 설정 - 사업설명회 신청 - 수정
 	@GetMapping("/manage/general/biz-apply/edit")
-	public String applyBizEdit(Model model, HttpServletRequest rq) {
+	public String applyBizEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
 
 		return "/admin/general/biz_apply/edit";
 	}
 
 	// 설정 - 사업설명회 신청 - 생성
 	@GetMapping("/manage/general/biz-apply/create")
-	public String applyBizCreate(Model model, HttpServletRequest rq) {
-
+	public String applyBizCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		bizService.getBusinessListForApply(model);
 		return "/admin/general/biz_apply/create";
+	}
+	
+	// 설정 - 사업설명회 신청 - 생성 - 일자 선택을 위한 일자 리스트 조회
+	@ResponseBody
+	@GetMapping("/manage/general/biz-apply/get-sch-list")
+	public ResponseEntity<?> getSchListForApply(int prId) {
+		return bizService.getBizSchForApply(prId);
+	}
+	
+	// 설정 - 사업설명회 신청 - 생성하기
+	@ResponseBody
+	@PostMapping("/manage/general/biz-apply/create-biz-apply")
+	public ResponseEntity<?> createBizApply(BizAplDto bizApl) {
+		return bizService.createBizApply(bizApl);
 	}
 
 	// -------------------------------------------------------

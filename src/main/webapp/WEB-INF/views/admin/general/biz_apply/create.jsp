@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +46,8 @@
 			</section>
 
 			<!-- Main content -->
+			<form id="create-form">
+			<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<section class="content p-5">
 				<div class="card card-default">
 					<div class="card-body">
@@ -51,45 +55,45 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">신청자 성명</dt>
 								<dd class="col-md-10 px-3 py-0 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="name">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연락처</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="tel">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지역</dt>
+								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">설명회 선택</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<select id="category" class="form-control w-100">
-				                        <option selected>서울</option>
-				                        <option>인천</option>
-				                        <option>부천</option>
-				                        <option>성남</option>
+									<select id="select-biz" class="form-control w-100" name="prId">
+				                        <option value=0 selected>선택</option>
+				                        <c:forEach var="biz" items="${bizModelList}">
+				                        	<option value="${biz.bizId}">${biz.bizId}. ${biz.branch}(${biz.location})</option>
+				                        </c:forEach>
 				                    </select>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">일시</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<select id="category" class="form-control w-100">
-				                        <option selected>2019-03-11 12:00</option>
+									<select id="select-sch" class="form-control w-100" name="schId">
+				                        <option selected value=0>선택</option>
 				                    </select>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">활동 희망 지역</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="hopeArea">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연령대</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<select id="category" class="form-control w-100">
-				                        <option selected>연령대</option>
+									<select id="category" class="form-control w-100" name="age">
+				                        <option value=0 selected>연령대</option>
 				                        <option>20대</option>
 				                        <option>30대</option>
 				                        <option>40대</option>
@@ -101,7 +105,7 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">신청 경로</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0" placeholder="전화/이메일 등 경로 입력">
+									<input type="text" class="form-control-sm w-100 border-0" placeholder="전화/이메일 등 경로 입력" name="channel">
 								</dd>
 							</dl>
 							<div class="col-md-6"></div>
@@ -109,13 +113,13 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">유입 경로</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio3" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="온라인" id="radio3" name="funnel" checked>
 								        <label class="custom-control-label ml-5" for="radio3">
 								        	온라인
 								      	</label>
 									</div>
 							      	<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio4" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="오프라인" id="radio4" name="funnel">
 								        <label class="custom-control-label ml-5" for="radio4">
 								        	오프라인
 								      	</label>
@@ -125,8 +129,8 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">상세 유입 경로</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<select id="category" class="form-control w-100">
-				                        <option selected>상세 경로</option>
+									<select id="category" class="form-control w-100" name="funnelSub">
+				                        <option value=0 selected>상세 경로</option>
 				                        <option>아이스크림홈런 페이지</option>
 				                        <option>네이버 블로그</option>
 				                        <option>네이버 카페</option>
@@ -151,8 +155,8 @@
 										<p>3. 개인정보 보유 및 이용기간: 개인정보 수집 및 이용목적 달성 후에는 해당 정보 즉시 파기</p>
 										<br>
 										<p>*고객님께서는 동의를 거부하실 수 있으며, 동의하지 않을 경우 본 서비스는 이용할 수 없습니다.</p>
-										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1">
-								        <label class="form-control-label" for="checkbox1">
+										<input class="form-control-input ml-3" type="checkbox" id="agree-check">
+								        <label class="form-control-label" for="agree-check">
 								        	고객이 동의하였습니다.
 								      	</label>
 									</div>
@@ -162,15 +166,16 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/manage/biz-apply/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+							<button id="register-button" type="button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/manage/biz-apply/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
+							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</button>
 							<a href="/admin/manage/biz-apply/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
@@ -193,5 +198,7 @@
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/resources/adminlte/adminlte/js/demo.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/biz-apply-create.js"></script>
 </body>
 </html>
