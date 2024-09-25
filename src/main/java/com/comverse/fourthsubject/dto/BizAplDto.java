@@ -9,6 +9,7 @@ public class BizAplDto {
 	private int aplId;
 	private int schId;
 	private int prId;
+	private int brId;
 	private String name;
 	private String hopeArea;
 	private String age;

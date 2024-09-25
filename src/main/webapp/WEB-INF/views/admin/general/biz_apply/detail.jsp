@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,39 +51,42 @@
 						<div class="row">
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">신청자 성명</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">심영조</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.name}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연락처</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">010-2810-4870</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.tel}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지역</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${biz.prId}. ${branch.location}(${biz.location})</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">일시</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-04-11 11:30:00</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+									<fmt:formatDate value="${ sch }" pattern="yyyy-MM-dd HH:mm" var="parsedDateTime"/>
+									${parsedDateTime}
+								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">활동 희망 지역</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.hopeArea}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연령대</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">40대</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.age}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">신청 경로</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">홈페이지</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.channel}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">유입 경로</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">오프라인</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.funnel}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">상세 유입경로</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">지인추천</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${bizApl.funnelSub}</dd>
 							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">
@@ -99,7 +103,7 @@
 										<p>3. 개인정보 보유 및 이용기간: 개인정보 수집 및 이용목적 달성 후에는 해당 정보 즉시 파기</p>
 										<br>
 										<p>*고객님께서는 동의를 거부하실 수 있으며, 동의하지 않을 경우 본 서비스는 이용할 수 없습니다.</p>
-										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1" checked disabled>
+										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1" ${bizApl.agree ? 'checked' : '' } disabled>
 								        <label class="form-control-label" for="checkbox1">
 								        	고객이 동의하였습니다.
 								      	</label>
@@ -110,8 +114,8 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/manage/biz-apply/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
-							<a href="/admin/manage/biz-apply/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/general/biz-apply/edit?detailId=${searchIndex.detailId}&pageNo=${searchIndex.pageNo}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/manage/general/biz-apply/list?pageNo=${searchIndex.pageNo}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

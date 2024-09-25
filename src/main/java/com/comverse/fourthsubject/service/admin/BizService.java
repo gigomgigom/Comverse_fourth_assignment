@@ -129,6 +129,39 @@ public class BizService {
 		return ResponseEntity.ok(null);
 	}
 	//---------------------------------------------------------------------------------
+	//사업설명회 신청 목록조회
+	public void getBizAplList(Model model, SearchIndex searchIndex) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getEndDate()));
+		}
+		
+		List<BranchDto> branchList = branchDao.selectBranchListForSearch();
+		
+		int totalRows = bizDao.selectTotalAplRows(searchIndex);
+		Pager pager = new Pager(searchIndex.getRowsPerPage(), 5, totalRows, Integer.parseInt(searchIndex.getPageNo()));
+		searchIndex.setPager(pager);
+		
+		List<BizAplDto> bizAplInfo = bizDao.selectBizAplList(searchIndex);
+		
+		List<Map<String, Object>> bizAplList = new ArrayList<>();
+		
+		for(BizAplDto bizApl : bizAplInfo) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("branch", branchDao.selectBranchDetail(bizApl.getBrId()).getLocation());
+			map.put("bizApl", bizApl);
+			
+			bizAplList.add(map);
+		}
+		
+		model.addAttribute("searchIndex", searchIndex);
+		model.addAttribute("bizAplList", bizAplList);
+		model.addAttribute("branchList", branchList);
+		log.info(model.toString());
+	}
 	//사업설명회신청 생성 데이터 조회
 	public void getBusinessListForApply(Model model) {
 		List<BizDto> bizList = bizDao.selectBizListForApply();
@@ -152,6 +185,48 @@ public class BizService {
 	//사업설명회신청 생성
 	public ResponseEntity<?> createBizApply(BizAplDto bizApl) {
 		bizDao.insertBizApply(bizApl);
+		return ResponseEntity.ok(null);
+	}
+	//사업설명회신청 상세 조회
+	public void getBizAplDetail(Model model, SearchIndex searchIndex) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getEndDate()));
+		}
+		
+		BizAplDto bizApl = bizDao.selectBizAplDetail(Integer.parseInt(searchIndex.getDetailId()));
+		BizSchDto bizSch = bizDao.selectBizScheduleBySchId(bizApl.getSchId());
+		
+		List<BizSchDto> bizSchList = bizDao.selectBizScheduleByPrId(bizApl.getPrId());
+		List<Map<String,Object>> dateList = new ArrayList<>();
+		for(BizSchDto bs : bizSchList) {
+			Map<String, Object> map = new HashMap<>();
+			Date date = Date.from(bs.getPrDate().atZone(ZoneId.systemDefault()).toInstant());
+			
+			map.put("schId", bs.getSchId());
+			map.put("prDate", date);
+			
+			dateList.add(map);
+		}
+		
+		BizDto biz = bizDao.selectBizDetailByPrId(bizApl.getPrId());
+		BranchDto branch = branchDao.selectBranchDetail(biz.getBrId());
+		Date date = Date.from(bizSch.getPrDate().atZone(ZoneId.systemDefault()).toInstant());
+		
+		model.addAttribute("dateList", dateList);
+		model.addAttribute("bizSch", bizSch);
+		model.addAttribute("bizApl", bizApl);
+		model.addAttribute("sch", date);
+		model.addAttribute("biz", biz);
+		model.addAttribute("branch", branch);
+		
+	}
+	//사업설명회신청 수정하기
+	public ResponseEntity<?> editBizApply(BizAplDto bizApl) {
+		bizDao.updateBizApplyDetail(bizApl);
 		return ResponseEntity.ok(null);
 	}
 }

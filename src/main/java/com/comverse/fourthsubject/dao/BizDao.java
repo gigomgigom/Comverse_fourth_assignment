@@ -25,6 +25,16 @@ public interface BizDao {
 	void deleteBizSch(int prId);
 	
 	//신청-------------------------------------------------
+	//목록조회
+	int selectTotalAplRows(SearchIndex searchIndex);
+	List<BizAplDto> selectBizAplList(SearchIndex searchIndex);
+	//생성
 	List<BizDto> selectBizListForApply();
 	void insertBizApply(BizAplDto bizApl);
+	//상세 조회
+	BizAplDto selectBizAplDetail(int aplId);
+	BizSchDto selectBizScheduleBySchId(int schId);
+	//수정하기
+	void updateBizApplyDetail(BizAplDto bizApl);
+	
 }

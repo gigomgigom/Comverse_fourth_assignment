@@ -38,31 +38,31 @@ $(document).ready(function () {
 		let result = true;
 		let error = [];
 
-		if($('#create-form [name="name"]').val() === '') {
+		if($('#edit-form [name="name"]').val() === '') {
 			result = false;
 			error.push('이름');
 		}
-		if($('#create-form [name="prId"]').val() === 0) {
+		if($('#edit-form [name="prId"]').val() === 0) {
 			result = false;
 			error.push('설명회');
 		}
-		if($('#create-form [name="schId"]').val() === 0) {
+		if($('#edit-form [name="schId"]').val() === 0) {
 			result = false;
 			error.push('일시');
 		}
-		if($('#create-form [name="hopeArea"]').val() === '') {
+		if($('#edit-form [name="hopeArea"]').val() === '') {
 			result = false;
 			error.push('희망지역');
 		}
-		if($('#create-form [name="age"]').val() === 0) {
+		if($('#edit-form [name="age"]').val() === 0) {
 			result = false;
 			error.push('연령대');
 		}
-		if($('#create-form [name="funnelSub"]').val() === 0) {
+		if($('#edit-form [name="funnelSub"]').val() === 0) {
 			result = false;
 			error.push('상세 유입경로');
 		}
-		if(!phoneRegex.test($('#create-form [name="tel"]').val())) {
+		if(!phoneRegex.test($('#edit-form [name="tel"]').val())) {
 			result = false;
 			error.push('연락처');
 		}
@@ -78,10 +78,8 @@ $(document).ready(function () {
 	function submitData() {
 		const _csrf = $('#csrf').val();
 		
-		const form = $('#create-form')[0];
+		const form = $('#edit-form')[0];
 		const formData = new FormData(form);
-		
-		formData.append('agree', $('#agree-check').is(':checked'))
 		
 		$.ajaxSetup({
 			headers: {
@@ -90,7 +88,7 @@ $(document).ready(function () {
 		})
 		
 		$.ajax({
-			url: '/admin/manage/general/biz-apply/create-biz-apply',
+			url: '/admin/manage/general/biz-apply/edit-biz-apply',
 			type: 'POST',
 			enctype: 'multipart/form-data',
 			data: formData,
@@ -98,7 +96,7 @@ $(document).ready(function () {
 			contentType: false,
 			success: function() {
 				alert('정보가 생성되었습니다.');
-				//location.href="/admin/manage/general/biz-apply/list";
+				location.href="/admin/manage/general/biz-apply/list";
 			},
 			error: function(e) {
 				alert('에러발생');

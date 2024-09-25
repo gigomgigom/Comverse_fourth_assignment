@@ -345,23 +345,32 @@ public class AdminController {
 		if(searchIndex.getRowsPerPage() == 0) {
 			searchIndex.setRowsPerPage(10);
 		}
+		bizService.getBizAplList(model, searchIndex);
 		return "/admin/general/biz_apply/list";
 	}
 
 	// 설정 - 사업설명회 신청 - 상세
 	@GetMapping("/manage/general/biz-apply/detail")
-	public String applyBizDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
-
+	public String applyBizDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) { 
+		bizService.getBizAplDetail(model, searchIndex);
 		return "/admin/general/biz_apply/detail";
 	}
 
 	// 설정 - 사업설명회 신청 - 수정
 	@GetMapping("/manage/general/biz-apply/edit")
 	public String applyBizEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
-
+		bizService.getBusinessListForApply(model);
+		bizService.getBizAplDetail(model, searchIndex);
+		log.info(model.getAttribute("bizSch").toString());
 		return "/admin/general/biz_apply/edit";
 	}
-
+	// 설정 - 사업설명회 신청 - 수정하기
+	@ResponseBody
+	@PostMapping("/manage/general/biz-apply/edit-biz-apply")
+	public ResponseEntity<?> editBizApply(BizAplDto bizApl) {
+		return bizService.editBizApply(bizApl);
+	}
+	
 	// 설정 - 사업설명회 신청 - 생성
 	@GetMapping("/manage/general/biz-apply/create")
 	public String applyBizCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq) {

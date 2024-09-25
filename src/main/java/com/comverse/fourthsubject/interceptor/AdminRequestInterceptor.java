@@ -1,9 +1,12 @@
 package com.comverse.fourthsubject.interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.comverse.fourthsubject.service.admin.AuthService;
 
@@ -20,6 +23,14 @@ public class AdminRequestInterceptor implements HandlerInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		
+		String url = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE).toString();
+		
+		//404에러 발생시키기
+		if(url.equals("/**")) {
+			throw new NoHandlerFoundException(url, url, null);
+		}
+		
 		
 		String userId = request.getUserPrincipal().getName();
 		String requestUri = request.getRequestURI();

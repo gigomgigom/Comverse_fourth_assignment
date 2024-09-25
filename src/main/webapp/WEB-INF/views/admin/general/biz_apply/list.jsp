@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,57 +51,52 @@
 			<section class="content">
 				<div class="container-fluid p-5">
 					<div class="card card-default">
-						<div class="card-body p-4">
-							<form>
-					            <div class="form-group row">
-					                <label class="col-sm-2 col-form-label">신청자 정보</label>
-					                <div class="col-sm-10 d-flex row">
-					                    <select id="category" class="form-control col-sm-2" name="keywordCtg">
-					                        <option value=0 ${searchIndex.keywordCtg == 0 ? 'selected' : '' }>검색 조건</option>
-					                        <option value=1 ${searchIndex.keywordCtg == 1 ? 'selected' : '' }>이름</option>
-					                        <option value=2 ${searchIndex.keywordCtg == 2 ? 'selected' : '' }>연락처</option>
-					                    </select>
-					                    <input type="text" class="form-control col-sm-10" id="keyword" placeholder="검색어를 입력하세요" name="keyword" value="${searchIndex.keyword}">
-					                </div>
-					            </div>
-					            <div class="form-group row">
-					                <label class="col-sm-2 col-form-label">지역 검색</label>
-					                <div class="col-sm-10 d-flex row">
-					                	<select class="form-control col-sm-2" name="location">
-					                        <option value=0 ${searchIndex.location == 0 ? 'selected' : '' }>검색 조건</option>
-					                    </select>
-					                </div>
-					            </div>
-					            <div class="form-group row">
-					                <label class="col-sm-2 col-form-label">일자 검색</label>
-					                <div class="col-sm-10 d-flex row">
-					                	<select class="form-control col-sm-2" name="dateCtg">
-					                        <option value=0 ${searchIndex.dateCtg == 0 ? 'selected' : '' }>검색 조건</option>
-					                        <option value=1 ${searchIndex.dateCtg == 1 ? 'selected' : '' }>게시물 등록일</option>
-					                        <option value=2 ${searchIndex.dateCtg == 2 ? 'selected' : '' }>노출 시작일</option>
-					                        <option value=3 ${searchIndex.dateCtg == 3 ? 'selected' : '' }>노출 종료일</option>
-					                    </select>
-					                    <input type="date" class="form-control col-sm-5" id="dateFrom" name="startDate">
-					                    <input type="date" class="form-control col-sm-5" id="dateTo" name="endDate">
-					                </div>
-					            </div>
-					            <div class="form-group row">
-					                <div class="col-sm-2"></div>
-					                <div class="col-sm-10">
-					                    <button type="button" onClick="pickDate(1)" class="btn btn-sm btn-primary">1주</button>
-					                    <button type="button" onClick="pickDate(12)" class="btn btn-sm btn-primary">1개월</button>
-					                    <button type="button" onClick="pickDate(36)" class="btn btn-sm btn-primary">3개월</button>
-					                    <button type="button" onClick="pickDate(2)" class="btn btn-sm btn-primary">금월</button>
-					                    <button type="button" onClick="pickDate(-1)" class="btn btn-sm btn-primary">전월</button>
-					                </div>
-					            </div>
-					            <div class="form-group d-flex justify-content-center">
-					                <div>
-					                    <button type="submit" class="btn btn-lg btn-primary mr-3">검색</button>
-					                    <button type="reset" class="btn btn-lg btn-secondary">초기화</button>
-					                </div>
-					            </div>
-					        </form>
+						<div class="card-body p-4">							
+				            <div class="form-group row">
+				                <label class="col-sm-2 col-form-label">신청자 정보</label>
+				                <div class="col-sm-10 d-flex row">
+				                    <select id="category" class="form-control col-sm-2" name="keywordCtg">
+				                        <option value=0 ${searchIndex.keywordCtg == 0 ? 'selected' : '' }>검색 조건</option>
+				                        <option value=1 ${searchIndex.keywordCtg == 1 ? 'selected' : '' }>이름</option>
+				                        <option value=2 ${searchIndex.keywordCtg == 2 ? 'selected' : '' }>연락처</option>
+				                    </select>
+				                    <input type="text" class="form-control col-sm-10" id="keyword" placeholder="검색어를 입력하세요" name="keyword" value="${searchIndex.keyword}">
+				                </div>
+				            </div>
+				            <div class="form-group row">
+				                <label class="col-sm-2 col-form-label">지부 검색</label>
+				                <div class="col-sm-10 d-flex row">
+				                	<select class="form-control col-sm-2" name="location">
+				                        <option value=0 ${searchIndex.location == 0 ? 'selected' : '' }>검색 조건</option>
+				                        <c:forEach var="branch"  items="${branchList}">
+				                        	<option value="${branch.brId}" ${searchIndex.location == branch.brId ? 'selected' : '' }>${branch.location}</option>
+				                        </c:forEach>
+				                    </select>
+				                </div>
+				            </div>
+				            <div class="form-group row">
+				                <label class="col-sm-2 col-form-label">등록일</label>
+				                <div class="col-sm-10 d-flex row">					                	
+				                    <input type="date" class="form-control col-sm-6" id="dateFrom" name="startDate">
+				                    <input type="date" class="form-control col-sm-6" id="dateTo" name="endDate">
+				                </div>
+				            </div>
+				            <div class="form-group row">
+				                <div class="col-sm-2"></div>
+				                <div class="col-sm-10">
+				                    <button type="button" onClick="pickDate(1)" class="btn btn-sm btn-primary">1주</button>
+				                    <button type="button" onClick="pickDate(12)" class="btn btn-sm btn-primary">1개월</button>
+				                    <button type="button" onClick="pickDate(36)" class="btn btn-sm btn-primary">3개월</button>
+				                    <button type="button" onClick="pickDate(2)" class="btn btn-sm btn-primary">금월</button>
+				                    <button type="button" onClick="pickDate(-1)" class="btn btn-sm btn-primary">전월</button>
+				                </div>
+				            </div>
+				            <div class="form-group d-flex justify-content-center">
+				                <div>
+				                    <button type="submit" class="btn btn-lg btn-primary mr-3">검색</button>
+				                    <button type="reset" class="btn btn-lg btn-secondary">초기화</button>
+				                </div>
+				            </div>
 						</div>
 					</div>
 				</div>			
@@ -109,7 +106,7 @@
 				<div class="container-fluid px-3">
 					<div class="d-flex justify-content-between row">
 						<div class="col-md-5">
-							<a href="/admin/manage/general/biz-apply/create" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
+							<a href="/admin/manage/general/biz-apply/create?pageNo=${searchIndex.pageNo}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
 							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
@@ -129,40 +126,40 @@
 				<div class="container-fluid p-3">
 					<div class="card card-default">
 						<div class="card-header bg-info">
-							검색 결과 : N개
+							검색 결과 : ${searchIndex.pager.totalRows}개
 						</div>
 						<div class="card-body table-responsive">
 							<table class="table">
 								<thead>
 									<tr>
 										<th class="text-center" width="15%">ID</th>
-										<th class="text-center" width="15%">지역</th>
+										<th class="text-center" width="15%">지부</th>
 										<th class="text-center" width="15%">성명</th>
 										<th class="text-center" width="15%">연락처</th>
-										<th class="text-center" width="15%">신청일</th>
 										<th class="text-center" width="15%">등록일</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td class="text-center">tlarlrma</td>
-										<td class="text-center"><a href="/admin/manage/biz-apply/detail">인천</a></td>
-										<td class="text-center">심영조</td>
-										<td class="text-center">010-2810-4870</td>
-										<td class="text-center">2024.10.10</td>
-										<td class="text-center">2024.10.10</td>
-									</tr>
+									<c:forEach var="bizAplInfo" items="${bizAplList}">
+										<tr>
+											<td class="text-center">${bizAplInfo.bizApl.aplId}</td>
+											<td class="text-center"><a href="/admin/manage/general/biz-apply/detail?detailId=${bizAplInfo.bizApl.aplId}&pageNo=${searchIndex.pageNo}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}">${bizAplInfo.branch}</a></td>
+											<td class="text-center">${bizAplInfo.bizApl.name}</td>
+											<td class="text-center">${bizAplInfo.bizApl.tel}</td>
+											<td class="text-center"><fmt:formatDate value="${bizAplInfo.bizApl.aplDate}" type="date"/></td>
+										</tr>
+									</c:forEach>									
 								</tbody>
 							</table>
 						</div>
 						<div class="card-footer bg-white d-flex justify-content-center">
 							<nav>
 							  <ul class="pagination">
-							    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-							    <li class="page-item"><a class="page-link" href="#">1</a></li>
-							    <li class="page-item"><a class="page-link" href="#">2</a></li>
-							    <li class="page-item"><a class="page-link" href="#">3</a></li>
-							    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+							    <li class="page-item ${searchIndex.pager.groupNo == 1 ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/general/biz-apply/list?pageNo=${searchIndex.pager.startPageNo-1}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}">Previous</a></li>
+							    	<c:forEach var="pageNum" items="${searchIndex.pager.pageArray}">
+								    	<li class="page-item ${searchIndex.pager.pageNo == pageNum ? 'active' : ''}"><a class="page-link" href="/admin/manage/general/biz-apply/list?pageNo=${pageNum}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}">${pageNum}</a></li>
+								    </c:forEach>
+							    <li class="page-item ${searchIndex.pager.groupNo == searchIndex.pager.totalGroupNo ? 'disabled' : ''}"><a class="page-link" href="/admin/manage/general/biz-apply/list?pageNo=${searchIndex.pager.endPageNo+1}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}">Next</a></li>
 							  </ul>
 							</nav>
 						</div>

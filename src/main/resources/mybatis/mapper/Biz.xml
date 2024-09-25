@@ -309,4 +309,118 @@
 									)
 		
 	</insert>
+	<select id="selectTotalAplRows" parameterType="searchIndex">
+		select 	count(*)
+				
+		from 	biz_pr_apply bizApl
+		join 	biz_pr bizPr
+		on 		bizApl.pr_id = bizPr.pr_id
+		<where>
+			<choose>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and name like concat('%', #{keyword} ,'%')
+					</if>
+					<if test="keywordCtg == 2">
+						and tel like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="location != 0">
+					and br_id = #{location}
+				</when>
+				<when test="startDate != null or endDate != null">
+					<if test="startDate != null and endDate != null">
+						<![CDATA[
+							and apl_date >= #{startDate}
+							and apl_date <= #{endDate}
+						]]>
+					</if>
+					<if test="startDate == null or endDate == null">
+						<if test="startDate == null">
+							<![CDATA[
+								and apl_date <= #{endDate}
+							]]>
+						</if>
+						<if test="endDate == null">
+							<![CDATA[
+								and apl_date >= #{startDate}
+							]]>
+						</if>
+					</if>
+				</when>
+			</choose>
+		</where>
+	</select>
+	<select id="selectBizAplList" parameterType="searchIndex" resultType="bizAplDto">
+		select 	bizApl.apl_id,
+				bizApl.pr_id,
+				bizApl.name,
+				bizApl.apl_date,
+				bizApl.tel,
+				bizPr.br_id
+				
+		from 	biz_pr_apply bizApl
+		join 	biz_pr bizPr
+		on 		bizApl.pr_id = bizPr.pr_id
+		<where>
+			<choose>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and name like concat('%', #{keyword} ,'%')
+					</if>
+					<if test="keywordCtg == 2">
+						and tel like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="location != 0">
+					and br_id = #{location}
+				</when>
+				<when test="startDate != null or endDate != null">
+					<if test="startDate != null and endDate != null">
+						<![CDATA[
+							and apl_date >= #{startDate}
+							and apl_date <= #{endDate}
+						]]>
+					</if>
+					<if test="startDate == null or endDate == null">
+						<if test="startDate == null">
+							<![CDATA[
+								and apl_date <= #{endDate}
+							]]>
+						</if>
+						<if test="endDate == null">
+							<![CDATA[
+								and apl_date >= #{startDate}
+							]]>
+						</if>
+					</if>
+				</when>
+			</choose>
+		</where>
+		order by	apl_id desc
+		limit		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectBizAplDetail">
+		select	*
+		from	biz_pr_apply
+		where	apl_id = #{aplId}
+	</select>
+	<select id="selectBizScheduleBySchId">
+		select	*
+		from	biz_pr_sch
+		where	sch_id = #{schId}
+	</select>
+	<update id="updateBizApplyDetail" parameterType="bizAplDto">
+		update	biz_pr_apply
+		set		name = #{name},
+				tel = #{tel},
+				pr_id = #{prId},
+				sch_id = #{schId},
+				hope_area = #{hopeArea},
+				age = #{age},
+				channel = #{channel},
+				funnel = #{funnel},
+				funnel_sub = #{funnelSub}
+		where	apl_id = #{aplId}
+	</update>
 </mapper>
