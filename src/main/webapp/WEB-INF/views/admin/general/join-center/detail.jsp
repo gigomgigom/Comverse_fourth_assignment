@@ -50,35 +50,35 @@
 						<div class="row">
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지원분야</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">학습센터 교사</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.field}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이름</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">심영조</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.name}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연락처</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">010-2810-4870</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.tel}</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">생년월일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2000-01-07</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.birthDate }</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">성별</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">남성</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.sex}</dd>
 							</dl>							
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이메일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">tlarlrma@naver.com</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.email }</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">거주 지역</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.location }</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">주소</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">인천시 서구 청라라임로 131</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">${rcrt.adr }</dd>
 							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">
@@ -95,7 +95,7 @@
 										<p>3. 개인정보 보유 및 이용기간: 개인정보 수집 및 이용목적 달성 후에는 해당 정보 즉시 파기</p>
 										<br>
 										<p>*고객님께서는 동의를 거부하실 수 있으며, 동의하지 않을 경우 본 서비스는 이용할 수 없습니다.</p>
-										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1">
+										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1" checked disabled>
 								        <label class="form-control-label" for="checkbox1">
 								        	고객이 동의하였습니다.
 								      	</label>
@@ -106,8 +106,8 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/manage/join-center/edit" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
-							<a href="/admin/manage/join-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/general/join-center/edit?detailId=${searchIndex.detailId}&pageNo=${searchIndex.pageNo}&division=${searchIndex.division}&locationStr=${searchIndex.locationStr}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-primary mr-5 px-4">수정</a>
+							<a href="/admin/manage/general/join-center/list?pageNo=${searchIndex.pageNo}&division=${searchIndex.division}&locationStr=${searchIndex.locationStr}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

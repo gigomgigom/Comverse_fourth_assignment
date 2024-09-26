@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comverse.fourthsubject.dao.InquiryDao">
+	<insert id="insertInquiry" parameterType="inquiryDto">
+		insert into	inquiry	(
+								title,
+								field,
+								name,
+								tel,
+								email,
+								content,
+								agree,
+								reg_date,
+								stts
+							)
+		values				(
+								#{title},
+								#{field},
+								#{name},
+								#{tel},
+								#{email},
+								#{content},
+								#{agree},
+								now(),
+								'접수중'
+							)
+	</insert>
+	<select id="selectRowCnt" parameterType="searchIndex">
+		select	count(*)
+		from	inquiry
+		<where>
+			<choose>
+				<when test="division != 0">
+					<if test="division == 1">
+						and field = '1대1 문의'
+					</if>
+					<if test="division == 2">
+						and field = '학습문의'
+					</if>
+				</when>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and name like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 2">
+						and tel like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 3">
+						and email like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="startDate != null or endDate != null">
+					<if test="startDate != null and endDate != null">
+						<![CDATA[
+							and reg_date >= #{startDate}
+							and reg_date <= #{endDate}
+						]]>
+					</if>
+					<if test="startDate == null or endDate == null">
+						<if test="startDate == null">
+							<![CDATA[
+								and reg_date <= #{endDate}
+							]]>
+						</if>
+						<if test="endDate == null">
+							<![CDATA[
+								and reg_date >= #{startDate}
+							]]>
+						</if>
+					</if>
+				</when>
+				<when test="stts != 0">
+					<if test="stts == 1">
+						and stts = '접수중'
+					</if>
+					<if test="stts == 2">
+						and stts = '전화 처리완료'
+					</if>
+					<if test="stts == 3">
+						and stts = '이메일 처리완료'
+					</if>
+					<if test="stts == 4">
+						and stts = '미처리'
+					</if>
+				</when>
+			</choose>
+		</where>
+	</select>
+	<select id="selectInqList" parameterType="searchIndex">
+		select	*
+		from	inquiry
+		<where>
+			<choose>
+				<when test="division != 0">
+					<if test="division == 1">
+						and field = '1대1 문의'
+					</if>
+					<if test="division == 2">
+						and field = '학습문의'
+					</if>
+				</when>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and name like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 2">
+						and tel like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 3">
+						and email like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="startDate != null or endDate != null">
+					<if test="startDate != null and endDate != null">
+						<![CDATA[
+							and reg_date >= #{startDate}
+							and reg_date <= #{endDate}
+						]]>
+					</if>
+					<if test="startDate == null or endDate == null">
+						<if test="startDate == null">
+							<![CDATA[
+								and reg_date <= #{endDate}
+							]]>
+						</if>
+						<if test="endDate == null">
+							<![CDATA[
+								and reg_date >= #{startDate}
+							]]>
+						</if>
+					</if>
+				</when>
+				<when test="stts != 0">
+					<if test="stts == 1">
+						and stts = '접수중'
+					</if>
+					<if test="stts == 2">
+						and stts = '전화 처리완료'
+					</if>
+					<if test="stts == 3">
+						and stts = '이메일 처리완료'
+					</if>
+					<if test="stts == 4">
+						and stts = '미처리'
+					</if>
+				</when>
+			</choose>
+		</where>
+		order by	inq_id desc
+		limit 		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectInqDetailByInqId" resultType="inquiryDto">
+		select	*
+		from	inquiry
+		where	inq_id = #{inqId}
+	</select>
+	<select id="selectInqProgListByInqId" resultType="inqProgDto">
+		select	*
+		from	inq_prog_log
+		where	inq_id = #{inqId}
+	</select>
+	<insert id="insertInqProg" parameterType="inqProgDto">
+		insert into	inq_prog_log	(
+										inq_id,
+										adm_id,
+										content,
+										stts,
+										reg_date
+									)
+		values						(
+										#{inqId},
+										#{admId},
+										#{content},
+										#{stts},
+										now()
+									)
+	</insert>
+	<update id="updateInquiryStts" parameterType="inqProgDto">
+		update	inquiry
+		set		stts = #{stts}
+	</update>
+</mapper>

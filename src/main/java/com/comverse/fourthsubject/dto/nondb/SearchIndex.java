@@ -32,6 +32,8 @@ public class SearchIndex {
 	private String endDateSdf;
 	//지역(지부)
 	private int location;
+	//지역(문자열)
+	private String locationStr;
 	//상태
 	private int stts;
 	//분야, 구분

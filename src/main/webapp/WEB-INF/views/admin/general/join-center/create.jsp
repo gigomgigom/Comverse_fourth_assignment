@@ -44,6 +44,8 @@
 			</section>
 
 			<!-- Main content -->
+			<form id="create-form">
+			<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<section class="content p-5">
 				<div class="card card-default">
 					<div class="card-body">
@@ -52,13 +54,13 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">지원분야</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="학습센터 교사" id="radio1" name="field" checked>
 								        <label class="custom-control-label ml-5" for="radio1">
 								        	학습센터 교사
 								      	</label>
 									</div>
 							      	<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio2" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="방문 교사" id="radio2" name="field">
 								        <label class="custom-control-label ml-5" for="radio2">
 								        	방문 교사
 								      	</label>
@@ -68,32 +70,32 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이름</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="name">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">연락처</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="tel">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">생년월일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="birthDate">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">성별</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio3">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="남성" id="radio3" name="sex" checked>
 								        <label class="custom-control-label ml-5" for="radio3">
 								        	남성
 								      	</label>
 									</div>
 							      	<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio4">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value="여성" id="radio4" name="sex">
 								        <label class="custom-control-label ml-5" for="radio4">
 								        	여성
 								      	</label>
@@ -103,24 +105,38 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">이메일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="email">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">거주 지역</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<select id="category" class="form-control col-sm-12">
-				                        <option selected>지역 선택</option>
-				                        <option>서울</option>
-				                        <option>인천</option>
-				                        <option>경기</option>
+									<select id="category" class="form-control col-sm-12" name="location">
+				                        <option value="" selected>지역 선택</option>
+				                        <option value="서울">서울특별시</option>
+									    <option value="부산">부산광역시</option>
+									    <option value="대구">대구광역시</option>
+									    <option value="인천">인천광역시</option>
+									    <option value="광주">광주광역시</option>
+									    <option value="대전">대전광역시</option>
+									    <option value="울산">울산광역시</option>
+									    <option value="세종">세종특별자치시</option>
+									    <option value="경기">경기도</option>
+									    <option value="강원">강원도</option>
+									    <option value="충북">충청북도</option>
+									    <option value="충남">충청남도</option>
+									    <option value="전북">전라북도</option>
+									    <option value="전남">전라남도</option>
+									    <option value="경북">경상북도</option>
+									    <option value="경남">경상남도</option>
+									    <option value="제주">제주특별자치도</option>
 				                    </select>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">주소</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="adr">
 								</dd>
 							</dl>
 							<dl class="col-md-12 d-flex row">
@@ -138,8 +154,8 @@
 										<p>3. 개인정보 보유 및 이용기간: 개인정보 수집 및 이용목적 달성 후에는 해당 정보 즉시 파기</p>
 										<br>
 										<p>*고객님께서는 동의를 거부하실 수 있으며, 동의하지 않을 경우 본 서비스는 이용할 수 없습니다.</p>
-										<input class="form-control-input ml-3" type="checkbox" value="" id="checkbox1">
-								        <label class="form-control-label" for="checkbox1">
+										<input class="form-control-input ml-3" type="checkbox" value="" id="agree-check">
+								        <label class="form-control-label" for="agree-check">
 								        	고객이 동의하였습니다.
 								      	</label>
 									</div>
@@ -149,15 +165,16 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/manage/join-center/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+							<button type="button" id="register-button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/manage/join-center/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
-							<a href="/admin/manage/join-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</button>
+							<a href="/admin/manage/general/join-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
@@ -180,5 +197,7 @@
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/resources/adminlte/adminlte/js/demo.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/joincenter-create.js"></script>
 </body>
 </html>

@@ -24,5 +24,10 @@
 		<typeAlias type="com.comverse.fourthsubject.dto.BizDto" alias="bizDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BizSchDto" alias="bizSchDto"/>
 		<typeAlias type="com.comverse.fourthsubject.dto.BizAplDto" alias="bizAplDto"/>
+		
+		<typeAlias type="com.comverse.fourthsubject.dto.InquiryDto" alias="inquiryDto"/>
+		<typeAlias type="com.comverse.fourthsubject.dto.InqProgDto" alias="inqProgDto"/>
+		
+		<typeAlias type="com.comverse.fourthsubject.dto.RecruitDto" alias="recruitDto"/>
 	</typeAliases>
 </configuration>

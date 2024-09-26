@@ -1,27 +1,6 @@
-$(document).ready(function () {	
-	$('#select-biz').change(function () {
-		const prId = $(this).val();
-		getPrSchList(prId);
-	})
-	function getPrSchList(prId) {
-		$.ajax({
-			url: '/admin/manage/general/biz-apply/get-sch-list?prId='+prId,
-			type: 'GET',
-			success: function(data){
-				$('#select-sch').html('');
-				$('#select-sch').append('<option value=0 selected>선택</option>');
-				for(const sch of data) {
-					var dateString = sch.prDate + '';
-					var date = dateString.replace('T', ' ').slice(0, 16);
-					$('#select-sch').append('<option value=' + sch.schId + '>' + date + '</option>');
-				}
-			},
-			error: function(e) {
-				alert('에러발생');
-				console.log(e);
-			}
-		})
-	}
+$(document).ready(function () {
+	
+	
 	//제출 이벤트 리스너
 	$('#register-button').click(function() {
 		const validateResult = validateData();
@@ -32,37 +11,33 @@ $(document).ready(function () {
 		}
 	});
     function validateData() {
+		
+
 		const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
-				
+		const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		
 		let result = true;
 		let error = [];
+		
 		if($('#create-form [name="name"]').val() === '') {
 			result = false;
-			error.push('이름');
+			error.push('제목');
 		}
-		if($('#create-form [name="prId"]').val() === 0) {
+		if($('#create-form [name="birthDate"]').val() === '') {
 			result = false;
-			error.push('설명회');
+			error.push('내용');
 		}
-		if($('#create-form [name="schId"]').val() === 0) {
+		if($('#create-form [name="adr"]').val() === '') {
 			result = false;
-			error.push('일시');
-		}
-		if($('#create-form [name="hopeArea"]').val() === '') {
-			result = false;
-			error.push('희망지역');
-		}
-		if($('#create-form [name="age"]').val() === 0) {
-			result = false;
-			error.push('연령대');
-		}
-		if($('#create-form [name="funnelSub"]').val() === 0) {
-			result = false;
-			error.push('상세 유입경로');
+			error.push('주소');
 		}
 		if(!phoneRegex.test($('#create-form [name="tel"]').val())) {
 			result = false;
 			error.push('연락처');
+		}
+		if(!emailRegex.test($('#create-form [name="email"]').val())) {
+			result = false;
+			error.push('이메일')
 		}
 		if(!$('#agree-check').is(':checked')){
 			result = false;
@@ -88,7 +63,7 @@ $(document).ready(function () {
 		})
 		
 		$.ajax({
-			url: '/admin/manage/general/biz-apply/create-biz-apply',
+			url: '/admin/manage/general/join-center/create-join-center',
 			type: 'POST',
 			enctype: 'multipart/form-data',
 			data: formData,
@@ -96,7 +71,7 @@ $(document).ready(function () {
 			contentType: false,
 			success: function() {
 				alert('정보가 생성되었습니다.');
-				//location.href="/admin/manage/general/biz-apply/list";
+				location.href="/admin/manage/general/join-center/list";
 			},
 			error: function(e) {
 				alert('에러발생');

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comverse.fourthsubject.dao.RecruitDao">
+	<insert id="insertJoinCenter" parameterType="recruitDto">
+		insert into recruit	(
+								name,
+								field,
+								tel,
+								birth_date,
+								location,
+								adr,
+								agree,
+								sex,
+								email,
+								reg_date
+							)
+		values				(
+								#{name},
+								#{field},
+								#{tel},
+								#{birthDate},
+								#{location},
+								#{adr},
+								#{agree},
+								#{sex},
+								#{email},
+								now()
+							)
+	</insert>
+	<select id="selectJoinCenterTotalRows" parameterType="searchIndex">
+		select 	count(*)
+		from	recruit
+		<where>
+			<choose>
+				<when test="division != 0">
+					<if test="division == 1">
+						and field = '학습센터 교사'
+					</if>
+					<if test="division == 2">
+						and field = '방문 교사'
+					</if>
+				</when>
+				<when test="locationStr != null and !locationStr.equals('')">
+					and location = #{locationStr}
+				</when>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and name like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 2">
+						and tel like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 3">
+						and email like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="startDate != null or endDate != null">
+					<if test="startDate != null and endDate != null">
+						<![CDATA[
+							and reg_date >= #{startDate}
+							and reg_date <= #{endDate}
+						]]>
+					</if>
+					<if test="startDate == null or endDate == null">
+						<if test="startDate == null">
+							<![CDATA[
+								and reg_date <= #{endDate}
+							]]>
+						</if>
+						<if test="endDate == null">
+							<![CDATA[
+								and reg_date >= #{startDate}
+							]]>
+						</if>
+					</if>
+				</when>
+			</choose>
+		</where>
+	</select>
+	<select id="selectJoinCenterList" parameterType="searchIndex">
+		select 	*
+		from	recruit
+		<where>
+			<choose>
+				<when test="division != 0">
+					<if test="division == 1">
+						and field = '학습센터 교사'
+					</if>
+					<if test="division == 2">
+						and field = '방문 교사'
+					</if>
+				</when>
+				<when test="locationStr != null and !locationStr.equals('')">
+					and location = #{locationStr}
+				</when>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and name like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 2">
+						and tel like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 3">
+						and email like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="startDate != null or endDate != null">
+					<if test="startDate != null and endDate != null">
+						<![CDATA[
+							and reg_date >= #{startDate}
+							and reg_date <= #{endDate}
+						]]>
+					</if>
+					<if test="startDate == null or endDate == null">
+						<if test="startDate == null">
+							<![CDATA[
+								and reg_date <= #{endDate}
+							]]>
+						</if>
+						<if test="endDate == null">
+							<![CDATA[
+								and reg_date >= #{startDate}
+							]]>
+						</if>
+					</if>
+				</when>
+			</choose>
+		</where>
+		order by	rcrt_id desc
+		limit 		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectJoinCenterDetail" resultType="recruitDto">
+		select	*
+		from	recruit
+		where	rcrt_id = #{rcrtId}
+	</select>
+	<update id="updateJoinCenter" parameterType="recruitDto">
+		update	recruit
+		set		name = #{name},
+				field = #{field},
+				tel = #{tel},
+				birth_date = #{birthDate},
+				location = #{location},
+				adr = #{adr},
+				sex = #{sex},
+				email = #{email}
+		where	rcrt_id = #{rcrtId}
+	</update>
+</mapper>

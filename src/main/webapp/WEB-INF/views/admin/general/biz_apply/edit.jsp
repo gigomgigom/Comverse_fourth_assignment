@@ -176,8 +176,8 @@
 							<button type="button" id="register-button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/manage/biz-apply/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
-							<a href="/admin/manage/biz-apply/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</button>
+							<a href="/admin/manage/general/biz-apply/list?pageNo=${searchIndex.pageNo}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&location=${searchIndex.location}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

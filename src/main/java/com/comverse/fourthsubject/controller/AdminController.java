@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,9 @@ import com.comverse.fourthsubject.dto.BizAplDto;
 import com.comverse.fourthsubject.dto.BizDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.BranchDto;
+import com.comverse.fourthsubject.dto.InqProgDto;
+import com.comverse.fourthsubject.dto.InquiryDto;
+import com.comverse.fourthsubject.dto.RecruitDto;
 import com.comverse.fourthsubject.dto.RoleDto;
 import com.comverse.fourthsubject.dto.TeamDto;
 import com.comverse.fourthsubject.dto.nondb.AdminRequest;
@@ -33,6 +37,8 @@ import com.comverse.fourthsubject.service.admin.AuthService;
 import com.comverse.fourthsubject.service.admin.BizService;
 import com.comverse.fourthsubject.service.admin.BoardService;
 import com.comverse.fourthsubject.service.admin.BranchService;
+import com.comverse.fourthsubject.service.admin.InquiryService;
+import com.comverse.fourthsubject.service.admin.RecruitService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -393,54 +399,108 @@ public class AdminController {
 	}
 
 	// -------------------------------------------------------
+	
+	@Autowired
+	RecruitService rcrtService;
+	
 	// 설정 - 학습센터 개설 - 목록
 	@GetMapping("/manage/general/join-center/list")
-	public String joinCenterList(Model model, HttpServletRequest rq) {
-
+	public String joinCenterList(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().isBlank()) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		rcrtService.getJoinCenterList(searchIndex, model);
 		return "/admin/general/join-center/list";
 	}
 
 	// 설정 - 학습센터 개설 - 상세
 	@GetMapping("/manage/general/join-center/detail")
-	public String joinCenterDetail(Model model, HttpServletRequest rq) {
-
+	public String joinCenterDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		rcrtService.getJoinCenterDetail(searchIndex, model);
 		return "/admin/general/join-center/detail";
 	}
 
 	// 설정 - 학습센터 개설 - 수정
 	@GetMapping("/manage/general/join-center/edit")
-	public String joinCenterEdit(Model model, HttpServletRequest rq) {
-
+	public String joinCenterEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		rcrtService.getJoinCenterDetail(searchIndex, model);
 		return "/admin/general/join-center/edit";
+	}
+	
+	// 설정 - 학습센터 개설 - 수정하기
+	@ResponseBody
+	@PostMapping("/manage/general/join-center/edit-join-center")
+	public ResponseEntity<?> editJoinCenter(RecruitDto rcrt) {
+		return rcrtService.editJoinCenter(rcrt);
 	}
 
 	// 설정 - 학습센터 개설 - 생성
 	@GetMapping("/manage/general/join-center/create")
-	public String joinCenterCreate(Model model, HttpServletRequest rq) {
-
+	public String joinCenterCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		model.addAttribute("searchIndex", searchIndex);
 		return "/admin/general/join-center/create";
+	}
+	
+	//설정  - 학습센터 개설 - 생성하기
+	@ResponseBody
+	@PostMapping("/manage/general/join-center/create-join-center")
+	public ResponseEntity<?> createJoinCenter(RecruitDto rcrt) {
+		return rcrtService.createJoinCenter(rcrt);
 	}
 
 	// -------------------------------------------------------
+	@Autowired
+	InquiryService inqService;
+	
 	// 설정 - 문의 관리 - 목록
 	@GetMapping("/manage/general/one-to-one/list")
-	public String oneToOneList(Model model, HttpServletRequest rq) {
-
+	public String oneToOneList(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().isBlank()) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		inqService.getInquiryList(searchIndex, model);
 		return "/admin/general/onetoone/list";
 	}
 
 	// 설정 - 문의 관리 - 상세
 	@GetMapping("/manage/general/one-to-one/detail")
-	public String oneToOneDetail(Model model, HttpServletRequest rq) {
-
+	public String oneToOneDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		inqService.getInquiryDetail(model, searchIndex);
 		return "/admin/general/onetoone/detail";
+	}
+	
+	// 설정 - 문의 관리 - 처리 이력 생성
+	@ResponseBody
+	@PostMapping("/manage/general/one-to-one/create-inq-prog")
+	public ResponseEntity<?> createInqProg(InqProgDto inqProg, Authentication auth) {
+		inqProg.setAdmUserName(auth.getName());
+		return inqService.createInqProg(inqProg);
 	}
 
 	// 설정 - 문의 관리 - 생성
 	@GetMapping("/manage/general/one-to-one/create")
-	public String oneToOneCreate(Model model, HttpServletRequest rq) {
-
+	public String oneToOneCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
 		return "/admin/general/onetoone/create";
+	}
+	
+	// 설정 - 문의 관리 - 문의 생성
+	@ResponseBody
+	@PostMapping("/manage/general/one-to-one/create-inquiry")
+	public ResponseEntity<?> createInquiry(InquiryDto inqDto) {
+		return inqService.createInquiry(inqDto);
 	}
 
 	// -------------------------------------------------------
