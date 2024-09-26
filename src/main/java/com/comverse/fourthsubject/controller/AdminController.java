@@ -31,12 +31,14 @@ import com.comverse.fourthsubject.dto.RoleDto;
 import com.comverse.fourthsubject.dto.TeamDto;
 import com.comverse.fourthsubject.dto.nondb.AdminRequest;
 import com.comverse.fourthsubject.dto.nondb.BoardFormRequest;
+import com.comverse.fourthsubject.dto.nondb.FaqRequest;
 import com.comverse.fourthsubject.dto.nondb.RoleRequest;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 import com.comverse.fourthsubject.service.admin.AuthService;
 import com.comverse.fourthsubject.service.admin.BizService;
 import com.comverse.fourthsubject.service.admin.BoardService;
 import com.comverse.fourthsubject.service.admin.BranchService;
+import com.comverse.fourthsubject.service.admin.FaqService;
 import com.comverse.fourthsubject.service.admin.InquiryService;
 import com.comverse.fourthsubject.service.admin.RecruitService;
 
@@ -504,32 +506,60 @@ public class AdminController {
 	}
 
 	// -------------------------------------------------------
-	// 게시판 관리 - FAQ - 목록
+	
+	@Autowired
+	FaqService faqService;
+	
+	// 설정 - FAQ - 목록
 	@GetMapping("/manage/general/faq/list")
-	public String boardFaqList(Model model, HttpServletRequest rq) {
-
+	public String boardFaqList(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
+		if(searchIndex.getPageNo() == null || searchIndex.getPageNo().isBlank()) {
+			searchIndex.setPageNo("1");
+		}
+		if(searchIndex.getRowsPerPage() == 0) {
+			searchIndex.setRowsPerPage(10);
+		}
+		
+		faqService.getFaqList(model, searchIndex);
 		return "/admin/board/faq/list";
 	}
 
-	// 게시판 관리 - FAQ - 상세
+	// 설정 - FAQ - 상세
 	@GetMapping("/manage/general/faq/detail")
-	public String boardFaqDetail(Model model, HttpServletRequest rq) {
+	public String boardFaqDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
 
 		return "/admin/board/faq/detail";
 	}
 
-	// 게시판 관리 - FAQ - 수정
+	// 설정 - FAQ - 수정
 	@GetMapping("/manage/general/faq/edit")
-	public String boardFaqEdit(Model model, HttpServletRequest rq) {
+	public String boardFaqEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
 
 		return "/admin/board/faq/edit";
 	}
 
-	// 게시판 관리 - FAQ - 생성
+	// 설정 - FAQ - 생성
 	@GetMapping("/manage/general/faq/create")
-	public String boardFaqCreate(Model model, HttpServletRequest rq) {
-
+	public String boardFaqCreate(Model model, SearchIndex searchIndex, HttpServletRequest rq, Authentication auth) {
+		model.addAttribute("writer", auth.getName());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getEndDate()));
+		}
+		
+		model.addAttribute("searchIndex", searchIndex);
 		return "/admin/board/faq/create";
+	}
+	
+	// 설정 - FAQ - 생성하기
+	@ResponseBody
+	@PostMapping("/manage/general/faq/create-faq")
+	public ResponseEntity<?> createFaq(FaqRequest faq, Authentication auth) {
+		return faqService.createFaq(faq, auth);
 	}
 	// -------------------------------------------------------
 	

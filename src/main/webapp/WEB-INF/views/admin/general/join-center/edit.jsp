@@ -170,7 +170,7 @@
 						</div>
 						<div class="d-flex justify-content-end">
 							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</button>
-							<a href="/admin/manage/general/join-center/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/general/join-center/list?pageNo=${searchIndex.pageNo}&division=${searchIndex.division}&locationStr=${searchIndex.locationStr}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&rowsPerPage=${searchIndex.rowsPerPage}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

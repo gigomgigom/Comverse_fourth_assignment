@@ -29,5 +29,7 @@
 		<typeAlias type="com.comverse.fourthsubject.dto.InqProgDto" alias="inqProgDto"/>
 		
 		<typeAlias type="com.comverse.fourthsubject.dto.RecruitDto" alias="recruitDto"/>
+		
+		<typeAlias type="com.comverse.fourthsubject.dto.FaqDto" alias="faqDto"/>
 	</typeAliases>
 </configuration>

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.comverse.fourthsubject.dao.FaqDao">
+	<insert id="insertFaq" parameterType="faqDto">
+		insert into faq	(
+							faq_writer,
+							title,
+							faq_pinned,
+							faq_writing,
+							expose_start,
+							expose_end,
+							content,
+							reg_date
+						)
+		values			(
+							#{faqWriter},
+							#{title},
+							#{faqPinned},
+							#{faqWriting},
+							#{exposeStart},
+							#{exposeEnd},
+							#{content},
+							now()
+						)
+	</insert>
+	<select id="selectTotalRowCnt" parameterType="searchIndex">
+		select	count(*)
+		from	(
+					select	fq.*,
+							adm.adm_id as adm_id
+					from	faq fq
+					join	admin adm
+					on		fq.faq_writer = adm.adm_no
+				) faq
+		<where>
+			<choose>
+				<when test="isExpose != 0">
+					<if test="isExpose == 1">
+							and faq_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</if>
+					<if test="isExpose == 2">
+							and faq_writing = 1
+						<![CDATA[
+							or
+								(
+									faq_writing = 0
+									and
+									(
+										(CURRENT_DATE() < expose_start)
+										or 
+										(CURRENT_DATE() > expose_end)
+									)
+								)
+						]]>
+					</if>
+				</when>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and title like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 2">
+						and (
+								title like concat('%', #{keyword}, '%')
+								or
+								content like concat('%', #{keyword}, '%')
+							)
+					</if>
+					<if test="keywordCtg == 3">
+						and adm_id like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="dateCtg != 0 and (startDate != null or endDate != null)">
+					<if test="dateCtg == 1">
+						<if test="startDate != null and endDate != null">
+							<![CDATA[
+								and reg_date >= #{startDate}
+								and reg_date <= #{endDate}
+							]]>
+						</if>
+						<if test="startDate == null or endDate == null">
+							<if test="startDate == null">
+								<![CDATA[
+									and reg_date <= #{endDate}
+								]]>
+							</if>
+							<if test="endDate == null">
+								<![CDATA[
+									and reg_date >= #{startDate}
+								]]>
+							</if>
+						</if>
+					</if>
+					<if test="dateCtg == 2">
+						<if test="startDate != null and endDate != null">
+							<![CDATA[
+								and expose_start >= #{startDate}
+								and expose_start <= #{endDate}
+							]]>
+						</if>
+						<if test="startDate == null or endDate == null">
+							<if test="startDate == null">
+								<![CDATA[
+									and expose_start <= #{endDate}
+								]]>
+							</if>
+							<if test="endDate == null">
+								<![CDATA[
+									and expose_start >= #{startDate}
+								]]>
+							</if>
+						</if>
+					</if>
+					<if test="dateCtg == 3">
+						<if test="startDate != null and endDate != null">
+							<![CDATA[
+								and expose_end >= #{startDate}
+								and expose_end <= #{endDate}
+							]]>
+						</if>
+						<if test="startDate == null or endDate == null">
+							<if test="startDate == null">
+								<![CDATA[
+									and expose_end <= #{endDate}
+								]]>
+							</if>
+							<if test="endDate == null">
+								<![CDATA[
+									and expose_end >= #{startDate}
+								]]>
+							</if>
+						</if>
+					</if>					
+				</when>
+				<when test="stts != 0">
+					<if test="stts == 1">
+						and faq_writing = 1
+					</if>
+					<if test="stts == 2">
+							and faq_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</if>
+					<if test="stts == 3">
+						and faq_writing = 0
+						and expose_end is null
+					</if>
+					<if test="stts == 4">
+						<![CDATA[
+							and CURRENT_DATE() > expose_end
+						]]>
+					</if>
+				</when>
+			</choose>
+		</where>
+	</select>
+	<select id="selectFaqList" parameterType="searchIndex">
+		select	*
+		from	(
+					select	fq.*,
+							adm.adm_id as adm_id
+					from	faq fq
+					join	admin adm
+					on		fq.faq_writer = adm.adm_no
+				) faq
+		<where>
+			<choose>
+				<when test="isExpose != 0">
+					<if test="isExpose == 1">
+							and faq_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</if>
+					<if test="isExpose == 2">
+							and faq_writing = 1
+						<![CDATA[
+							or
+								(
+									faq_writing = 0
+									and
+									(
+										(CURRENT_DATE() < expose_start)
+										or 
+										(CURRENT_DATE() > expose_end)
+									)
+								)
+						]]>
+					</if>
+				</when>
+				<when test="keyword != null and !keyword.equals('')">
+					<if test="keywordCtg == 1">
+						and title like concat('%', #{keyword}, '%')
+					</if>
+					<if test="keywordCtg == 2">
+						and (
+								title like concat('%', #{keyword}, '%')
+								or
+								content like concat('%', #{keyword}, '%')
+							)
+					</if>
+					<if test="keywordCtg == 3">
+						and adm_id like concat('%', #{keyword}, '%')
+					</if>
+				</when>
+				<when test="dateCtg != 0 and (startDate != null or endDate != null)">
+					<if test="dateCtg == 1">
+						<if test="startDate != null and endDate != null">
+							<![CDATA[
+								and reg_date >= #{startDate}
+								and reg_date <= #{endDate}
+							]]>
+						</if>
+						<if test="startDate == null or endDate == null">
+							<if test="startDate == null">
+								<![CDATA[
+									and reg_date <= #{endDate}
+								]]>
+							</if>
+							<if test="endDate == null">
+								<![CDATA[
+									and reg_date >= #{startDate}
+								]]>
+							</if>
+						</if>
+					</if>
+					<if test="dateCtg == 2">
+						<if test="startDate != null and endDate != null">
+							<![CDATA[
+								and expose_start >= #{startDate}
+								and expose_start <= #{endDate}
+							]]>
+						</if>
+						<if test="startDate == null or endDate == null">
+							<if test="startDate == null">
+								<![CDATA[
+									and expose_start <= #{endDate}
+								]]>
+							</if>
+							<if test="endDate == null">
+								<![CDATA[
+									and expose_start >= #{startDate}
+								]]>
+							</if>
+						</if>
+					</if>
+					<if test="dateCtg == 3">
+						<if test="startDate != null and endDate != null">
+							<![CDATA[
+								and expose_end >= #{startDate}
+								and expose_end <= #{endDate}
+							]]>
+						</if>
+						<if test="startDate == null or endDate == null">
+							<if test="startDate == null">
+								<![CDATA[
+									and expose_end <= #{endDate}
+								]]>
+							</if>
+							<if test="endDate == null">
+								<![CDATA[
+									and expose_end >= #{startDate}
+								]]>
+							</if>
+						</if>
+					</if>					
+				</when>
+				<when test="stts != 0">
+					<if test="stts == 1">
+						and faq_writing = 1
+					</if>
+					<if test="stts == 2">
+							and faq_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+					</if>
+					<if test="stts == 3">
+						and faq_writing = 0
+						and expose_end is null
+					</if>
+					<if test="stts == 4">
+						<![CDATA[
+							and CURRENT_DATE() > expose_end
+						]]>
+					</if>
+				</when>
+			</choose>
+		</where>
+		order by	faq_id desc
+		limit		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+</mapper>
