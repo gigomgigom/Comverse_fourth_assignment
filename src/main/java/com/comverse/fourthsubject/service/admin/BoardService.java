@@ -7,9 +7,13 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -303,5 +307,52 @@ public class BoardService {
 		if(boardForm.getBoAttach() != null && !boardForm.getBoAttach().isEmpty()) {
 			saveBoardAttachFile(folderPath, board.getBoId(), boardForm);
 		}		
+	}
+	//엑셀 파일 다운로드
+	public XSSFWorkbook getBoardWorkBook(int boCtg) {
+		
+		BoardCtgDto boardCtg = boardCtgDao.selectBoardCtgDetail(boCtg);
+		List<BoardDto> boardList = boardDao.selectBoardListForExcel(boCtg);
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet(boardCtg.getCtgName());
+		
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Row dscrptn = sheet.createRow(0);
+		dscrptn.createCell(4).setCellValue("기준 일자");
+		dscrptn.createCell(5).setCellValue(sdf.format(now));
+		
+		Row headerRow = sheet.createRow(1);
+		headerRow.createCell(0).setCellValue("ID");
+		headerRow.createCell(1).setCellValue("Title");
+		headerRow.createCell(2).setCellValue("Register_Date");
+		headerRow.createCell(3).setCellValue("Is_Expose");
+		headerRow.createCell(4).setCellValue("Expose_Start");
+		headerRow.createCell(5).setCellValue("Expose_End");
+		headerRow.createCell(6).setCellValue("Attach_Cnt");
+		
+		int rowIdx = 2;
+		for(BoardDto board : boardList) {
+			Row row = sheet.createRow(rowIdx++);
+			row.createCell(0).setCellValue(board.getBoId());
+			row.createCell(1).setCellValue(board.getBoTitle());
+			row.createCell(2).setCellValue(sdf.format(board.getRegDate()));
+			row.createCell(3).setCellValue(!board.isBoWriting() && (board.getExposeStart() == null || now.after(board.getExposeStart())) && (board.getExposeEnd() == null || now.before(board.getExposeEnd())) ? "노출" : "비노출");
+			if(board.getExposeStart() != null) {
+				row.createCell(4).setCellValue(sdf.format(board.getExposeStart()));
+			} else {
+				row.createCell(4).setCellValue("미지정");
+			}
+			if(board.getExposeEnd() != null) {
+				row.createCell(5).setCellValue(sdf.format(board.getExposeEnd()));
+			} else {
+				row.createCell(5).setCellValue("미지정");
+			}
+			row.createCell(6).setCellValue(board.getAttachCnt());
+		}
+		
+		return workbook;
 	}
 }

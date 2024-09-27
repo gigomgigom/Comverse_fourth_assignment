@@ -139,4 +139,9 @@
 		from	branch
 		where	stts = '작성완료'
 	</select>
+	<select id="selectBranchListForExcel">
+		select	*
+		from	branch
+		order by br_id desc
+	</select>
 </mapper>

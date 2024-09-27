@@ -183,14 +183,18 @@ public class AuthService {
 	}
 	//메뉴 권한 정보 추가
 	public void insertRoleMenuAuth(int roleId, List<Integer> menuList) {
-		for(int menuId : menuList) {
-			authDao.insertRoleMenuAuth(roleId, menuId);
-		}
+		if(menuList != null) {
+			for(int menuId : menuList) {
+				authDao.insertRoleMenuAuth(roleId, menuId);
+			}
+		}		
 	}
 	//게시판 권한 정보 추가
 	public void insertRoleBoardAuth(int roleId, List<Integer> boardList) {
-		for(int ctgId : boardList) {
-			authDao.insertRoleBoardAuth(roleId, ctgId);
+		if(boardList != null) {
+			for(int ctgId : boardList) {
+				authDao.insertRoleBoardAuth(roleId, ctgId);
+			}
 		}
 	}
 	//권한 목록 가져오기

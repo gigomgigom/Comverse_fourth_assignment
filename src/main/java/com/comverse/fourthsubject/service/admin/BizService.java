@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -52,7 +55,6 @@ public class BizService {
 			List<BizSchDto> bizSchList = bizDao.selectBizScheduleByPrId(biz.getPrId());
 			biz.setBizSchList(bizSchList);
 		}
-		log.info(bizList.toString());
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -228,5 +230,55 @@ public class BizService {
 	public ResponseEntity<?> editBizApply(BizAplDto bizApl) {
 		bizDao.updateBizApplyDetail(bizApl);
 		return ResponseEntity.ok(null);
+	}
+	//엑셀 파일 생성 - 사업설명회 목록
+	public XSSFWorkbook getBizWorkbook() {
+		List<BizDto> bizList = bizDao.selectBizListForExcel();
+		
+		List<Map<String, Object>> bizResult = new ArrayList<>();
+		for(BizDto biz : bizList) {
+			Map<String, Object> map = new HashMap<>();
+			List<BizSchDto> bizSchList = bizDao.selectBizScheduleByPrId(biz.getPrId());
+			biz.setBizSchList(bizSchList);
+			
+			BranchDto branch = branchDao.selectBranchDetail(biz.getBrId());
+			
+			map.put("biz", biz);
+			map.put("branch", branch.getLocation());
+			bizResult.add(map);
+		}
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("지국(branch)");
+		
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Row dscrptn = sheet.createRow(0);
+		dscrptn.createCell(4).setCellValue("기준 일자");
+		dscrptn.createCell(5).setCellValue(sdf.format(now));
+		
+		Row headerRow = sheet.createRow(1);
+		headerRow.createCell(0).setCellValue("ID");
+		headerRow.createCell(1).setCellValue("지부");
+		headerRow.createCell(2).setCellValue("등록일");
+		headerRow.createCell(3).setCellValue("진행일자");
+		headerRow.createCell(4).setCellValue("상태");
+		
+		int rowIdx = 2;
+		for(Map<String, Object> map : bizResult) {
+			Row row = sheet.createRow(rowIdx++);
+			BizDto biz = (BizDto) map.get("biz");
+			
+			row.createCell(0).setCellValue(biz.getPrId());
+			row.createCell(1).setCellValue((String) map.get("branch"));
+			row.createCell(2).setCellValue(sdf.format(biz.getRegDate()));
+			if(!biz.getBizSchList().isEmpty()) {
+				row.createCell(3).setCellValue(biz.getBizSchList().get(0).getPrDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))+" 외"+(biz.getBizSchList().size()-1)+"개");
+			}
+			row.createCell(4).setCellValue(biz.isWriting() ? "작성중" : "작성완료" );
+		}
+		
+		return workbook;
 	}
 }

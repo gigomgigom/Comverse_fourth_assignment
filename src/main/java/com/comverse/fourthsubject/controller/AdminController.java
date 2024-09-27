@@ -5,6 +5,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +46,7 @@ import com.comverse.fourthsubject.service.admin.InquiryService;
 import com.comverse.fourthsubject.service.admin.RecruitService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -127,6 +131,21 @@ public class AdminController {
 		boardService.getBoardList(boCtg, searchIndex, model);
 		
 		return "/admin/board/manage/list";
+	}
+	
+	// 게시판 관리 - 목록 - 엑셀 파일 다운로드
+	@ResponseBody
+	@GetMapping("/board/manage/{boCtg}/list/download-excel")
+	public void downloadBoardExcel(@PathVariable int boCtg, HttpServletResponse rs) {
+		XSSFWorkbook workbook = boardService.getBoardWorkBook(boCtg);
+		rs.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        rs.setHeader("Content-Disposition", "attachment; filename=sample_data.xlsx");
+		try {
+			workbook.write(rs.getOutputStream());
+			workbook.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// 게시판 관리 - 상세 화면 이동
@@ -272,6 +291,21 @@ public class AdminController {
 	public ResponseEntity<?> createBranch(BranchDto branch) {
 		return branchService.createBranch(branch);
 	}
+	
+	// 설정 - 지국 위치 안내 - 엑셀 파일 다운로드
+	@ResponseBody
+	@GetMapping("/manage/general/location/download-excel")
+	public void downloadBranchExcel(HttpServletResponse rs) {
+		XSSFWorkbook workbook = branchService.getBranchWorkbook();
+		rs.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        rs.setHeader("Content-Disposition", "attachment; filename=sample_data.xlsx");
+		try {
+			workbook.write(rs.getOutputStream());
+			workbook.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	// -------------------------------------------------------
 	
 	@Autowired
@@ -341,6 +375,20 @@ public class AdminController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		}
+	}
+	// 설정 - 지국 위치 안내 - 엑셀 파일 다운로드
+	@ResponseBody
+	@GetMapping("/manage/general/biz/download-excel")
+	public void downloadBizExcel(HttpServletResponse rs) {
+		XSSFWorkbook workbook = bizService.getBizWorkbook();
+		rs.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        rs.setHeader("Content-Disposition", "attachment; filename=sample_data.xlsx");
+		try {
+			workbook.write(rs.getOutputStream());
+			workbook.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	// -------------------------------------------------------

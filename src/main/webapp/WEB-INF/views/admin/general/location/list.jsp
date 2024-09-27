@@ -105,7 +105,7 @@
 							<a href="/admin/manage/general/location/create?pageNo=${searchIndex.pageNo}&rowsPerpage=${searchIndex.rowsPerPage}&isExpose=${searchIndex.isExpose}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
-							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
+							<button type="button" id="download-excel" class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
 							<select class="form-control" style="max-width: 200px" name="rowsPerPage">
 		                        <option value=10 ${searchIndex.rowsPerPage == 10 ? 'selected' : '' }>10개씩 보기</option>
 		                        <option value=50 ${searchIndex.rowsPerPage == 50 ? 'selected' : '' }>50개씩 보기</option>

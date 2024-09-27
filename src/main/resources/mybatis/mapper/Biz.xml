@@ -423,4 +423,9 @@
 				funnel_sub = #{funnelSub}
 		where	apl_id = #{aplId}
 	</update>
+	<select id="selectBizListForExcel">
+		select	*
+		from	biz_pr
+		order by pr_id desc
+	</select>
 </mapper>

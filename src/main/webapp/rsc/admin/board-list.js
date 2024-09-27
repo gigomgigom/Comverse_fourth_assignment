@@ -1,5 +1,7 @@
 $(document).ready(function () {
-
+	$('#download-excel').on('click', function() {
+		downloadExcel();
+	})
 })
 
 function pickDate(n) {
@@ -32,4 +34,9 @@ function pickDate(n) {
 	}
 	$('#dateFrom').val(startDate.toISOString().split('T')[0]);
 	$('#dateTo').val(endDate.toISOString().split('T')[0]);
+}
+
+function downloadExcel() {
+	const boCtg = $('#ctg').val();
+	location.href='/admin/board/manage/' + boCtg + '/list/download-excel';
 }

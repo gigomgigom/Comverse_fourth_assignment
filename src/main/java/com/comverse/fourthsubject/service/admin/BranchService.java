@@ -1,9 +1,13 @@
 package com.comverse.fourthsubject.service.admin;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.comverse.fourthsubject.dao.BranchDao;
+import com.comverse.fourthsubject.dto.BoardDto;
 import com.comverse.fourthsubject.dto.BranchDto;
 import com.comverse.fourthsubject.dto.SubBranchDto;
 import com.comverse.fourthsubject.dto.nondb.Pager;
@@ -101,6 +106,42 @@ public class BranchService {
 	//다른 서비스에서 사용 - 지국 목록 가져오기
 	public List<BranchDto> getBranchListForOther() {
 		return branchDao.selectBranchListForSearch();
+	}
+	
+	//지국 목록 엑셀 생성
+	public XSSFWorkbook getBranchWorkbook() {
+		
+		List<BranchDto> branchList = branchDao.selectBranchListForExcel();
+		
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		Sheet sheet = workbook.createSheet("지국(branch)");
+		
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Row dscrptn = sheet.createRow(0);
+		dscrptn.createCell(4).setCellValue("기준 일자");
+		dscrptn.createCell(5).setCellValue(sdf.format(now));
+		
+		Row headerRow = sheet.createRow(1);
+		headerRow.createCell(0).setCellValue("ID");
+		headerRow.createCell(1).setCellValue("위치명");
+		headerRow.createCell(2).setCellValue("전화");
+		headerRow.createCell(3).setCellValue("등록일");
+		headerRow.createCell(4).setCellValue("상태");
+		
+		int rowIdx = 2;
+		for(BranchDto branch : branchList) {
+			Row row = sheet.createRow(rowIdx++);
+			
+			row.createCell(0).setCellValue(branch.getBrId());
+			row.createCell(1).setCellValue(branch.getLocation());
+			row.createCell(2).setCellValue(branch.getTel());
+			row.createCell(3).setCellValue(sdf.format(branch.getRegDate()));
+			row.createCell(4).setCellValue(branch.getStts().equals("작성중") ? "비활성" : "활성");
+		}
+		
+		return workbook;
 	}
 
 }

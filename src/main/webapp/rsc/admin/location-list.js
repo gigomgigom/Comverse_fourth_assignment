@@ -1,5 +1,7 @@
 $(document).ready(function () {
-
+	$('#download-excel').on('click', function() {
+		downloadExcel();
+	})
 })
 
 function pickDate(n) {
@@ -32,4 +34,8 @@ function pickDate(n) {
 	}
 	$('#dateFrom').val(startDate.toISOString().split('T')[0]);
 	$('#dateTo').val(endDate.toISOString().split('T')[0]);
+}
+
+function downloadExcel() {
+	location.href='/admin/manage/general/location/download-excel';
 }

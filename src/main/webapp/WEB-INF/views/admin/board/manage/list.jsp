@@ -50,6 +50,8 @@
 			<!-- Main content -->
 			<!-- Search -->
 			<form action="#" id="search-input">
+			<input type="hidden" id="ctg" value="${boCtg}"/>
+			<input type="hidden" id="page-no" value="${searchIndex.pageNo}"/>
 			<section class="content">
 				<div class="container-fluid p-5">
 					<div class="card card-default">
@@ -143,7 +145,7 @@
 							<a href="/admin/board/manage/${boCtg}/create?pageNo=${searchIndex.pageNo}&isExpose=${searchIndex.isExpose}&keywordCtg=${searchIndex.keywordCtg}&keyword=${searchIndex.keyword}&dateCtg=${searchIndex.dateCtg}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}&stts=${searchIndex.stts}&rowsPerPage=${searchIndex.rowsPerPage}<c:forEach var="other" items="${searchIndex.others}">&others%5B%5D=${other}</c:forEach>" class="btn btn-md btn-outline-primary bg-white">신규 등록</a>
 						</div>
 						<div class="col-md-5 d-flex align-items-center justify-content-end">
-							<button class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
+							<button type="button" id="download-excel" class="btn btn-md btn-outline-primary bg-white mr-5" style="width:300px">엑셀 다운로드</button>
 							<select class="form-control" style="max-width: 200px" name="rowsPerPage">
 		                        <option value=10 ${searchIndex.rowsPerPage == 10 ? 'selected' : '' }>10개씩 보기</option>
 		                        <option value=50 ${searchIndex.rowsPerPage == 50 ? 'selected' : '' }>50개씩 보기</option>

@@ -37,4 +37,7 @@ public interface BizDao {
 	//수정하기
 	void updateBizApplyDetail(BizAplDto bizApl);
 	
+	//엑셀파일에 들어갈 데이터 조회
+	List<BizDto> selectBizListForExcel();
+	
 }

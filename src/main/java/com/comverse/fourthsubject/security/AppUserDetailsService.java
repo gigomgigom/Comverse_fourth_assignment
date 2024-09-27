@@ -27,7 +27,7 @@ public class AppUserDetailsService implements UserDetailsService {
 		
 		AdminDto admin = authDao.selectAdminByAdminId(username);
 		if(admin == null) {
-			log.info("실패");
+			throw new UsernameNotFoundException("사용자가 존재하지않습니다.");
 		}
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		

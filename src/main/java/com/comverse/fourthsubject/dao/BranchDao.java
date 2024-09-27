@@ -25,5 +25,8 @@ public interface BranchDao {
 	
 	//사업설명회 검색을 위한 지부 목록 가져오기
 	List<BranchDto> selectBranchListForSearch();
+	
+	//엑셀
+	List<BranchDto> selectBranchListForExcel();
 
 }

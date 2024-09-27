@@ -432,4 +432,32 @@
 			        #{item}
 			  	</foreach>				
 	</delete>
+	<select id="selectBoardListForExcel">
+		select	bo_id,
+				bo_title,
+				reg_date,
+				bo_writing,
+				expose_start,
+				expose_end,
+				attach_cnt
+		from	(
+					select 		bo.*, 
+								coalesce(boat.cnt, 0) as attach_cnt
+					from		(
+									select 	board.*, 
+											adm.adm_id as adm_id
+									from	board board
+									join	admin adm
+									on		board.bo_writer = adm.adm_no
+								) bo
+					left join	(
+									select 		bo_id, count(*) as cnt
+									from 		board_attach
+									group by 	bo_id
+								) boat
+					on			bo.bo_id = boat.bo_id
+					where		bo.bo_ctg = #{boCtg} and bo_enabled = 1
+				) rs		
+		order by	bo_id desc
+	</select>
 </mapper>

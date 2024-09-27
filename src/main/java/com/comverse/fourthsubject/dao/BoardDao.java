@@ -30,5 +30,7 @@ public interface BoardDao {
 	public void updateBoardDetail(BoardDto board);
 	//게시물 수정 - 게시물 첨부파일 삭제하기
 	public void deleteBoardAttach(int boId, List<Integer> selectedSavedAttach);
+	//게시물 목록 - 검색조건에 해당하는 목록 엑셀파일 생성
+	public List<BoardDto> selectBoardListForExcel(int boCtg);
 
 }
