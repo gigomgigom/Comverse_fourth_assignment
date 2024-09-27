@@ -61,8 +61,7 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">작성자</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<sec:authentication property="principal.username" var="username"/>
-									${username}									
-									<input type="hidden" class="form-control-sm w-100 border-0" value="${username}" name="boWriter"/>
+									${username}
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">

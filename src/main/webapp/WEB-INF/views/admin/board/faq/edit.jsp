@@ -44,6 +44,9 @@
 			</section>
 
 			<!-- Main content -->
+			<form id="edit-form">
+			<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			<input type="hidden" value="${searchIndex.detailId}" name="faqId"/>
 			<section class="content p-5">
 				<div class="card card-default">
 					<div class="card-body">
@@ -51,46 +54,35 @@
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">제목</dt>
 								<dd class="col-md-10 px-3 py-0 m-0 d-flex align-items-center border">
-									<input type="text" class="form-control-sm w-100 border-0">
+									<input type="text" class="form-control-sm w-100 border-0" name="title" value="${faq.title}">
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">작성자</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">심영조</dd>
+								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
+									${writer}
+								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 고정 유무</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox1">
-							        <label class="custom-control-label ml-5" for="checkbox1">
+									<input class="custom-control-input ml-3 mr-5" type="checkbox" value=1 id="pinned" name="pinned" ${faq.faqPinned ? 'checked' : '' }>
+							        <label class="custom-control-label ml-5" for="pinned">
 							        	프론트 화면에 최신 게시물로 노출됩니다.
 							      	</label>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">댓글 등록가능</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox2">
-							        <label class="custom-control-label ml-5" for="checkbox2">
-							        	댓글 등록 가능
-							      	</label>
-								</dd>
-							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">등록일</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">2019-02-25 12:00:00</dd>
-							</dl>
-							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio1" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value=1 id="radio1" name="stts" ${faq.faqWriting ? 'checked' : ''}>
 								        <label class="custom-control-label ml-5" for="radio1">
 								        	작성중
 								      	</label>
 									</div>
 							      	<div class="custom-control custom-radio">
-										<input class="custom-control-input ml-3 mr-5" type="radio" value="" id="radio2" name="isWriting">
+										<input class="custom-control-input ml-3 mr-5" type="radio" value=2 id="radio2" name="stts" ${faq.faqWriting ? '' : 'checked'}>
 								        <label class="custom-control-label ml-5" for="radio2">
 								        	작성완료
 								      	</label>
@@ -101,31 +93,31 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 시작일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div>
-										<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox3">
-								        <label class="custom-control-label ml-5" for="checkbox3">
+										<input class="custom-control-input ml-3 mr-5" type="checkbox" id="expose-start-check" ${faq.exposeStart != null ? 'checked' : ''}>
+								        <label class="custom-control-label ml-5" for="expose-start-check">
 								        	시작일 설정
 								      	</label>
 									</div>
-									<input type="date" class="ml-3 form-control col-sm-5" id="dateFrom">
+									<input id="expose-start" type="date" class="ml-3 form-control col-sm-5" name="exposeStart" value="${faq.exposeStartSdf}" ${faq.exposeStart == null ? 'disabled' : '' }>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">노출 종료일</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<div>
-										<input class="custom-control-input ml-3 mr-5" type="checkbox" value="" id="checkbox4">
-								        <label class="custom-control-label ml-5" for="checkbox4">
+										<input class="custom-control-input ml-3 mr-5" type="checkbox" id="expose-end-check" ${faq.exposeEnd != null ? 'checked' : ''}>
+								        <label class="custom-control-label ml-5" for="expose-end-check">
 								        	종료일 설정
 								      	</label>
 									</div>
-									<input type="date" class="ml-3 form-control col-sm-5" id="dateTo">
+									<input id="expose-end" type="date" class="ml-3 form-control col-sm-5" name="exposeEnd" value="${faq.exposeEndSdf}" ${faq.exposeEnd == null ? 'disabled' : '' }>
 								</dd>
 							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">내용</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border" style="min-height: 500px; max-height: 500px;">
 									<div class="m-0 w-100">
-										<textarea class="form-control" rows="20"></textarea>
+										<textarea class="form-control" rows="20" name="content">${faq.content}</textarea>
 									</div>
 								</dd>
 							</dl>
@@ -133,15 +125,16 @@
 					</div>
 					<div class="card-footer bg-white py-5">
 						<div class="d-flex justify-content-center">
-							<a href="/admin/board/manage/faq/detail" class="btn btn-lg btn-primary mr-5 px-4">저장</a>
+							<button type="button" id="submit-button" class="btn btn-lg btn-primary mr-5 px-4">저장</button>
 						</div>
 						<div class="d-flex justify-content-end">
-							<a href="/admin/board/manage/faq/detail" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</a>
+							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">취소</button>
 							<a href="/admin/board/manage/faq/list" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>
 			</section>
+			</form>
 			<!-- /.content -->
 		</div>
 		<!-- /.content-wrapper -->
@@ -164,5 +157,7 @@
 	<script src="/resources/adminlte/adminlte/js/adminlte.min.js"></script>
 	<!-- AdminLTE for demo purposes -->
 	<script src="/resources/adminlte/adminlte/js/demo.js"></script>
+	<!-- JS -->
+	<script src="/rsc/admin/faq-edit.js"></script>
 </body>
 </html>

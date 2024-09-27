@@ -297,4 +297,19 @@
 		order by	faq_id desc
 		limit		#{pager.startRowIndex}, #{pager.rowsPerPage}
 	</select>
+	<select id="selectFaqDetail">
+		select	*
+		from	faq
+		where	faq_id = #{faqId}
+	</select>
+	<update id="updateFaq" parameterType="faqDto">
+		update	faq
+		set		faq_pinned = #{faqPinned},
+				faq_writing = #{faqWriting},
+				expose_start = #{exposeStart},
+				expose_end = #{exposeEnd},
+				title = #{title},
+				content = #{content}
+		where	faq_id = #{faqId}
+	</update>
 </mapper>

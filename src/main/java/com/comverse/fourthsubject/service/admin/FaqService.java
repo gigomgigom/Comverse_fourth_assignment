@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 
 import com.comverse.fourthsubject.dao.AuthDao;
 import com.comverse.fourthsubject.dao.FaqDao;
+import com.comverse.fourthsubject.dto.AdminDto;
 import com.comverse.fourthsubject.dto.FaqDto;
 import com.comverse.fourthsubject.dto.nondb.FaqRequest;
 import com.comverse.fourthsubject.dto.nondb.Pager;
@@ -48,6 +49,31 @@ public class FaqService {
 		model.addAttribute("searchIndex", searchIndex);
 		model.addAttribute("faqList", faqList);
 	}
+	//상세
+	public void getFaqDetail(Model model, SearchIndex searchIndex) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if(searchIndex.getStartDate() != null) {
+			searchIndex.setStartDateSdf(sdf.format(searchIndex.getStartDate()));
+		}
+		if(searchIndex.getEndDate() != null) {
+			searchIndex.setEndDateSdf(sdf.format(searchIndex.getEndDate()));
+		}
+		
+		FaqDto faq = faqDao.selectFaqDetail(Integer.parseInt(searchIndex.getDetailId()));
+		
+		if(faq.getExposeStart() != null) {
+			faq.setExposeStartSdf(sdf.format(faq.getExposeStart()));
+		}
+		if(faq.getExposeEnd() != null) {
+			faq.setExposeEndSdf(sdf.format(faq.getExposeEnd()));
+		}
+		
+		AdminDto admin = authDao.selectManagerDetail(faq.getFaqWriter());
+		
+		model.addAttribute("searchIndex", searchIndex);
+		model.addAttribute("faq", faq);
+		model.addAttribute("writer", admin.getAdmId());		
+	}
 	//생성
 	public ResponseEntity<?> createFaq(FaqRequest fr, Authentication auth) {
 		FaqDto faq = convertRequestToDto(fr, auth);
@@ -61,7 +87,11 @@ public class FaqService {
 		
 		FaqDto faq = new FaqDto();
 		faq.setFaqId(fr.getFaqId());
-		faq.setFaqWriter(authDao.selectAdminByAdminId(auth.getName()).getAdmNo());
+		
+		if(auth != null) {
+			faq.setFaqWriter(authDao.selectAdminByAdminId(auth.getName()).getAdmNo());
+		}
+		
 		faq.setTitle(fr.getTitle());
 		faq.setFaqPinned(fr.getPinned() == 1);
 		faq.setFaqWriting(fr.getStts() == 1);
@@ -71,6 +101,15 @@ public class FaqService {
 		
 		return faq;
 	}
+	//수정
+	public ResponseEntity<?> editFaq(FaqRequest fr) {
+		FaqDto faq = convertRequestToDto(fr, null);
+		
+		faqDao.updateFaq(faq);
+		
+		return ResponseEntity.ok(null);
+	}
+	
 	
 	
 }

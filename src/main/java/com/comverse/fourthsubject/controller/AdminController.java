@@ -518,8 +518,7 @@ public class AdminController {
 		}
 		if(searchIndex.getRowsPerPage() == 0) {
 			searchIndex.setRowsPerPage(10);
-		}
-		
+		}		
 		faqService.getFaqList(model, searchIndex);
 		return "/admin/board/faq/list";
 	}
@@ -527,15 +526,22 @@ public class AdminController {
 	// 설정 - FAQ - 상세
 	@GetMapping("/manage/general/faq/detail")
 	public String boardFaqDetail(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
-
+		faqService.getFaqDetail(model, searchIndex);
 		return "/admin/board/faq/detail";
 	}
 
 	// 설정 - FAQ - 수정
 	@GetMapping("/manage/general/faq/edit")
 	public String boardFaqEdit(Model model, SearchIndex searchIndex, HttpServletRequest rq) {
-
+		faqService.getFaqDetail(model, searchIndex);
 		return "/admin/board/faq/edit";
+	}
+	
+	//설정 - FAQ - 수정
+	@ResponseBody
+	@PostMapping("/manage/general/faq/edit-faq")
+	public ResponseEntity<?> editFaq(FaqRequest faq) {
+		return faqService.editFaq(faq);
 	}
 
 	// 설정 - FAQ - 생성

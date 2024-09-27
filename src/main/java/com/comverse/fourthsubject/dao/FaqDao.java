@@ -15,5 +15,9 @@ public interface FaqDao {
 	//목록 조회
 	int selectTotalRowCnt(SearchIndex searchIndex);
 	List<FaqDto> selectFaqList(SearchIndex searchIndex);
+	//상세 조회
+	FaqDto selectFaqDetail(int faqId);
+	//수정하기
+	void updateFaq(FaqDto faq);
 
 }
