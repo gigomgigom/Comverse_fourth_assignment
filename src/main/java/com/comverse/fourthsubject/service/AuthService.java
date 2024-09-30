@@ -1,4 +1,4 @@
-package com.comverse.fourthsubject.service.admin;
+package com.comverse.fourthsubject.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;

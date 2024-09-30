@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.comverse.fourthsubject.interceptor.AdminRequestInterceptor;
 import com.comverse.fourthsubject.interceptor.SettingAdminBoardCtgNameInterceptor;
+import com.comverse.fourthsubject.interceptor.UserSettingMenuInterceptor;
 
 @Configuration
 @EnableAspectJAutoProxy
@@ -17,6 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
 	AdminRequestInterceptor ari;
 	@Autowired
 	SettingAdminBoardCtgNameInterceptor bcni;
+	@Autowired
+	UserSettingMenuInterceptor usmi;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -24,5 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
 				.addPathPatterns("/admin/**");
 		registry.addInterceptor(bcni)
 				.addPathPatterns("/admin/board/manage/**");
+		registry.addInterceptor(usmi)
+				.excludePathPatterns("/admin/**")
+				.excludePathPatterns("/resources/**");
 	}
 }

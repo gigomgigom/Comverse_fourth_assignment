@@ -460,4 +460,106 @@
 				) rs		
 		order by	bo_id desc
 	</select>
+	<select id="selectRowCntForUser">
+		select	count(*)
+		from	board
+		where	bo_ctg = #{boCtg}
+				and
+				bo_enabled = 1
+				and
+				bo_writing = 0
+			<![CDATA[
+				and (CURRENT_DATE() >= expose_start or expose_start is null)
+				and (CURRENT_DATE() <= expose_end or expose_end is null)
+			]]>
+				
+	</select>
+	<select id="selectBoardListForUser">
+		select	bo_id,
+				bo_title,
+				reg_date,
+				hit_cnt,
+				bo_pinned
+		from	board
+		where	bo_ctg = #{boCtg}
+				and
+				bo_enabled = 1
+				and
+				bo_writing = 0
+			<![CDATA[
+				and (CURRENT_DATE() >= expose_start or expose_start is null)
+				and (CURRENT_DATE() <= expose_end or expose_end is null)
+			]]>
+		order by	bo_id desc
+		limit		#{pager.startRowIndex}, #{pager.rowsPerPage}
+	</select>
+	<select id="selectPinnedBoardListForUser">
+		select	bo_id,
+				bo_title,
+				reg_date,
+				hit_cnt,
+				bo_pinned
+		from	board
+		where	bo_ctg = #{boCtg}
+				and
+				bo_enabled = 1
+				and
+				bo_writing = 0
+				and
+				bo_pinned = 1
+			<![CDATA[
+				and (CURRENT_DATE() >= expose_start or expose_start is null)
+				and (CURRENT_DATE() <= expose_end or expose_end is null)
+			]]>
+		order by		bo_id desc
+	</select>
+	<select id="selectPreBoardByBoId">
+		select	bo.*
+		from	board as bo
+		join	(
+					select	max(bo_id) as bo_id
+					from	board
+					where	bo_id <![CDATA[<]]> #{boId}
+							and
+							bo_ctg = #{boCtg}
+							and
+							bo_enabled = 1
+							and
+							bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+							
+					
+				) pre
+		on		bo.bo_id = pre.bo_id
+	</select>
+	<select id="selectNextBoardByBoId">
+		select	bo.*
+		from	board as bo
+		join	(
+					select	min(bo_id) as bo_id
+					from	board
+					where	bo_id <![CDATA[>]]> #{boId}
+							and
+							bo_ctg = #{boCtg}
+							and
+							bo_enabled = 1
+							and
+							bo_writing = 0
+						<![CDATA[
+							and (CURRENT_DATE() >= expose_start or expose_start is null)
+							and (CURRENT_DATE() <= expose_end or expose_end is null)
+						]]>
+							
+					
+				) next
+		on		bo.bo_id = next.bo_id
+	</select>
+	<select id="selectBoardAttachByAttachId">
+		select	*
+		from	board_attach
+		where	attach_id = #{attachId}
+	</select>
 </mapper>

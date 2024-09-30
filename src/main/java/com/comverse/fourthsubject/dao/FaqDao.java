@@ -19,5 +19,8 @@ public interface FaqDao {
 	FaqDto selectFaqDetail(int faqId);
 	//수정하기
 	void updateFaq(FaqDto faq);
+	
+	//사용자 화면을 위한 FAQ 리스트 조회
+	List<FaqDto> selectFaqListForUser();
 
 }

@@ -1,4 +1,4 @@
-package com.comverse.fourthsubject.service.admin;
+package com.comverse.fourthsubject.service;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -108,6 +108,12 @@ public class FaqService {
 		faqDao.updateFaq(faq);
 		
 		return ResponseEntity.ok(null);
+	}
+	
+	//사용자화면에서의 FAQ리스트 가져오기
+	public void getFaqListForUser(Model model) {
+		List<FaqDto> faqList = faqDao.selectFaqListForUser();
+		model.addAttribute("faqList", faqList);
 	}
 	
 	

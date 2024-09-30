@@ -1,4 +1,4 @@
-package com.comverse.fourthsubject.service.admin;
+package com.comverse.fourthsubject.service;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,8 +7,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -167,6 +171,29 @@ public class BoardService {
 		}		
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Image file");
+	}
+	//서버 로컬에 저장된 첨부파일 다운로드
+	public ResponseEntity<?> boardDownloadAttachFile(int boId, int attachId) throws IOException {
+		BoardAttachDto boAttach = boardDao.selectBoardAttachByAttachId(attachId);
+		if(boAttach != null) {
+			String boardDir = uploadDir + "/attach/" +boId;
+			Path filePath = Paths.get(boardDir).resolve(boAttach.getAttachName()).normalize();
+			Resource rsc = new UrlResource(filePath.toUri());
+			
+			if(rsc.exists()) {
+				String contentType = Files.probeContentType(filePath);
+	            if (contentType == null) {
+	                contentType = "application/octet-stream"; // 기본값으로 바이너리 파일 처리
+	            }
+	            
+	            String fileName = new String(boAttach.getAttachOName().getBytes("UTF-8"), "ISO-8859-1");
+	            return ResponseEntity.ok()
+	                .contentType(MediaType.parseMediaType(contentType))
+	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"") // 다운로드를 위한 헤더
+	                .body(rsc);
+			}
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not exists");
 	}
 	// 게시판 생성하기
 	@Transactional
@@ -354,5 +381,60 @@ public class BoardService {
 		}
 		
 		return workbook;
+	}
+	
+	//사용자 화면에서의 게시글 목록 가져오기
+	public void getBoardListForUser(int boCtg, String pageNo, Model model) {
+		
+		if(pageNo == null || pageNo.isBlank()) {
+			pageNo = "1";
+		}
+		BoardCtgDto ctg = boardCtgDao.selectBoardCtgDetail(boCtg);
+		
+		int totalRows = boardDao.selectRowCntForUser(boCtg);
+		Pager pager = new Pager(10, 10, totalRows, Integer.parseInt(pageNo));
+		
+		List<BoardDto> boardList = boardDao.selectBoardListForUser(boCtg, pager);
+		
+		List<BoardDto> pinnedBoardList = boardDao.selectPinnedBoardListForUser(boCtg);
+		
+		Date compDate = null;
+		if(ctg.isNewExpose()) {
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.DATE, -ctg.getExposePeriod());
+			
+			compDate = cal.getTime();
+		}
+		
+		model.addAttribute("compDate", compDate);
+		model.addAttribute("ctg", ctg);
+		model.addAttribute("pager", pager);
+		model.addAttribute("boardList", boardList);
+		model.addAttribute("pinned", pinnedBoardList);
+		
+	}
+	
+	//사용자 화면에서의 게시글 상세 가져오기
+	public void getBoardDetailForUser(int boCtg, String boId, Model model) {
+		
+		BoardCtgDto ctg = boardCtgDao.selectBoardCtgDetail(boCtg);
+		BoardDto board = boardDao.selectBoardDetailByBoId(Integer.parseInt(boId));
+		if(board != null) {
+			List<BoardAttachDto> boardAttach = boardDao.selectBoardAttachListByBoId(board.getBoId());
+			board.setBoAttachList(boardAttach);
+		}
+		
+		Map<String, BoardDto> preNext = new HashMap<>();
+		
+		BoardDto preBoard = boardDao.selectPreBoardByBoId(boCtg, Integer.parseInt(boId));
+		BoardDto nextBoard = boardDao.selectNextBoardByBoId(boCtg, Integer.parseInt(boId));
+		
+		preNext.put("pre", preBoard);
+		preNext.put("next", nextBoard);
+		
+		model.addAttribute("ctg", ctg);
+		model.addAttribute("board", board);
+		model.addAttribute("preNext", preNext);
+		
 	}
 }

@@ -32,5 +32,15 @@ public interface BoardDao {
 	public void deleteBoardAttach(int boId, List<Integer> selectedSavedAttach);
 	//게시물 목록 - 검색조건에 해당하는 목록 엑셀파일 생성
 	public List<BoardDto> selectBoardListForExcel(int boCtg);
+	
+	//사용자 화면 게시물 목록 가져오기
+	public int selectRowCntForUser(int boCtg);
+	public List<BoardDto> selectBoardListForUser(int boCtg, Pager pager);
+	public List<BoardDto> selectPinnedBoardListForUser(int boCtg);
+	//사용자 화면 게시물 상세 가져오기
+	public BoardDto selectPreBoardByBoId(int boCtg, int boId);
+	public BoardDto selectNextBoardByBoId(int boCtg, int boId);
+	//첨부파일 정보 가져오기
+	public BoardAttachDto selectBoardAttachByAttachId(int attachId);
 
 }

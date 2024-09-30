@@ -1,14 +1,16 @@
-package com.comverse.fourthsubject.service.admin;
+package com.comverse.fourthsubject.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -280,5 +282,44 @@ public class BizService {
 		}
 		
 		return workbook;
+	}
+	//사용자를 위한 사업설명회 목록 가져오기
+	public void getBizListForUser(Model model) {
+		List<BizDto> bizList = bizDao.selectBizListForApply();
+		
+		List<Map<String, Object>> result = new ArrayList<>();
+		for(BizDto biz : bizList) {
+			Map<String, Object> map = new HashMap<>();
+			
+			List<BizSchDto> bizSchList = bizDao.selectBizScheduleByPrId(biz.getPrId());
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일");
+			for(BizSchDto bizSch : bizSchList) {
+		        String formattedDate = bizSch.getPrDate().format(formatter);
+
+		        // 요일을 한글로 추가
+		        String dayOfWeek = bizSch.getPrDate().getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+		        
+		        // 오전/오후 형식
+		        String amPm = bizSch.getPrDate().getHour() < 12 ? "오전" : "오후";
+		        int hour = bizSch.getPrDate().getHour() % 12 == 0 ? 12 : bizSch.getPrDate().getHour() % 12;
+		        String minute = String.format("%02d", bizSch.getPrDate().getMinute());
+
+		        // 포맷하기
+		        String str = String.format("%s(%s) %s %d:%s", formattedDate, dayOfWeek, amPm, hour, minute);
+		        bizSch.setPrDateStr(str);
+			}
+			biz.setBizSchList(bizSchList);
+			log.info(bizSchList.toString());
+			BranchDto branch = branchDao.selectBranchDetail(biz.getBrId());
+			
+			map.put("branch", branch);
+			map.put("biz", biz);
+			
+			result.add(map);
+		}
+		
+		model.addAttribute("result", result);
+		
 	}
 }

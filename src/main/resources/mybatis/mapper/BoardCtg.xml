@@ -3,7 +3,7 @@
 <mapper namespace="com.comverse.fourthsubject.dao.BoardCtgDao">
 
 	<select id="selectBoardCtgList" resultType="boardCtgDto">
-		select 	ctg_id, ctg_name
+		select 	ctg_id, ctg_name, ctg_in_use, ctg_menu
 		from	board_ctg
 		where	ctg_enabled = 1
 	</select>

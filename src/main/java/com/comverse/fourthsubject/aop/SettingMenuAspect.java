@@ -1,4 +1,4 @@
-package com.comverse.fourthsubject.aop.admin;
+package com.comverse.fourthsubject.aop;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.springframework.ui.Model;
 import com.comverse.fourthsubject.dto.AdminMenuDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.nondb.SideBarModel;
-import com.comverse.fourthsubject.service.admin.AuthService;
+import com.comverse.fourthsubject.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

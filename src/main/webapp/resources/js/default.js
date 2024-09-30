@@ -6,6 +6,110 @@
 //     }
 // })
 
+//사용자 지정 스크립트
+$('#query-content-input').keyup(function (e) {
+	let content = $(this).val();
+	
+	if(content.length === 0 || content === '') {
+		$('#text_count .current').text('0자');
+	} else if(content.length > 1000) {
+		alert('1000자 이상 작성하실 수 없습니다');
+	} else {
+		$('#text_count .current').text(content.length + '자');
+	}
+});
+
+function reset() {
+	$('#inquiry-form')[0].reset();
+}
+
+function submitInquiryForm(index) {
+	const validateResult = validateForm();
+	const _csrf = $('#csrf').val();
+	
+	const form = $('#inquiry-form')[0];
+	if(validateResult.result) {
+		const formData = new FormData(form);
+		
+		formData.append('tel', validateResult.tel);
+		formData.append('email', validateResult.email);
+		formData.append('agree', true);
+		if(index === 0) {
+			formData.append('field', '학습문의');
+		} else {
+			formData.append('field', '1대1 문의');
+		}
+		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': _csrf
+			}
+		})
+		
+		$.ajax({
+			url: '/create-inquiry',
+			type: 'POST',
+			enctype: 'multipart/form-data',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function() {
+				alert('정보가 생성되었습니다.');
+				location.href="/";
+			},
+			error: function(e) {
+				alert('에러발생');
+				console.log(e);
+			}
+		})
+	} else{
+		alert(validateResult.error.join(', ')+"에서 올바르지 않은 형식이 발견되었습니다.");
+	}
+}
+
+function validateForm() {
+	
+	let result = true;
+	let error = [];
+	
+	const tel = $('#tel-prefix').attr('data-select') + '-' + $('#inquiry-form [name="telSecond"]').val() + '-' + $('#inquiry-form [name="telThird"]').val()
+	const email = $('#email_name').val()+'@'+$('#email_domain').val();
+	
+	const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
+	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	
+	if($('#inquiry-form [name="name"]').val() === '') {
+		result = false;
+		error.push('이름');
+	}
+	if($('#inquiry-form [name="title"]').val() === '') {
+		result = false;
+		error.push('제목');
+	}
+	if($('#inquiry-form [name="content"]').val() === '') {
+		result = false;
+		error.push('내용');
+	}	
+	if(!phoneRegex.test(tel)) {
+		result = false;
+		error.push('전화번호');
+	}
+	if(!emailRegex.test(email)) {
+		result = false;
+		error.push('이메일');
+	}
+	if(!$('#agree').is(':checked')){
+		result = false;
+		error.push('개인정보 동의');
+	}
+	return {
+		result,
+		error,
+		tel,
+		email
+	}
+}
+
 var selectAct = {
     init:function(){
         this.wrap = $('.sel_wrap .sel_style');
@@ -31,6 +135,19 @@ var selectAct = {
             var $this = $(this);
             var $text = $this.text();
             $this.closest('.sel_wrap').removeClass('open').find('.sel_style').text($text).attr('data-select',$text);
+			
+			const emailInput = $('#email_domain');
+			if($text.indexOf('.') != -1 || $text === '직접입력') {
+				if($text === '직접입력') {
+					emailInput.removeClass('disabled');
+					emailInput.attr('disabled', false);
+					emailInput.val('');
+				} else {
+					emailInput.addClass('disabled');
+					emailInput.attr('disabled', true);
+					emailInput.val($text);
+				}
+			}			
         });
     }
 }

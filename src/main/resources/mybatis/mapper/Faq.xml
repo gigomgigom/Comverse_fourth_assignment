@@ -312,4 +312,13 @@
 				content = #{content}
 		where	faq_id = #{faqId}
 	</update>
+	<select id="selectFaqListForUser">
+		select	*
+		from	faq
+		where	faq_writing = 0
+			<![CDATA[
+				and (CURRENT_DATE() >= expose_start or expose_start is null)
+				and (CURRENT_DATE() <= expose_end or expose_end is null)
+			]]>
+	</select>
 </mapper>

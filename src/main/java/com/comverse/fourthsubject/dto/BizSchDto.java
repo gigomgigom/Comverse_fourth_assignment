@@ -9,4 +9,5 @@ public class BizSchDto {
 	private int schId;
 	private int prId;
 	private LocalDateTime prDate;
+	private String prDateStr;
 }

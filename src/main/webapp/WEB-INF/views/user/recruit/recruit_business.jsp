@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -80,56 +82,34 @@
 				<section class="section_business_schedule">
 					<div class="inner">
 						<ul class="schedule_list">
-							<li>
-								<strong class="location">서울</strong>
-								<ul class="schedule_info_list">
-									<li>
-										<em class="subject">일시</em>
-										<div class="cont_wrap">
-											<p>2019년 4월 19일(금) 오전 10:30</p>
-											<p>2019년 4월 26일(금) 오전 10:30</p>
-										</div>
-									</li>
-									<li>
-										<em class="subject">장소</em>
-										<div class="cont_wrap">
-											<p>서울시 강남구 영동대로 106길 41, (삼성동 동영빌딩)  시공교육 2F</p>
-										</div>
-									</li>
-									<li>
-										<em class="subject">전화</em>
-										<div class="cont_wrap">
-											<p>02) 3288-0910</p>
-										</div>
-									</li>
-								</ul>
-								<a href="javascript:void(0);" class="btn_ask" onclick="layerAct.layerShow('layer_ask')">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
-							</li>
-							<li>
-								<strong class="location">경북/구미</strong>
-								<ul class="schedule_info_list">
-									<li>
-										<em class="subject">일시</em>
-										<div class="cont_wrap">
-											<p>2019년 4월 19일(금) 오전 10:30</p>
-											<p>2019년 4월 26일(금) 오전 10:30</p>
-										</div>
-									</li>
-									<li>
-										<em class="subject">장소</em>
-										<div class="cont_wrap">
-											<p>경북 구미시 박정희로 599, 상가 402호 구미지국</p>
-										</div>
-									</li>
-									<li>
-										<em class="subject">전화</em>
-										<div class="cont_wrap">
-											<p>02) 3288-0910</p>
-										</div>
-									</li>
-								</ul>
-								<a href="javascript:void(0);" class="btn_ask" onclick="layerAct.layerShow('layer_ask')">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
-							</li>
+							<c:forEach var="biz" items="${result}">
+								<li>
+									<strong class="location">${biz.branch.location}</strong>
+									<ul class="schedule_info_list">
+										<li>
+											<em class="subject">일시</em>
+											<div class="cont_wrap">
+												<c:forEach var="bizSch" items="${biz.biz.bizSchList}">
+													<p>${bizSch.prDateStr}</p>
+												</c:forEach>												
+											</div>
+										</li>
+										<li>
+											<em class="subject">장소</em>
+											<div class="cont_wrap">
+												<p>${biz.biz.location}</p>
+											</div>
+										</li>
+										<li>
+											<em class="subject">전화</em>
+											<div class="cont_wrap">
+												<p>${biz.branch.tel}</p>
+											</div>
+										</li>
+									</ul>
+									<a href="javascript:void(0);" class="btn_ask" onclick="layerAct.layerShow('layer_ask')">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
+								</li>
+							</c:forEach>							
 						</ul>
 					</div>
 				</section>
