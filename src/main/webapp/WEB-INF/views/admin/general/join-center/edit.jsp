@@ -113,7 +113,7 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">거주 지역</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<select id="category" class="form-control col-sm-12" name="location">
-				                        <option value="">지역 선택</option>
+				                        <option value="0">지역 선택</option>
 				                        <option value="서울" ${rcrt.location eq '서울' ? 'selected' : '' }>서울특별시</option>
 									    <option value="부산" ${rcrt.location eq '부산' ? 'selected' : '' }>부산광역시</option>
 									    <option value="대구" ${rcrt.location eq '대구' ? 'selected' : '' }>대구광역시</option>

@@ -92,7 +92,7 @@
 									<th scope="row">이메일<span class="essential">*</span></th>
 									<td>
 										<div class="form_group">
-											<input type="text" class="ip_email" title="메일주소" name="email_name">
+											<input type="text" class="ip_email" title="메일주소" id="email_name">
 											<span class="at">@</span>
 											<input type="text" class="ip_email" id="email_domain" title="도메인">
 											<div class="sel_wrap ip_personal">

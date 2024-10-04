@@ -208,6 +208,17 @@ div.sel_wrap.ip_address{width:100%;}
 .board_detail_style .file_wrap a:before{content:'';display:inline-block;width:16px;height:16px;margin-right:6px;background:url(../image/icon_file.png) no-repeat;vertical-align:middle;}
 .board_detail_style .file_wrap a:hover{background:#f3f5f6;}
 
+.board_detail_style .comment_form_container{color: black; padding:20px 0 10px; display: flex;}
+.board_detail_style .comment_form_container textarea{width: 90%;}
+.board_detail_style .comment_form_container button{width: 10%; background-color: #ff5a00; color:white;}
+.board_detail_style .comment_list_wrap{color: black; padding:20px 0 10px;}
+.board_detail_style .comment_list_wrap .comment {border-bottom:0.5px solid #ddd; border-top: 0.5px solid #ddd; padding: 20px 30px 20px 30px;}
+.board_detail_style .comment_list_wrap .comment .comment_writer_date{display: flex; justify-content: space-between; margin-bottom: 20px}
+.board_detail_style .comment_list_wrap .comment .comment_writer_date .comment_writer{font-size: 1.4em}
+.board_detail_style .comment_list_wrap .comment .comment_button {display: flex; justify-content: end}
+.board_detail_style .comment_list_wrap .comment .comment_button .remove_button {width: 70px;  height: 40px; background-color: #ff5a00; color:white;}
+
+
 .board_detail_style .move_area{position:relative;margin-bottom:50px;border-bottom:1px solid #ddd;}
 .board_detail_style .move_area div{position:relative;padding:22px 80px;border-top:1px solid #ddd;}
 .board_detail_style .move_area .direction{display:inline-block;width:123px;color:#ff5a00;font-size:16px;line-height:1.62;}

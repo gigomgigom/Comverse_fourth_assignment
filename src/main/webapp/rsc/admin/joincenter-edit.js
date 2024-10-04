@@ -31,6 +31,10 @@ $(document).ready(function () {
 			result = false;
 			error.push('주소');
 		}
+		if($('#create-form [name="location"]').val() === '') {
+			result = false;
+			error.push('거주지역');
+		}
 		if(!phoneRegex.test($('#edit-form [name="tel"]').val())) {
 			result = false;
 			error.push('연락처');

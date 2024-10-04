@@ -166,7 +166,7 @@
 						</div>
 						<div class="d-flex justify-content-end">
 							<button type="reset" class="btn btn-lg btn-outline-danger mr-5 px-4">초기화</button>
-							<a href="/admin/manage/location/list?pageNo=${searchIndex.pageNo}&rowsPerpage=${searchIndex.rowsPerPage}&isExpose=${searchIndex.isExpose}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
+							<a href="/admin/manage/general/location/list?pageNo=${searchIndex.pageNo}&rowsPerpage=${searchIndex.rowsPerPage}&isExpose=${searchIndex.isExpose}&keyword=${searchIndex.keyword}&startDate=${searchIndex.startDateSdf}&endDate=${searchIndex.endDateSdf}" class="btn btn-lg btn-outline-secondary px-4">목록</a>
 						</div>
 					</div>
 				</div>

@@ -5,6 +5,83 @@
 //         $(this).parent('.sel_wrap').toggleClass('open')
 //     }
 // })
+//댓글 작성하기
+$('#submit_comment').on('click', function(){
+	const name = $('#writer_name').val();
+	const pw = $('#writer_pw').val();
+	const content = $('#comment_form').val();
+	const boId = $('#bo_id_input').val();
+	
+	if(name === '') {
+		alert('이름을 적어주십시오.');
+		return;
+	} else if(pw === '') {
+		alert('비밀번호를 입력해주세요');
+		return;
+	} else if(content === '') {
+		alert('내용을 입력해주세요');
+		return;
+	}
+	const _csrf = $('#csrf').val();
+	const formData = new FormData();
+	
+	formData.append('boId', boId);
+	formData.append('anonWriter', name);
+	formData.append('anonPw', pw);
+	formData.append('content', content);
+	
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': _csrf
+		}
+	})
+	
+	$.ajax({
+		url: '/home/board/write_reply',
+		type: 'POST',
+		enctype: 'multipart/form-data',
+		data: formData,
+		processData: false,
+		contentType: false,
+		success: function() {
+			alert('댓글이 생성되었습니다.');
+			location.reload();
+		},
+		error: function(e) {
+			alert('에러발생');
+			console.log(e);
+		}
+	})	
+})
+
+$('.remove_button').on('click', function(){
+	const replyId = $(this).attr('id').substr(6);
+	const anonPw = prompt('댓글 생성할때 지정한 비밀번호를 입력해주세요.', '');
+	
+	const data = {
+		replyId, anonPw
+	};
+	if(anonPw != null) {
+		$.ajax({
+			url: '/home/board/delete_reply',
+			type: 'GET',
+			data: JSON.parse(JSON.stringify(data)),
+			contentType: 'application/json',
+			success: function(data) {
+				if(data) {
+					alert('삭제되었습니다.');
+					location.reload();
+				} else {
+					alert('비밀번호가 잘못되었습니다.');
+				}
+			},
+			error: function(e) {
+				alert('에러발생');
+				console.log(e);
+			}
+		})
+	}
+});
 
 //사용자 지정 스크립트
 $('#query-content-input').keyup(function (e) {
@@ -66,7 +143,6 @@ function submitInquiryForm(index) {
 		alert(validateResult.error.join(', ')+"에서 올바르지 않은 형식이 발견되었습니다.");
 	}
 }
-
 function validateForm() {
 	
 	let result = true;
@@ -108,6 +184,90 @@ function validateForm() {
 		tel,
 		email
 	}
+}
+
+function reset() {
+	$('#join-center-form')[0].reset();
+}
+
+function submitJoinCenterForm() {
+	let result = true;
+	let error = [];
+	
+	const tel = $('#tel-prefix').attr('data-select') + '-' + $('#join-center-form [name="telSecond"]').val() + '-' + $('#join-center-form [name="telThird"]').val()
+	const email = $('#email_name').val()+'@'+$('#email_domain').val();
+	
+	const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
+	const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	
+	
+	if($('#join-center-form [name="name"]').val() === '') {
+		result = false;
+		error.push('이름');
+	}
+	if($('#join-center-form [name="birthDate"]').val() === '') {
+		result = false;
+		error.push('생년월일');
+	}
+	if($('#join-center-form [name="adr"]').val() === '') {
+		result = false;
+		error.push('주소');
+	}
+	if(!phoneRegex.test(tel)) {
+		result = false;
+		error.push('전화번호');
+	}
+	if(!emailRegex.test(email)) {
+		result = false;
+		error.push('이메일');
+	}
+	if($('#living-location').attr('data-select') === ''){
+		result = false;
+		error.push('거주지역');
+	}
+	if(!$('#agree').is(':checked')){
+		result = false;
+		error.push('개인정보 동의');
+	}
+	
+	if(result) {
+		const _csrf = $('#csrf').val();
+			
+		const form = $('#join-center-form')[0];
+		const formData = new FormData(form);
+		
+		formData.append('tel', tel);
+		formData.append('email', email);
+		formData.append('agree', true);
+		formData.append('location', $('#living-location').attr('data-select'));
+		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': _csrf
+			}
+		})
+		
+		$.ajax({
+			url: '/recruit/create-center-setup',
+			type: 'POST',
+			enctype: 'multipart/form-data',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function() {
+				alert('정보가 생성되었습니다.');
+				location.href="/";
+			},
+			error: function(e) {
+				alert('에러발생');
+				console.log(e);
+			}
+		})
+	} else {
+		alert(error.join(', ')+"에서 올바르지 않은 형식이 발견되었습니다.");
+	}
+	
+	
 }
 
 var selectAct = {
@@ -165,6 +325,132 @@ $('.btn_faq_toggle').click(function(){
         $(this).removeClass('on')
     }
 })
+function formatDate(dateString) {
+    const daysOfWeek = ['일', '월', '화', '수', '목', '금', '토'];
+
+    // Date 객체로 변환
+    const date = new Date(dateString);
+
+    // 연도, 월, 일 추출
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1
+    const day = date.getDate();
+
+    // 요일 구하기
+    const dayOfWeek = daysOfWeek[date.getDay()];
+
+    // 시간 및 오전/오후 구하기
+    let hours = date.getHours();
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const ampm = hours < 12 ? '오전' : '오후';
+    hours = hours % 12 || 12; // 0을 12로 변환
+
+    // 최종 포맷
+    return `${year}년 ${month}월 ${day}일(${dayOfWeek}) ${ampm} ${hours}:${minutes}`;
+}
+
+function resetBizApply() {
+	$('#apply-form')[0].reset();
+}
+// 사업설명회 신청 폼 레이어 데이터 출력
+function showBizPrInfoForm(prId) {
+	resetBizApply();
+	
+	$.ajax({
+		url: '/recruit/get_biz_detail?prId='+prId,
+		type: 'GET',
+		success: function(data) {			
+			$('label[for=test1]').text(data.branchLocation);
+			$('#test1').val(data.biz.prId);
+			$('#choose_time').empty();
+			for(const dateTime of data.biz.bizSchList) {
+				var dateStr = formatDate(dateTime.prDate);
+				$('#choose_time').append(
+					'<div class="radio_wrap"><input type="radio" id="sch-' + dateTime.schId + '" name="schId" value="' + dateTime.schId + '"><label for="sch-' + dateTime.schId + '">' + dateStr + '</label></div>'
+				)
+			}			
+			layerAct.layerShow('layer_ask');
+		},
+		error: function(e) {
+			alert('에러발생');
+			console.log(e);
+		}
+	})
+}
+
+function bizApply() {
+	let result = true;
+	let error = [];
+	
+	const tel = $('#phone1').val() + '-' + $('#phone2').val() + '-' + $('#phone3').val();
+	
+	const phoneRegex = /^01[016789]-\d{3,4}-\d{4}$/;
+	
+	if($('#apply-form [name="name"]').val() === '') {
+		result = false;
+		error.push('이름');
+	}
+	if($('#apply-form [name="hopeArea"]').val() === '') {
+		result = false;
+		error.push('활동희망지역');
+	}
+	if($('#apply-form [name="age"]').val() === '') {
+		result = false;
+		error.push('연령대');
+	}
+	if($('#apply-form [name="funnel"]').val() === '') {
+		result = false;
+		error.push('유입경로');
+	}
+	if($('#apply-form [name="funnelSub"]').val() === '') {
+		result = false;
+		error.push('상세 유입경로');
+	}
+	if(!phoneRegex.test(tel)) {
+		result = false;
+		error.push('전화번호');
+	}
+	if(!$('#agree').is(':checked')){
+		result = false;
+		error.push('개인정보 동의');
+	}
+	
+	if(result) {
+		const form = $('#apply-form')[0];
+		const formData = new FormData(form);
+		
+		const _csrf = $('#csrf').val();
+				
+		formData.append('tel', tel);
+		formData.append('channel', '홈페이지');
+		formData.append('agree', true);
+		
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': _csrf
+			}
+		})
+		
+		$.ajax({
+			url: '/recruit/create-biz-apply',
+			type: 'POST',
+			enctype: 'multipart/form-data',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function() {
+				alert('정보가 생성되었습니다.');
+				location.reload();
+			},
+			error: function(e) {
+				alert('에러발생');
+				console.log(e);
+			}
+		})
+	} else {
+		alert(error.join(', ')+"에서 올바르지 않은 형식이 발견되었습니다.");
+	}
+}
 
 /* layer popup */
 var layerAct = {
@@ -205,22 +491,46 @@ var tabAct = {
     },
     addEvent:function(){
         this.menu.on('click',function(){
-            var $this = $(this)
-            ,$thisIndex = $this.index()
+            var $this = $(this)			
+            //,$thisIndex = $this.index()
             ,$thisP = $this.parent()
             ,$thisSB = $thisP.find('li')
-            ,$thisPP = $thisP.parent()
-            ,$cont = $thisPP.find('.tab_cont');
-
+            //,$thisPP = $thisP.parent()
+            //,$cont = $thisPP.find('.tab_cont');
+			
             $thisSB.removeClass('active');
             $this.addClass('active');
-
-            $cont.removeClass('active');
-            $cont.eq($thisIndex).addClass('active');
+            
+			getBranchDetail($this.attr('data-select'));
+			//$cont.removeClass('active');
+            //$cont.eq($thisIndex).addClass('active');
         });
     }
 }
 tabAct.init();
+
+function getBranchDetail(brId) {
+	$.ajax({
+		url: '/help/get-location-detail?brId='+brId,
+		type: 'GET',
+		success: function(data){
+			$('#branch_location').text(data.branch.location);
+			$('#branch_adr').text(data.branch.adr);
+			$('#branch_tel').text(data.branch.tel);
+			
+			$('#branch_sub').html('');
+			for(const subBranch of data.subBranchList) {
+				const htmlPiece = '<li><em>' + subBranch.subName + '</em><span>' + subBranch.subAdr + '</span></li>';
+				$('#branch_sub').append(htmlPiece);
+			}
+			createMap(data.branch.adr);
+		},
+		error: function(e) {
+			alert('에러발생');
+			console.log(e);
+		}
+	})
+}
 
 $('.visual_wrap').animate({opacity:1}, 1500, function() {}).addClass('on');
 

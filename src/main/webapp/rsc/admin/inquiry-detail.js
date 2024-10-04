@@ -44,7 +44,7 @@ $(document).ready(function () {
 			processData: false,
 			contentType: false,
 			success: function() {
-				alert('정보가 생성되었습니다.');
+				alert('처리되었습니다.');
 				location.reload();
 			},
 			error: function(e) {

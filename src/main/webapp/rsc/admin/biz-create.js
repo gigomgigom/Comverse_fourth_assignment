@@ -65,7 +65,7 @@ $(document).ready(function () {
 		let result = true;
 		let error = [];
 
-		if(brId === 0) {
+		if(brId == 0) {
 			result = false;
 			error.push('지부');
 		}

@@ -27,6 +27,10 @@ $(document).ready(function () {
 			result = false;
 			error.push('내용');
 		}
+		if($('#create-form [name="location"]').val() === '') {
+			result = false;
+			error.push('거주지역');
+		}
 		if($('#create-form [name="adr"]').val() === '') {
 			result = false;
 			error.push('주소');

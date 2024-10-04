@@ -105,7 +105,7 @@
 				                    <input id="status2" type="radio" value=1 name="stts" ${searchIndex.stts == 1 ? 'checked' : ''}>
 				                    <label for="status2" class="mr-3">작성중</label>
 				                    <input id="status3" type="radio" value=2 name="stts" ${searchIndex.stts == 2 ? 'checked' : ''}>
-				                    <label for="status3" class="mr-3">게시중</label>
+				                    <label for="status3" class="mr-3">작성완료</label>
 				                </div>
 				            </div>
 				            <div class="form-group d-flex justify-content-center">

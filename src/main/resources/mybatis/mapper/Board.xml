@@ -562,4 +562,39 @@
 		from	board_attach
 		where	attach_id = #{attachId}
 	</select>
+	<insert id="insertBoardReply">
+		insert into	board_reply	(
+									bo_id,
+									content,
+									reg_date,
+									anon_writer,
+									anon_pw,
+									rply_enabled
+								)
+		values					(
+									#{boId},
+									#{content},
+									now(),
+									#{anonWriter},
+									#{anonPw},
+									1
+								)
+	</insert>
+	<select id="selectReplyListByBoId">
+		select	*
+		from	board_reply
+		where	bo_id = #{boId}
+				and
+				rply_enabled = 1
+	</select>
+	<update id="updateReplyEnabled">
+		update	board_reply
+		set		rply_enabled = 0
+		where	reply_id = #{replyId}
+	</update>
+	<select id="selectReplyDetail">
+		select	*
+		from	board_reply
+		where	reply_id = #{replyId}
+	</select>
 </mapper>

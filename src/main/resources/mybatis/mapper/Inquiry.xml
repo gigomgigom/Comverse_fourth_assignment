@@ -178,5 +178,6 @@
 	<update id="updateInquiryStts" parameterType="inqProgDto">
 		update	inquiry
 		set		stts = #{stts}
+		where	inq_id = #{inqId}
 	</update>
 </mapper>

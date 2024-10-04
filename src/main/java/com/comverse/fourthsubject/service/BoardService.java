@@ -37,6 +37,7 @@ import com.comverse.fourthsubject.dto.AdminDto;
 import com.comverse.fourthsubject.dto.BoardAttachDto;
 import com.comverse.fourthsubject.dto.BoardCtgDto;
 import com.comverse.fourthsubject.dto.BoardDto;
+import com.comverse.fourthsubject.dto.ReplyDto;
 import com.comverse.fourthsubject.dto.nondb.BoardFormRequest;
 import com.comverse.fourthsubject.dto.nondb.Pager;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
@@ -415,6 +416,7 @@ public class BoardService {
 	}
 	
 	//사용자 화면에서의 게시글 상세 가져오기
+	@Transactional
 	public void getBoardDetailForUser(int boCtg, String boId, Model model) {
 		
 		BoardCtgDto ctg = boardCtgDao.selectBoardCtgDetail(boCtg);
@@ -424,10 +426,14 @@ public class BoardService {
 			board.setBoAttachList(boardAttach);
 		}
 		
+		List<ReplyDto> replyList = boardDao.selectReplyListByBoId(Integer.parseInt(boId));
+		
 		Map<String, BoardDto> preNext = new HashMap<>();
 		
 		BoardDto preBoard = boardDao.selectPreBoardByBoId(boCtg, Integer.parseInt(boId));
 		BoardDto nextBoard = boardDao.selectNextBoardByBoId(boCtg, Integer.parseInt(boId));
+		
+		boardDao.updateBoardHitCnt(Integer.parseInt(boId));
 		
 		preNext.put("pre", preBoard);
 		preNext.put("next", nextBoard);
@@ -435,6 +441,21 @@ public class BoardService {
 		model.addAttribute("ctg", ctg);
 		model.addAttribute("board", board);
 		model.addAttribute("preNext", preNext);
-		
+		model.addAttribute("replyList", replyList);
+	}
+	//댓글 작성하기
+	public ResponseEntity<?> writeBoardReply(ReplyDto reply) {
+		boardDao.insertBoardReply(reply);
+		return ResponseEntity.ok(null);
+	}
+	//댓글 삭제하기
+	public ResponseEntity<?> deleteBoardReply(ReplyDto rqReply) {
+		ReplyDto reply = boardDao.selectReplyDetail(rqReply.getReplyId());
+		if(reply.getAnonPw().equals(rqReply.getAnonPw())) {
+			boardDao.updateReplyEnabled(rqReply);
+			return ResponseEntity.ok(true);
+		} else {
+			return ResponseEntity.ok(false);
+		}
 	}
 }

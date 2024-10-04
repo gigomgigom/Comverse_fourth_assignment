@@ -107,7 +107,7 @@
 											</div>
 										</li>
 									</ul>
-									<a href="javascript:void(0);" class="btn_ask" onclick="layerAct.layerShow('layer_ask')">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
+									<a href="javascript:void(0);" class="btn_ask" onclick="showBizPrInfoForm(${biz.biz.prId})">참석신청</a><!-- 190426 javascript:void(0); 오타수정 -->
 								</li>
 							</c:forEach>							
 						</ul>
@@ -131,80 +131,62 @@
 		</div>
 		<div class="cont_area">
 			<div class="area_inner">
+				<form id="apply-form">
+				<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				<strong class="tit">2019년 4월 아이스크림 홈런 학습센터 사업설명회 신청</strong>
 				<ul class="input_list">
 						<li>
 							<strong class="subject">지역<span class="essential">*</span></strong>
 							<div class="form_group">
 								<div class="radio_wrap">
-									<input type="radio" id="test1" name="location" checked="">
+									<input type="radio" id="test1" name="prId" checked>
 									<label for="test1">서울</label>
-								</div>
-								<div class="radio_wrap">
-									<input type="radio" id="test2" name="location">
-									<label for="test2">부산</label>
-								</div>
-								<div class="radio_wrap">
-									<input type="radio" id="test3" name="location">
-									<label for="test3">대구</label>
 								</div>
 							</div>
 						</li>
 						<li>
 							<strong class="subject">일시<span class="essential">*</span></strong>
-							<div class="form_group">
-								<div class="radio_wrap">
-									<input type="radio" id="test4" name="date" checked="">
-									<label for="test4">2019년 4월 19일(금) 오전 10:30</label>
-								</div>
-								<div class="radio_wrap">
-									<input type="radio" id="test5" name="date">
-									<label for="test5">2019년 4월 26일(금) 오전 10:30</label>
-								</div>
+							<div class="form_group" id="choose_time">
+								
 							</div>
 						</li>
 						<li>
 							<strong class="subject">연락처<span class="essential">*</span></strong>
 							<div class="form_group">
-								<div class="sel_wrap ip_phone3">
-									<button type="button" class="sel_style"><span>선택</span></button>
-									<ul class="sel_list">
-										<li><button type="button">010</button></li>
-									</ul>
-								</div>
-								<input type="text" class="ip_phone3" title="연락처 중간자리">
-								<input type="text" class="ip_phone3" title="연락처 끝자리">
+								<input type="text" class="ip_phone3" title="연락처 첫번째자리" id="phone1">
+								<input type="text" class="ip_phone3" title="연락처 중간자리" id="phone2">
+								<input type="text" class="ip_phone3" title="연락처 끝자리" id="phone3">
 							</div>
 						</li>
 						<li>
 							<strong class="subject">이름<span class="essential">*</span></strong>
-							<input type="text" class="ip_name" title="이름" placeholder="이름을 입력해주세요">
+							<input type="text" class="ip_name" title="이름" placeholder="이름을 입력해주세요" name="name">
 						</li>
 						<li>
 							<strong class="subject">활동희망지역<span class="essential">*</span></strong>
-							<input type="text" class="ip_name" title="활동희망지역" placeholder="예시) 서울시 서초구">
+							<input type="text" class="ip_name" title="활동희망지역" placeholder="예시) 서울시 서초구" name="hopeArea">
 						</li>
 						<li>
 							<strong class="subject">연령대<span class="essential">*</span></strong>
 							<div class="form_group">
 								<div class="radio_wrap">
-									<input type="radio" id="test6" name="age" checked="">
+									<input type="radio" id="test6" name="age" value="20대">
 									<label for="test6">20대</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test7" name="age">
+									<input type="radio" id="test7" name="age" value="30대">
 									<label for="test7">30대</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test8" name="age">
+									<input type="radio" id="test8" name="age" value="40대">
 									<label for="test8">40대</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test9" name="age">
+									<input type="radio" id="test9" name="age" value="50대">
 									<label for="test9">50대</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test10" name="age">
+									<input type="radio" id="test10" name="age" value="기타">
 									<label for="test10">기타</label>
 								</div>
 							</div>
@@ -213,11 +195,11 @@
 							<strong class="subject">유입경로</strong>
 							<div class="form_group">
 								<div class="radio_wrap">
-									<input type="radio" id="test11" name="inflow" checked="">
+									<input type="radio" id="test11" name="funnel" value="온라인" checked>
 									<label for="test11">온라인</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test12" name="inflow">
+									<input type="radio" id="test12" name="funnel" value="오프라인">
 									<label for="test12">오프라인</label>
 								</div>
 							</div>
@@ -226,29 +208,29 @@
 							<strong class="subject">상세 유입경로</strong>
 							<div class="form_group">
 								<div class="radio_wrap">
-									<input type="radio" id="test13" name="inflow2" checked="">
+									<input type="radio" id="test13" value="아이스크림홈런 홈페이지" name="funnelSub">
 									<label for="test13">아이스크림홈런 홈페이지</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test14" name="inflow2">
+									<input type="radio" id="test14" value="네이버블로그" name="funnelSub">
 									<label for="test14">네이버블로그</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test15" name="inflow2">
+									<input type="radio" id="test15" value="네이버카페" name="funnelSub">
 									<label for="test15">네이버카페</label>
 								</div>
 							</div>
 							<div class="form_group">
 								<div class="radio_wrap">
-									<input type="radio" id="test16" name="inflow2">
+									<input type="radio" id="test16" value="신문광고" name="funnelSub">
 									<label for="test16">신문광고</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test17" name="inflow2">
+									<input type="radio" id="test17" value="지인추천" name="funnelSub">
 									<label for="test17">지인추천</label>
 								</div>
 								<div class="radio_wrap">
-									<input type="radio" id="test18" name="inflow2">
+									<input type="radio" id="test18" value="기타" name="funnelSub">
 									<label for="test18">기타</label>
 								</div>
 							</div>
@@ -261,11 +243,12 @@
 						<a href="javascript:void(0);" class="show_content" onclick="layerAct.layerShow('layer_agree')">내용보기</a><!-- 190426 javascript:void(0); 오타수정 -->
 					</div>
 				</div>
+				</form>
 			</div>
 		</div>
 		<div class="btn_center_wrap">
-			<a href="javascript:void(0)" class="btn_cancel">초기화</a><!-- 190426 javascript:void(0) 추가 -->
-			<a href="javascript:void(0)" class="btn_regi">등록</a><!-- 190426 javascript:void(0) 추가 -->
+			<a href="javascript:resetBizApply()" class="btn_cancel">초기화</a><!-- 190426 javascript:void(0) 추가 -->
+			<a href="javascript:bizApply()" class="btn_regi">등록</a><!-- 190426 javascript:void(0) 추가 -->
 		</div>
 		<button type="button" class="btn_pop_close" onclick="layerAct.layerHide('layer_ask')"><span class="blind">닫기</span></button>
 	</div>

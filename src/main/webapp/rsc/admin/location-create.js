@@ -81,11 +81,13 @@ $(document).ready(function () {
 		
 		//산하 학습센터 목록 폼데이터에 추가하기
 		$('#card-container .card').each(function() {
-			if($(this).find('#center-name').val() !== '' && $(this).find('#center-adr').val() !== '') {
-				var info = $(this).find('#center-name').val() + '_' + $(this).find('#center-adr').val();
+			if($(this).find('.center-name').val() !== '' && $(this).find('.center-adr').val() !== '') {
+				var info = $(this).find('.center-name').val() + '_' + $(this).find('.center-adr').val();
 				formData.append('subBranchRq', info);
 			}
 		})
+		
+		console.log($('.card-container.card'));
 		
 		$.ajaxSetup({
 			headers: {

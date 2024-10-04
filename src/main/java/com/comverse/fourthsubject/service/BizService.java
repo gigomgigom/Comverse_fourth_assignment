@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +107,10 @@ public class BizService {
 			biz.setWriting(true);
 		}
 		bizDao.insertBizPr(biz);
-		createBizSch(biz);
+		if(biz.getDateList() != null) {
+			createBizSch(biz);
+		}
+		
 		return ResponseEntity.ok(null);
 	}
 	//사업설명회 일정 생성
@@ -129,7 +133,10 @@ public class BizService {
 		}
 		bizDao.updateBizPr(biz);
 		bizDao.deleteBizSch(biz.getPrId());
-		createBizSch(biz);
+		
+		if(biz.getDateList() != null) {
+			createBizSch(biz);
+		}
 		return ResponseEntity.ok(null);
 	}
 	//---------------------------------------------------------------------------------
@@ -321,5 +328,21 @@ public class BizService {
 		
 		model.addAttribute("result", result);
 		
+	}
+	//사용자를 위한 사업설명회 상세 정보 가져오기
+	public ResponseEntity<?> getBizDetailForUser(int prId) {
+		BizDto biz = bizDao.selectBizDetailByPrId(prId);
+		if(biz != null) {
+			Map<String, Object> map = new HashMap<>();
+			
+			List<BizSchDto> bizSch = bizDao.selectBizScheduleByPrId(prId);
+			biz.setBizSchList(bizSch);
+
+			map.put("branchLocation", branchDao.selectBranchDetail(biz.getBrId()).getLocation());
+			map.put("biz", biz);
+			return ResponseEntity.ok(map);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("존재하지 않는 정보입니다.");
+		}
 	}
 }

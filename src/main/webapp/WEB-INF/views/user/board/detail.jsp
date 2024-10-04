@@ -8,9 +8,8 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>아이스크림 홈런 학습센터</title>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="/resources/css/common.css">
 	
+	<link rel="stylesheet" href="/resources/css/common.css">
 </head>
 <body>
 <!-- wrap -->
@@ -94,12 +93,44 @@
 						<span class="date"><fmt:formatDate value="${board.regDate}" type="date"/></span>
 					</div>
 					<div class="cont_area">
-						${board.content}
+						<div style="width:100%;">
+							<img width=""/>
+						</div>
+						${board.content}						
 						<div class="file_wrap">
 							<c:forEach var="attach" items="${board.boAttachList}">
 								<a href="/board/download-attach/${board.boId}/${attach.attachId}">${attach.attachOName}</a>
 							</c:forEach>
 						</div>
+						<c:if test="${board.boReplyable}">
+							<h3>댓글 작성</h3>
+							<input type="hidden" value="${board.boId}" id="bo_id_input">
+							<input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<label for="writer_name">작성자명</label>
+							<input type="text" id="writer_name" style="margin-right: 20px">
+							<label for="writer_pw">비밀번호</label>
+							<input type="text" id="writer_pw">
+							<div class="comment_form_container">							
+								<textarea id="comment_form"></textarea>
+								<button type="button" id="submit_comment">작성하기</button>
+							</div>
+							<div class="comment_list_wrap">
+								<c:forEach var="reply" items="${replyList}">
+									<div class="comment">
+										<div class="comment_writer_date">
+											<span class="comment_writer">${reply.anonWriter}</span>
+											<span><fmt:formatDate value="${reply.regDate}" type="date"/></span>
+										</div>
+										<div class="comment_content">
+											${reply.content}
+										</div>
+										<div class="comment_button">
+											<button class="remove_button" id="reply-${reply.replyId}">삭제</button>
+										</div>
+									</div>				
+								</c:forEach>											
+							</div>
+						</c:if>						
 					</div>
 					<div class="move_area">
 						<c:choose>

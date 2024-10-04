@@ -42,11 +42,11 @@ $(document).ready(function () {
 			result = false;
 			error.push('이름');
 		}
-		if($('#edit-form [name="prId"]').val() === 0) {
+		if($('#edit-form [name="prId"]').val() == 0) {
 			result = false;
 			error.push('설명회');
 		}
-		if($('#edit-form [name="schId"]').val() === 0) {
+		if($('#edit-form [name="schId"]').val() == 0) {
 			result = false;
 			error.push('일시');
 		}
@@ -54,11 +54,11 @@ $(document).ready(function () {
 			result = false;
 			error.push('희망지역');
 		}
-		if($('#edit-form [name="age"]').val() === 0) {
+		if($('#edit-form [name="age"]').val() == 0) {
 			result = false;
 			error.push('연령대');
 		}
-		if($('#edit-form [name="funnelSub"]').val() === 0) {
+		if($('#edit-form [name="funnelSub"]').val() == 0) {
 			result = false;
 			error.push('상세 유입경로');
 		}
@@ -95,7 +95,7 @@ $(document).ready(function () {
 			processData: false,
 			contentType: false,
 			success: function() {
-				alert('정보가 생성되었습니다.');
+				alert('정보가 수정되었습니다.');
 				location.href="/admin/manage/general/biz-apply/list";
 			},
 			error: function(e) {

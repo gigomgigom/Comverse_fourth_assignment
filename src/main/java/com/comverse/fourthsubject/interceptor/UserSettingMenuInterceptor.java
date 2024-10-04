@@ -28,7 +28,6 @@ public class UserSettingMenuInterceptor implements HandlerInterceptor{
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		
 		List<BoardCtgDto> boardList = boardService.getBoardCtgList();
-		log.info(boardList.toString());
 		for(int i=0; i<boardList.size(); i++) {
 			
 			BoardCtgDto ctg = boardList.get(i);

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,6 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>아이스크림 홈런 학습센터</title>
 	<link rel="stylesheet" href="/resources/css/common.css">
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a475c090e241b8895d644d35af840ffb&libraries=services"></script>
 </head>
 <body>
 <!-- wrap -->
@@ -41,41 +43,30 @@
 					<ul class="tab_list">
 						<!-- 20190607 명칭 수정 -->
 						<!-- 190426 javascript:void(0); 오타수정 -->
-						<li class="active"><a href="javascript:void(0)">서울 강북</a></li>
-						<li><a href="javascript:void(0)">서울 서북</a></li>
-						<li><a href="javascript:void(0)">서울 강서</a></li>
-						<li><a href="javascript:void(0)">광주/순천</a></li>
-						<li><a href="javascript:void(0)">구미/경북</a></li>
-						<li><a href="javascript:void(0)">전라북도</a></li>
-						<li><a href="javascript:void(0)">대구/포항</a></li>
-						<li><a href="javascript:void(0)">대전/세종/청주</a></li>
-						<li><a href="javascript:void(0)">목포/해남</a></li>
-						<li><a href="javascript:void(0)">부산</a></li>
-						<li><a href="javascript:void(0)">천안/아산</a></li>
-						<li><a href="javascript:void(0)">경기남부</a></li>
-						<li><a href="javascript:void(0)">울산</a></li>
-						<li><a href="javascript:void(0)">창원/경남</a></li>
-						<!-- // 190426 javascript:void(0); 오타수정 -->
-						<!-- // 20190607 명칭 수정 -->
+						<c:forEach var="branch" items="${branchList}" varStatus="stts">
+							<li class="select_branch ${stts.first ? 'active' : '' }" data-select="${branch.brId}"><a href="javascript:void(0)">${branch.location}</a></li>
+						</c:forEach>
 					</ul>
 					<div class="tab_cont active">
 						<div class="map_wrap">
-							<img src="/resources/image/temp_map.png" alt="">
+							<div id="map" style="width:100%; height: 300px;">
+							
+							</div>							
 						</div>
 						<dl class="info_list">
-							<dt><span>강북/경기북부</span></dt>
+							<dt><span id="branch_location">강북/경기북부</span></dt>
 							<dd class="address">
 								<strong class="tit">주소</strong>
-								<span class="cont">서울시 강남구 영동대로 106길 41(삼성동 동영빌딩) 시공교육 2F</span>
+								<span class="cont" id="branch_adr">서울시 강남구 영동대로 106길 41(삼성동 동영빌딩) 시공교육 2F</span>
 							</dd>
 							<dd class="call">
 								<strong class="tit">전화</strong>
-								<span class="cont">02.3288.0910</span>
+								<span class="cont" id="branch_tel">02.3288.0910</span>
 							</dd>
 							<!-- 190412 추가 -->
 							<dd class="affiliated">
 								<strong class="tit">산하</strong>
-								<ul class="cont">
+								<ul class="cont" id="branch_sub">
 									<li>
 										<em>노원 학습센터</em>
 										<span>서울특별시 노원구 상계동 330-26 3층</span>
@@ -93,38 +84,6 @@
 							<!-- // 190412 추가 -->
 						</dl>
 					</div>
-					<div class="tab_cont">
-						<div class="map_wrap">
-							<img src="/resources/image/temp_map.png" alt="">
-						</div>
-						<dl class="info_list">
-							<dt><span>서북/경기서부</span></dt>
-							<dd class="address">
-								<strong class="tit">주소</strong>
-								<span class="cont">서울시 강남구 영동대로 106길 41(삼성동 동영빌딩) 시공교육 2F</span>
-							</dd>
-							<dd class="call">
-								<strong class="tit">전화</strong>
-								<span class="cont">02.3288.0910</span>
-							</dd>
-						</dl>
-					</div>
-					<div class="tab_cont">
-						<div class="map_wrap">
-							<img src="/resources/image/temp_map.png" alt="">
-						</div>
-						<dl class="info_list">
-							<dt><span>강서/인천/부천</span></dt>
-							<dd class="address">
-								<strong class="tit">주소</strong>
-								<span class="cont">서울시 강남구 영동대로 106길 41(삼성동 동영빌딩) 시공교육 2F</span>
-							</dd>
-							<dd class="call">
-								<strong class="tit">전화</strong>
-								<span class="cont">02.3288.0910</span>
-							</dd>
-						</dl>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -138,5 +97,6 @@
 <!--// wrap -->
 <script src="/resources/js/jquery-1.9.1.min.js"></script>
 <script src="/resources/js/default.js"></script>
+<script src="/resources/js/kakaomap.js"></script>
 </body>
 </html>

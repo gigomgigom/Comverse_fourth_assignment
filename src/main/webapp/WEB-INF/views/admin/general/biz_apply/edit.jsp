@@ -137,13 +137,13 @@
 								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">상세 유입 경로</dt>
 								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
 									<select id="category" class="form-control w-100" name="funnelSub">
-				                        <option value=0 selected>상세 경로</option>
-				                        <option ${bizApl.funnelSub eq '아이스크림홈런 페이지' ? 'checked' : ''}>아이스크림홈런 페이지</option>
-				                        <option ${bizApl.funnelSub eq '네이버 블로그' ? 'checked' : ''}>네이버 블로그</option>
-				                        <option ${bizApl.funnelSub eq '네이버 카페' ? 'checked' : ''}>네이버 카페</option>
-				                        <option ${bizApl.funnelSub eq '신문 광고' ? 'checked' : ''}>신문 광고</option>
-				                        <option ${bizApl.funnelSub eq '지인 추천' ? 'checked' : ''}>지인 추천</option>
-				                        <option ${bizApl.funnelSub eq '기타' ? 'checked' : ''}>기타</option>
+				                        <option value=0>상세 경로</option>
+				                        <option ${bizApl.funnelSub eq '아이스크림홈런 페이지' ? 'selected' : ''}>아이스크림홈런 페이지</option>
+				                        <option ${bizApl.funnelSub eq '네이버 블로그' ? 'selected' : ''}>네이버 블로그</option>
+				                        <option ${bizApl.funnelSub eq '네이버 카페' ? 'selected' : ''}>네이버 카페</option>
+				                        <option ${bizApl.funnelSub eq '신문 광고' ? 'selected' : ''}>신문 광고</option>
+				                        <option ${bizApl.funnelSub eq '지인 추천' ? 'selected' : ''}>지인 추천</option>
+				                        <option ${bizApl.funnelSub eq '기타' ? 'selected' : ''}>기타</option>
 				                    </select>
 								</dd>
 							</dl>

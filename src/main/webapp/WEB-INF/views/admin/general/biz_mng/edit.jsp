@@ -98,7 +98,7 @@
 								        	시작일 설정
 								      	</label>
 									</div>
-									<input type="date" class="ml-3 form-control col-sm-5" id="expose-start" name="exposeStart" value="${formattedStartDate}">
+									<input type="date" class="ml-3 form-control col-sm-5" id="expose-start" name="exposeStart" value="${formattedStartDate}" ${formattedStartDate == null ? 'disabled' : ''}>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">
@@ -111,7 +111,7 @@
 								        	종료일 설정
 								      	</label>
 									</div>
-									<input type="date" class="ml-3 form-control col-sm-5" id="expose-end" name="exposeEnd" value="${formattedEndDate}">
+									<input type="date" class="ml-3 form-control col-sm-5" id="expose-end" name="exposeEnd" value="${formattedEndDate}" ${formattedEndDate == null ? 'disabled' : ''}>
 								</dd>
 							</dl>
 							<dl class="col-md-6 d-flex row">

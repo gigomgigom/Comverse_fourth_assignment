@@ -64,24 +64,6 @@
 									${username}
 								</dd>
 							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 고정 유무</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input class="custom-control-input ml-3 mr-5" type="checkbox" value=1 id="pinned" name="pinned">
-							        <label class="custom-control-label ml-5" for="pinned">
-							        	프론트 화면에 최신 게시물로 노출됩니다.
-							      	</label>
-								</dd>
-							</dl>
-							<dl class="col-md-6 d-flex row">
-								<dt class="col-md-2 px-3 py-2 bg-info d-flex justify-content-center align-items-center">댓글 등록가능</dt>
-								<dd class="col-md-10 px-3 py-2 m-0 d-flex align-items-center border">
-									<input class="custom-control-input ml-3 mr-5" type="checkbox" value=1 id="replyable" name="replyable">
-							        <label class="custom-control-label ml-5" for="replyable">
-							        	댓글 등록 가능
-							      	</label>
-								</dd>
-							</dl>
 							<dl class="col-md-12 d-flex row">
 								<dt class="col-md-1 px-3 py-2 bg-info d-flex justify-content-center align-items-center">게시물 상태</dt>
 								<dd class="col-md-11 px-3 py-2 m-0 d-flex align-items-center border">

@@ -2,20 +2,22 @@ package com.comverse.fourthsubject.service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.comverse.fourthsubject.dao.BranchDao;
-import com.comverse.fourthsubject.dto.BoardDto;
 import com.comverse.fourthsubject.dto.BranchDto;
 import com.comverse.fourthsubject.dto.SubBranchDto;
 import com.comverse.fourthsubject.dto.nondb.Pager;
@@ -142,6 +144,23 @@ public class BranchService {
 		}
 		
 		return workbook;
+	}
+	//사용자를 위한 지국 위치 불러오기
+	public ResponseEntity<?> getBranchDetailForUser(int brId) {
+		BranchDto branch = branchDao.selectBranchDetail(brId);
+		
+		if(branch != null) {
+			Map<String, Object> map = new HashMap<>();
+			
+			List<SubBranchDto> subBranchList = branchDao.selectSubBranchList(branch.getBrId());
+			map.put("branch", branch);
+			map.put("subBranchList", subBranchList);
+			
+			return ResponseEntity.ok(map);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
+		
 	}
 
 }

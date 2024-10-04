@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.comverse.fourthsubject.dto.BoardAttachDto;
 import com.comverse.fourthsubject.dto.BoardDto;
+import com.comverse.fourthsubject.dto.ReplyDto;
 import com.comverse.fourthsubject.dto.nondb.Pager;
 import com.comverse.fourthsubject.dto.nondb.SearchIndex;
 
@@ -42,5 +43,11 @@ public interface BoardDao {
 	public BoardDto selectNextBoardByBoId(int boCtg, int boId);
 	//첨부파일 정보 가져오기
 	public BoardAttachDto selectBoardAttachByAttachId(int attachId);
+	//댓글 작성하기
+	public void insertBoardReply(ReplyDto reply);
+	//댓글 목록 조회
+	public List<ReplyDto> selectReplyListByBoId(int boId);
+	public void updateReplyEnabled(ReplyDto rqReply);
+	public ReplyDto selectReplyDetail(int replyId);
 
 }

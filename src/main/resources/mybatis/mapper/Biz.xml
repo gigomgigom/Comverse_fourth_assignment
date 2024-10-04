@@ -19,7 +19,7 @@
 						<![CDATA[
 							or
 								(
-									bo_writing = 0
+									writing = 0
 									and
 									(
 										(CURRENT_DATE() < expose_start)
@@ -126,7 +126,7 @@
 						<![CDATA[
 							or
 								(
-									bo_writing = 0
+									writing = 0
 									and
 									(
 										(CURRENT_DATE() < expose_start)
