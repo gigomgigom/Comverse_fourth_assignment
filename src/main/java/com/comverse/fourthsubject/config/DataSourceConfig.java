@@ -19,7 +19,7 @@ public class DataSourceConfig {
 		HikariConfig config = new HikariConfig();
 		
 		//config.setDriverClassName("com.mysql.jdbc.Driver");
-		config.setJdbcUrl("jdbc:mysql://localhost:3306/fourthproject");
+		config.setJdbcUrl("jdbc:mysql://192.168.0.130:3306/fourthproject");
 		config.setUsername("sim");
 		config.setPassword("1234");
 		config.setMaximumPoolSize(12);

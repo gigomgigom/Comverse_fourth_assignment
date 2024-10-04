@@ -78,7 +78,7 @@ function uploadSummernoteImageFile (file) {
 		cache: false,
 		success: (data) => {
 			if(data !== null && data !== '') {
-				$('#summernote').summernote('insertImage', 'http://localhost:81'+data);
+				$('#summernote').summernote('insertImage', 'http://localhost'+data);
 			}
 		},
 		error: (e) => {
